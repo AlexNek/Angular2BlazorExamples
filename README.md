@@ -29,7 +29,8 @@ By default, Angular uses client-side rendering (CSR).
 From angular version 16 it is possible to use Server Side rendering (SSR): [Angular server-side rendering](https://angular.dev/guide/ssr)
 
 ### Component structure
-The component structure is the same for both languages:
+The component structure is the same for both languages:  
+
 ![image](Docu/pics/ComponentOverview.png)
 
 | Part | Angular | Blazor |
@@ -99,9 +100,3 @@ better to use **foreach** instead
 - [Telerik](https://www.telerik.com/blazor-ui) Develop new Blazor apps and modernize legacy web projects in half the time with a high-performing Grid and 110+ truly native, easy-to-customize Blazor UI components. Design and productivity tools are also included. 
 - [Developer Express](https://www.devexpress.com/blazor/) Blazor UI Component Library ships with a comprehensive set of native Blazor components (including a DataGrid, Pivot Grid, Scheduler, Chart, Data Editors, and Reporting).
 - [Syncfusion](https://www.syncfusion.com/blazor-components) The Syncfusion Blazor component library offers 85+ responsive, lightweight components, including data visualizations like DataGrid, 50+ Charts, and Scheduler, for building modern web apps. 
-
-
-## xxx
-At some point you may be wondering which is better, Angular or Blazor?
-As usual, it depends on many factors, so a general answer will never be possible.
-However, we will try to review some of the factors that may be helpful in making your decision.
