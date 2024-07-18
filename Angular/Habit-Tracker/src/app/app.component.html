@@ -1,0 +1,84 @@
+<div class="toolbar-container">
+  <mat-toolbar class="toolbar" color="primary">
+    <mat-icon aria-hidden="false" aria-label="check mark icon">fact_check</mat-icon>
+    <h1>Habit Tracker</h1>
+  </mat-toolbar>
+</div>
+
+@if (!adding && !editing) {
+  <div class="all-habits">
+    <h1>All Habits</h1>
+    <button mat-raised-button color="accent" (click)="adding = !adding">
+      Add New Habit
+    </button>
+    @for (habit of habits; track habit; let i = $index) {
+      <div>
+        <mat-card>
+          <mat-card-title>
+            <mat-icon
+              class="habit-icon"
+              color="accent"
+              aria-hidden="false"
+              aria-label="circle check mark icon"
+              >check_circle_outline</mat-icon>
+              {{ habit.name }}
+            </mat-card-title>
+            <div class="detail-options">
+              <mat-icon
+                class="habit-icon"
+                color="primary"
+                (click)="setEditForm(habit, i)"
+                >edit</mat-icon>
+                <mat-icon class="habit-icon" color="warn" (click)="onDelete(i)"
+                  >remove_circle</mat-icon>
+                </div>
+                <mat-card-content>
+                  <p>
+                    <span class="detail-label">Frequency:</span> {{ habit.frequency }}
+                  </p>
+                  <p>{{ habit.description }}</p>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          }
+        </div>
+      }
+
+      @if (adding || editing) {
+        <div class="add-form-container">
+          <mat-card>
+            <mat-card-title> {{ adding ? "Add New" : "Edit" }} Habit </mat-card-title>
+            <hr />
+            <form [formGroup]="habitForm" (ngSubmit)="onSubmit()">
+              <mat-card-content>
+                <mat-form-field appearance="fill">
+                  <mat-label>Title</mat-label>
+                  <input matInput formControlName="name" />
+                </mat-form-field>
+                <br />
+                <mat-form-field appearance="fill">
+                  <mat-label>Frequency</mat-label>
+                  <mat-select formControlName="frequency">
+                    <mat-option value="Daily">Daily</mat-option>
+                    <mat-option value="Weekly">Weekly</mat-option>
+                    <mat-option value="Monthly">Monthly</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <br />
+                <mat-form-field appearance="fill">
+                  <mat-label>Description</mat-label>
+                  <textarea
+                    matInput
+                    formControlName="description"
+                    placeholder="Why is this habit important to you?"
+                  ></textarea>
+                </mat-form-field>
+              </mat-card-content>
+              <mat-card-actions>
+                <button mat-raised-button color="primary" type="submit">Save</button>
+                <button mat-raised-button (click)="exitForm()">Cancel</button>
+              </mat-card-actions>
+            </form>
+          </mat-card>
+        </div>
+      }

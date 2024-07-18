@@ -1,0 +1,130 @@
+﻿@page "/"
+@using HabitTracker.Client.Layouts
+
+
+@layout MainLayout
+
+<PageTitle>Habit Tracker</PageTitle>
+@if (!_adding && !_editing)
+{
+    <div class="all-habits">
+        <h1>All Habits</h1>
+        <Container Fluid>
+            <Row>
+                <Column>
+                    <div class="mat-card">
+                        <Button Position="Position.Relative.Top.Is0.Start.Is50.Translate.Middle"
+                                Color="Color.Primary"
+                                Casing="CharacterCasing.Normal" style="text-transform: none"
+                                Margin="Margin.Is4.FromTop" 
+                                Clicked="@OnNewHabitClicked">
+                            Add New Habit
+                        </Button>
+                        @foreach (var habit in Habits)
+                        {
+                            <Card Margin="Margin.Is1">
+                                <CardTitle Size="3">
+                                    <i class="habit-icon mat-icon mat-accent material-icons"
+                                       aria-hidden="false"
+                                       aria-label="circle check mark icon"
+                                       data-mat-icon-type="font">check_circle_outline</i>
+
+                                    @* <Icon
+                            Name="Blazorise.Icons.Material.MaterialIcons.CheckCircleOutline"
+                            class="habit-icon  mat-accent"
+                            IconStyle="IconStyle.Regular"
+                            aria-hidden="false"
+                            aria-label="circle check mark icon"></Icon> *@
+                                    @habit.Name
+                                    <div class="detail-options">
+                                        <Button Clicked="() => SetEditForm(habit)">
+                                            <i class="habit-icon mat-icon mat-primary material-icons"
+                                               aria-hidden="true"
+                                               data-mat-icon-type="font">edit</i>
+                                        </Button>
+                                        <Button Clicked="() => OnDelete(habit)">
+                                            <i class="habit-icon mat-icon mat-warn material-icons"
+                                               aria-hidden="true"
+                                               data-mat-icon-type="font">remove_circle</i>
+                                        </Button>
+                                    </div>
+                                </CardTitle>
+
+                                <CardBody>
+                                    <div><b>Frequency: </b>@habit.Frequency<br /><br /></div>
+                                    @habit.Description
+                                </CardBody>
+                            </Card>
+                        }
+                    </div>
+                </Column>
+            </Row>
+        </Container>
+    </div>
+}
+@* Edit form *@
+@if (_editedHabit != null && (_adding || _editing))
+{
+    <Row>
+        <Column ColumnSize="ColumnSize.Is6.OnDesktop">
+            <Card Margin="Margin.Is4.FromBottom">
+                <CardHeader>
+                    <CardTitle>Add new habit</CardTitle>
+                </CardHeader>
+                <CardBody>
+                    <Validations @ref="validationsFormRef" Mode="ValidationMode.Auto" ValidateOnLoad="false">
+                        <Validation Validator="@ValidateEmptyString">
+                            <Field Horizontal>
+                                <FieldLabel ColumnSize="ColumnSize.IsFull.OnTablet.Is3.OnDesktop">Name</FieldLabel>
+                                <FieldBody ColumnSize="ColumnSize.IsFull.OnTablet.Is9.OnDesktop">
+                                    <TextEdit Placeholder="Title" @bind-Text="@_editedHabit.Name">
+                                        <Feedback>
+                                            <ValidationSuccess>Name is good.</ValidationSuccess>
+                                            <ValidationError>Enter nonempty name!</ValidationError>
+                                        </Feedback>
+                                    </TextEdit>
+                                </FieldBody>
+                            </Field>
+                        </Validation>
+                        <Validation Validator="@ValidationRule.IsSelected">
+                            <Field Horizontal>
+                                <FieldLabel ColumnSize="ColumnSize.IsFull.OnTablet.Is3.OnDesktop">Frequency</FieldLabel>
+                                <FieldBody ColumnSize="ColumnSize.IsFull.OnTablet.Is9.OnDesktop">
+                                    <Select TValue="string" @bind-SelectedValue="@_editedHabit.Frequency">
+                                        <SelectItem Value="@DefDaily">Daily</SelectItem>
+                                        <SelectItem Value="@DefWeekly">Weekly</SelectItem>
+                                        <SelectItem Value="@DefMonthly">Monthly</SelectItem>
+                                    </Select>
+                                </FieldBody>
+                            </Field>
+                        </Validation>
+                        <Validation Validator="@ValidateEmptyString">
+                            <Field Horizontal>
+                                <FieldLabel ColumnSize="ColumnSize.IsFull.OnTablet.Is3.OnDesktop">Description</FieldLabel>
+                                <FieldBody ColumnSize="ColumnSize.IsFull.OnTablet.Is9.OnDesktop">
+                                    <TextEdit Placeholder="Description" @bind-Text="@_editedHabit.Description">
+                                        <Feedback>
+                                            <ValidationSuccess>description is good.</ValidationSuccess>
+                                            <ValidationError>Enter nonempty description!</ValidationError>
+                                        </Feedback>
+                                    </TextEdit>
+                                </FieldBody>
+                            </Field>
+                        </Validation>
+
+                        <Field Horizontal JustifyContent="JustifyContent.End">
+                            <FieldBody ColumnSize="ColumnSize.Is9.Is3.WithOffset">
+                                <Button Color="Color.Primary" Clicked="SubmitForm">Submit</Button>
+                            </FieldBody>
+                        </Field>
+                        <Field Horizontal JustifyContent="JustifyContent.End">
+                            <FieldBody ColumnSize="ColumnSize.Is9.Is3.WithOffset">
+                                <Button Color="Color.Primary" Clicked="CancelForm">Cancel</Button>
+                            </FieldBody>
+                        </Field>
+                    </Validations>
+                </CardBody>
+            </Card>
+        </Column>
+    </Row>
+}
