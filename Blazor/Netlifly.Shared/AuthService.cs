@@ -15,9 +15,9 @@
         private readonly GraphQLHttpClient _apollo;
         private readonly AuthRepository _authRepository;
 
-        private readonly AppConfig _appConfig;
+        private readonly IAppConfig _appConfig;
 
-        public AuthService(GraphQLHttpClient apollo, AuthRepository authRepository,AppConfig appConfig)
+        public AuthService(GraphQLHttpClient apollo, AuthRepository authRepository, IAppConfig appConfig)
         {
             _apollo = apollo;
             _authRepository = authRepository;

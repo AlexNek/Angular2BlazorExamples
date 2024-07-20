@@ -1,53 +1,27 @@
-﻿namespace Netlifly.Shared
+﻿namespace Netlifly.Shared;
+
+public class AppConfig : IAppConfig
 {
-    public class AppConfig
-    {
-        public int AlertMilliseconds { get; set; }
+    public int AlertMilliseconds { get;  } = 3000;
 
-        public LocalBreakpoints Breakpoints { get; set; }
+    public IAppConfig.LocalBreakpoints Breakpoints { get; set; } =
+        new IAppConfig.LocalBreakpoints()
+            {
+                Xs = 0,
+                Sm = 576,
+                Md = 768,
+                Xl = 1200,
+                Xxl = 1400
+            };
 
-        public string BypassAuthorization { get; set; }
+    public string BypassAuthorization { get; set; } = "bypassAuthorization";
 
-        public LocalCustomQueryParams CustomQueryParams { get; set; }
+    public IAppConfig.LocalCustomQueryParams CustomQueryParams { get; set; } =
+        new IAppConfig.LocalCustomQueryParams() { AlertId = "alertId", Origin = "origin" };
 
-        public string DefaultLang { get; set; }
+    public string DefaultLang { get; set; } = "en";
 
-        public LocalEndpoints Endpoints { get; set; }
+    public IAppConfig.LocalEndpoints Endpoints { get; set; } = new IAppConfig.LocalEndpoints() { Graphql = "graphql" };
 
-        public LocalLanguages Languages { get; set; }
-
-        public class LocalBreakpoints
-        {
-            public int Lg { get; set; }
-
-            public int Md { get; set; }
-
-            public int Sm { get; set; }
-
-            public int Xl { get; set; }
-
-            public int Xs { get; set; }
-
-            public int Xxl { get; set; }
-        }
-
-        public class LocalCustomQueryParams
-        {
-            public string AlertId { get; set; }
-
-            public string Origin { get; set; }
-        }
-
-        public class LocalEndpoints
-        {
-            public string Graphql { get; set; }
-        }
-
-        public class LocalLanguages
-        {
-            public string En { get; set; }
-
-            public string Es { get; set; }
-        }
-    }
+    public IAppConfig.LocalLanguages Languages { get; set; } = new IAppConfig.LocalLanguages() { En = "en", Es = "es" };
 }
