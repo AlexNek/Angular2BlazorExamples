@@ -1,0 +1,63 @@
+﻿@page "/auth/log-in"
+@layout EmptyLayout
+
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Identity
+
+@using Netlify.Components.Layout
+@using Netlify.Components.Account.Shared
+
+@* only need for Demo button, HttpContext is null, login doesn't work *@
+@* @rendermode InteractiveServer *@
+
+@* @inject SignInManager<ApplicationUser> SignInManager
+@inject ILogger<Login> Logger *@
+@inject NavigationManager NavigationManager
+@* @inject IdentityRedirectManager RedirectManager *@
+
+<PageTitle>Log in</PageTitle>
+
+<div class="d-flex bg-white rounded-10 padding-2">
+   
+    <FluentGrid>
+        <FluentGridItem>
+            <StatusMessage Message="@errorMessage" />
+            <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
+                <DataAnnotationsValidator />
+                <h1>Log in</h1>
+                <hr />
+                <h2>Use a local account to log in.</h2>
+                <hr />
+                <FluentValidationSummary class="text-danger" role="alert" />
+                <FluentStack Orientation="Orientation.Vertical">
+                    <FluentTextField Id="EMail" Name="Input.EMail" @bind-Value="Input.EMail" AutoComplete="email" Required="true" Placeholder="e-mail" Label="E-Mail" Style="width: 100%">
+                        <FluentIcon Value="@(new Icons.Regular.Size24.MailEdit())" Slot="start" />
+                    </FluentTextField>
+                    <FluentValidationMessage For="() => Input.EMail" class="text-danger" />
+                    <PasswordField Id="Password" Name="Input.Password" @bind-Value="Input.Password" StartIcon="@(new Icons.Regular.Size24.PersonPasskey())" AutoComplete="current-password" Placeholder="password" Label="Password" Style="width: 100%" />
+                    
+                    <FluentValidationMessage For="() => Input.Password" class="text-danger" />
+                    <FluentCheckbox Name="Input.RememberMe" @bind-Value="Input.RememberMe" Label="Remember me" />
+
+                    <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%">Log in</FluentButton>
+                    <div>
+                        
+                        <p>
+                            <FluentAnchor Appearance="Appearance.Hypertext" Href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">Register as a new user</FluentAnchor>
+                        </p>
+                        
+                        <p>
+                            <FluentAnchor Appearance="Appearance.Hypertext" Href="@(NavigationManager.GetUriWithQueryParameters("auth/log-in", new Dictionary<string, object?> { ["IsDemoLogin"] = true }))">Demo login</FluentAnchor>
+                        </p>
+                    </div>
+                </FluentStack>
+            </EditForm>
+
+        </FluentGridItem>
+
+    </FluentGrid>
+
+</div>
+
+

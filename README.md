@@ -87,6 +87,7 @@ better to use **foreach** instead
   
   And yes, the whole logic has to be changed, see example code.
 ## Example 2 - Netlify 
+Login: test@google.com
 [Second example](https://github.com/Ismaestro/angular-example-app) must be a bit complicated.
 We can find there GraphQL Api call, authentication and localization.
 

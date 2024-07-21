@@ -15,7 +15,10 @@ namespace Netlify.Client
             //await builder.Build().RunAsync();
             var services = builder.Services;
             services.AddLocalization();
-            
+            services.AddAuthorizationCore();
+            //services.AddCascadingAuthenticationState();
+
+
             // need for FluentUI sometimes
             services.AddSingleton<LibraryConfiguration>();
 

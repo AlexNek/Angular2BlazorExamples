@@ -1,5 +1,7 @@
 using Blazored.LocalStorage;
 
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.FluentUI.AspNetCore.Components;
 
 using Netlify.Components;
@@ -18,6 +20,17 @@ namespace Netlify
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
             services.AddFluentUIComponents();
+            services.AddCascadingAuthenticationState();
+
+            services.AddAuthentication(
+                options =>
+                    {
+                        options.DefaultScheme = IdentityConstants.ApplicationScheme;
+                        options.DefaultSignInScheme = IdentityConstants.ApplicationScheme;
+                    }).AddCookie();
+
+            //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //    .AddCookie();
 
             services.AddHttpContextAccessor();
             services.AddControllers();
@@ -52,11 +65,17 @@ namespace Netlify
             app.UseStaticFiles();
             app.UseAntiforgery();
 
+            //app.UseAuthentication();
+            //app.UseAuthorization();
+
             app.MapControllers();
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode()
                 .AddInteractiveWebAssemblyRenderMode()
                 .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
+
+            // Add additional endpoints required by the Identity /Account Razor components.
+            //app.MapAdditionalIdentityEndpoints();
 
             app.Run();
         }

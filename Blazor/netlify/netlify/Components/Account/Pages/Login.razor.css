@@ -1,0 +1,31 @@
+@media (min-width: 576px) and (min-height: 685px) {
+    .login-page__container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: 0;
+        transform: translate(-50%,-50%);
+    }
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+.d-flex {
+    display: flex;
+}
+
+.padding-2 {
+    padding: 1.0rem;
+}
+.bg-white {
+    background: white;
+}
+
+.rounded-10 {
+    border-radius: 10px;
+}
