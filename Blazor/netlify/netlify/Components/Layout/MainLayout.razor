@@ -1,9 +1,18 @@
-﻿@using Netlify.Client.Components
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Primitives
+@using Netlify.Client.Components
 @inherits LayoutComponentBase
+
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 
 <FluentLayout>
     <FluentHeader>
         netlify
+        <FluentSpacer />
+        <article class="bottom-row px-4">
+            <CultureSelector @rendermode="InteractiveAuto" />
+        </article>
     </FluentHeader>
     <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
         <NavMenu />
@@ -17,10 +26,7 @@
         <a href="https://www.fluentui-blazor.net" target="_blank">Documentation and demos</a>
         <FluentSpacer />
         <a href="https://learn.microsoft.com/en-us/aspnet/core/blazor" target="_blank">About Blazor</a>
-        <FluentSpacer />
-        <article class="bottom-row px-4">
-            <CultureSelector @rendermode="InteractiveAuto" />
-        </article>
+       
 
     </FluentFooter>
 </FluentLayout>
@@ -30,3 +36,47 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@code
+{
+    // [CascadingParameter]
+    // public HttpContext? HttpContext { get; set; }
+    /// <summary>
+    /// Method invoked when the component is ready to start, having received its
+    /// initial parameters from its parent in the render tree.
+    /// Override this method if you will perform an asynchronous operation and
+    /// want the component to refresh when that operation is completed.
+    /// </summary>
+    /// <returns>A <see cref="T:System.Threading.Tasks.Task" /> representing any asynchronous operation.</returns>
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        
+        // var httpContext = HttpContextAccessor.HttpContext;
+        // var requestCookie = HttpContext?.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
+        // if (requestCookie != null)
+        // {
+        //     var cultureResult = CookieRequestCultureProvider.ParseCookieValue(requestCookie);
+        //     if (cultureResult != null && cultureResult.Cultures.Any())
+        //     {
+        //         var currentCulture = cultureResult.Cultures[0];
+        //         CultureInfo cultureInfo = new CultureInfo(currentCulture.ToString());
+        //         CultureInfo.CurrentCulture = cultureInfo;
+        //         CultureInfo.CurrentUICulture = cultureInfo;
+        //     }
+        // }
+    }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            var cultureResult = await LocalStorage.GetItemAsStringAsync("BlazorCulture");
+        }
+    }
+
+}
+            

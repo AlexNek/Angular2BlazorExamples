@@ -1,5 +1,8 @@
 ﻿@using System.Globalization
 @using Microsoft.AspNetCore.Localization
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,11 +35,28 @@
 
     protected override void OnInitialized()
     {
-        HttpContext?.Response.Cookies.Append(
-            CookieRequestCultureProvider.DefaultCookieName,
-            CookieRequestCultureProvider.MakeCookieValue(
-                new RequestCulture(
-                    CultureInfo.CurrentCulture,
-                    CultureInfo.CurrentUICulture)));
+        var requestCookie = HttpContext?.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
+        if (requestCookie != null)
+        {
+            var cultureResult = CookieRequestCultureProvider.ParseCookieValue(requestCookie);
+            if (cultureResult != null && cultureResult.Cultures.Any())
+            {
+                var currentCulture = cultureResult.Cultures[0];
+                // CultureInfo cultureInfo = new CultureInfo(currentCulture.ToString());
+                // CultureInfo.CurrentCulture = cultureInfo;
+                // CultureInfo.CurrentUICulture = cultureInfo;
+            }
+        }
+        else
+        {
+            // HttpContext?.Response.Cookies.Append(
+            //     CookieRequestCultureProvider.DefaultCookieName,
+            //     CookieRequestCultureProvider.MakeCookieValue(
+            //         new RequestCulture(
+            //             CultureInfo.CurrentCulture,
+            //             CultureInfo.CurrentUICulture)));
+        }
     }
+
+   
 }

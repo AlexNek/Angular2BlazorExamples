@@ -1,3 +1,5 @@
+using Blazored.LocalStorage;
+
 using Microsoft.FluentUI.AspNetCore.Components;
 
 using Netlify.Components;
@@ -17,8 +19,10 @@ namespace Netlify
                 .AddInteractiveWebAssemblyComponents();
             services.AddFluentUIComponents();
 
+            services.AddHttpContextAccessor();
             services.AddControllers();
             services.AddLocalization();
+            services.AddBlazoredLocalStorage();
 
 
             var app = builder.Build();
