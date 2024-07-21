@@ -11,10 +11,15 @@ namespace Netlify
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddRazorComponents()
+            var services = builder.Services;
+            services.AddRazorComponents()
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
-            builder.Services.AddFluentUIComponents();
+            services.AddFluentUIComponents();
+
+            services.AddControllers();
+            services.AddLocalization();
+
 
             var app = builder.Build();
 
@@ -30,11 +35,20 @@ namespace Netlify
                 app.UseHsts();
             }
 
+            var supportedCultures = new[] { "en-US", "es-CR" };
+            var localizationOptions = new RequestLocalizationOptions()
+                .SetDefaultCulture(supportedCultures[0])
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+
+            app.UseRequestLocalization(localizationOptions);
+
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
             app.UseAntiforgery();
 
+            app.MapControllers();
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode()
                 .AddInteractiveWebAssemblyRenderMode()
