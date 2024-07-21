@@ -41,7 +41,7 @@ The component structure is the same for both languages:
 
 > **Note:** It is also possible to include a code-behind section in the Razor file, which is not recommended for large components.
 
-## Example - Habit Tracker
+## Example 1 - Habit Tracker
 I was looking for an Angular code example with description and source code and found this:
 [Learn Angular Basics by Building a Simple App Using Angular Material](https://betterprogramming.pub/learn-angular-basics-by-building-a-simple-app-using-angular-material-9bbc19aa33cf)
 
@@ -86,7 +86,17 @@ better to use **foreach** instead
   ```
   
   And yes, the whole logic has to be changed, see example code.
-  
+## Example 2 - Netlify 
+[Second example](https://github.com/Ismaestro/angular-example-app) must be a bit complicated.
+We can find there GraphQL Api call, authentication and localization.
+
+[Working Angular App](https://angular-example-app.netlify.app/)  
+![image](Docu/pics/example2-angular.gif)
+
+### Conversion steps
+- For this example, we will choose MS FluentUI
+- For localization, we will follow [MS Recommendation](https://learn.microsoft.com/en-us/aspnet/core/blazor/globalization-localization?view=aspnetcore-8.0).On first step it will work only for client side as for server side we need to know current user.
+- 
 ## Blazor UI Library
 - [Radzen Blazor Components - free](https://blazor.radzen.com/) A set of 80+ free and open source native Blazor UI controls.
 - [MudBlazor - free](https://mudblazor.com/) Blazor Component Library based on Material design with an emphasis on ease of use. Mainly written in C# with Javascript kept to a bare minimum it empowers .NET developers to easily debug it if needed. 
