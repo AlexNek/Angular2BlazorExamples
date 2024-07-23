@@ -5,6 +5,7 @@
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
 
+@using Netlify.Client.Components
 @using Netlify.Components.Layout
 @using Netlify.Components.Account.Shared
 
@@ -29,6 +30,7 @@
                 <hr />
                 <h2>Use a local account to log in.</h2>
                 <hr />
+                <CultureSelector @rendermode="InteractiveAuto" />
                 <FluentValidationSummary class="text-danger" role="alert" />
                 <FluentStack Orientation="Orientation.Vertical">
                     <FluentTextField Id="EMail" Name="Input.EMail" @bind-Value="Input.EMail" AutoComplete="email" Required="true" Placeholder="e-mail" Label="E-Mail" Style="width: 100%">

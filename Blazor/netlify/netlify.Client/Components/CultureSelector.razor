@@ -2,31 +2,36 @@
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
 
-<p>
-    <label>
-        Select your locale:
-        <select @bind="@selectedCulture" @bind:after="ApplySelectedCultureAsync">
-            @foreach (var culture in supportedCultures)
-            {
-                <option value="@culture">@cultureDict[culture.Name]</option>
-            }
-        </select>
-    </label>
-</p>
+<div style="display: flex;justify-content: center; align-items: center; ">
+    @Label <FluentIcon Value="@(new Icons.Regular.Size24.GlobeLocation())" Color="@IconColor" Style="margin-top: 0px"/>
+    <select id="lang-select" @bind="@selectedCulture" @bind:after="ApplySelectedCultureAsync">
+        @foreach (var culture in supportedCultures)
+        {
+            <option value="@culture">@cultureDict[culture.Name]</option>
+        }
+    </select>
+
+</div>
 
 @code
 {
-    private Dictionary<string, string> cultureDict = 
+    [Parameter]
+    public string? Label { get; set; }
+    
+    [Parameter]
+    public Color? IconColor { get; set; }
+
+    private Dictionary<string, string> cultureDict =
         new()
-            {
-                { "en-US", "English (United States)" },
-                { "es-CR", "Spanish (Costa Rica)" }
-            };
+                {
+                    { "en-US", "English (United States)" },
+                    { "es-MX", "Spanish (Mexico)" }
+                };
 
     private CultureInfo[] supportedCultures = new[]
                                                   {
                                                       new CultureInfo("en-US"),
-                                                      new CultureInfo("es-CR"),
+                                                      new CultureInfo("es-MX"),
                                                   };
 
     private CultureInfo? selectedCulture;

@@ -53,7 +53,7 @@ namespace Netlify
                 app.UseHsts();
             }
 
-            var supportedCultures = new[] { "en-US", "es-CR" };
+            var supportedCultures = new[] { "en-US", "es-MX" };
             var localizationOptions = new RequestLocalizationOptions()
                 .SetDefaultCulture(supportedCultures[0])
                 .AddSupportedCultures(supportedCultures)
