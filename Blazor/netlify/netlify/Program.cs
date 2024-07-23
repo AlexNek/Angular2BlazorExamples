@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.FluentUI.AspNetCore.Components;
 
 using Netlify.Components;
+using Netlify.Middlware;
 
 namespace Netlify
 {
@@ -59,6 +60,7 @@ namespace Netlify
                 .AddSupportedUICultures(supportedCultures);
 
             app.UseRequestLocalization(localizationOptions);
+            app.UseMiddleware<CultureMiddleware>();
 
             app.UseHttpsRedirection();
 

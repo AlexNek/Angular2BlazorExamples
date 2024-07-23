@@ -1,21 +1,30 @@
 ﻿using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.JSInterop;
 
 namespace Netlify.Controllers;
 
 [Route("[controller]/[action]")]
 public class CultureController : Controller
 {
-    public IActionResult Set(string culture, string redirectUri)
+   public IActionResult Set(string culture, string redirectUri)
     {
         if (culture != null)
         {
+            var cookieOptions = new CookieOptions
+                                    {
+                                        Expires = DateTimeOffset.UtcNow.AddYears(10) // Set a long expiration time
+                                    };
+            string cookieValue = CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture, culture));
             HttpContext.Response.Cookies.Append(
                 CookieRequestCultureProvider.DefaultCookieName,
-                CookieRequestCultureProvider.MakeCookieValue(
-                    new RequestCulture(culture, culture)));
+                cookieValue,
+                cookieOptions);
         }
 
         return LocalRedirect(redirectUri);
     }
+
+   
+
 }

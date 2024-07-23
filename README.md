@@ -96,7 +96,10 @@ We can find there GraphQL Api call, authentication and localization.
 
 ### Conversion steps
 - For this example, we will choose MS FluentUI
-- For localization, we will follow [MS Recommendation](https://learn.microsoft.com/en-us/aspnet/core/blazor/globalization-localization?view=aspnetcore-8.0).On first step it will work only for client side as for server side we need to know current user.
+- For localization, we will follow [MS Recommendation](https://learn.microsoft.com/en-us/aspnet/core/blazor/globalization-localization?view=aspnetcore-8.0).
+  For web assembly language setting stored in local storage and for the server in cookie via controller.
+  In general, in our case it will be enough to use the cookie to store the language setting. But we leave both local settings and internal storage for learning case.
+  But we keep both the cookie and local storage for learning purposes.
 - 
 ## Blazor UI Library
 - [Radzen Blazor Components - free](https://blazor.radzen.com/) A set of 80+ free and open source native Blazor UI controls.

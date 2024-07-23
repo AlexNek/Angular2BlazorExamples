@@ -26,38 +26,8 @@
             set: (value) => window.localStorage['BlazorCulture'] = value
         };
     </script>
-
 </body>
 
 </html>
 @code {
-    [CascadingParameter]
-    public HttpContext? HttpContext { get; set; }
-
-    protected override void OnInitialized()
-    {
-        var requestCookie = HttpContext?.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
-        if (requestCookie != null)
-        {
-            var cultureResult = CookieRequestCultureProvider.ParseCookieValue(requestCookie);
-            if (cultureResult != null && cultureResult.Cultures.Any())
-            {
-                var currentCulture = cultureResult.Cultures[0];
-                // CultureInfo cultureInfo = new CultureInfo(currentCulture.ToString());
-                // CultureInfo.CurrentCulture = cultureInfo;
-                // CultureInfo.CurrentUICulture = cultureInfo;
-            }
-        }
-        else
-        {
-            // HttpContext?.Response.Cookies.Append(
-            //     CookieRequestCultureProvider.DefaultCookieName,
-            //     CookieRequestCultureProvider.MakeCookieValue(
-            //         new RequestCulture(
-            //             CultureInfo.CurrentCulture,
-            //             CultureInfo.CurrentUICulture)));
-        }
-    }
-
-   
 }
