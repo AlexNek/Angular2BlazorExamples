@@ -111,3 +111,5 @@ We can find there GraphQL Api call, authentication and localization.
 - [Telerik](https://www.telerik.com/blazor-ui) Develop new Blazor apps and modernize legacy web projects in half the time with a high-performing Grid and 110+ truly native, easy-to-customize Blazor UI components. Design and productivity tools are also included. 
 - [Developer Express](https://www.devexpress.com/blazor/) Blazor UI Component Library ships with a comprehensive set of native Blazor components (including a DataGrid, Pivot Grid, Scheduler, Chart, Data Editors, and Reporting).
 - [Syncfusion](https://www.syncfusion.com/blazor-components) The Syncfusion Blazor component library offers 85+ responsive, lightweight components, including data visualizations like DataGrid, 50+ Charts, and Scheduler, for building modern web apps. 
+
+YouTube Video - [8 Free and Open Source Blazor UI Libraries](https://www.youtube.com/watch?v=bsu0cCjeVaw)
