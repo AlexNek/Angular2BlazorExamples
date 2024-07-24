@@ -27,14 +27,7 @@ public class CultureMiddleware
                 CultureInfo.CurrentUICulture = cultureInfo;
             }
         }
-        //// Retrieve user preference or set default culture
-        //var userCulture = "en-US"; // This could come from user settings or a cookie
-        //var culture = new CultureInfo(userCulture);
-
-        //// Set culture for the current request
-        //CultureInfo.CurrentCulture = culture;
-        //CultureInfo.CurrentUICulture = culture;
-
+        
         await _next(httpContext);
     }
 }

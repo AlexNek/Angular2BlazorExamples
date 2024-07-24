@@ -11,9 +11,8 @@ namespace Netlify.Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-            //await builder.Build().RunAsync();
             var services = builder.Services;
-            services.AddLocalization();
+           
             services.AddAuthorizationCore();
             //services.AddCascadingAuthenticationState();
 

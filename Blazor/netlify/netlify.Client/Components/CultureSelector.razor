@@ -1,4 +1,5 @@
 ﻿@using System.Globalization
+@using Netlify.SharedResources
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
 
@@ -21,18 +22,9 @@
     [Parameter]
     public Color? IconColor { get; set; }
 
-    private Dictionary<string, string> cultureDict =
-        new()
-                {
-                    { "en-US", "English (United States)" },
-                    { "es-MX", "Spanish (Mexico)" }
-                };
-
-    private CultureInfo[] supportedCultures = new[]
-                                                  {
-                                                      new CultureInfo("en-US"),
-                                                      new CultureInfo("es-MX"),
-                                                  };
+    private Dictionary<string, string> cultureDict = SharedLocalizerHelper.GetCulturesDescription();
+    
+    private CultureInfo[] supportedCultures = SharedLocalizerHelper.GetSupportedCultures();
 
     private CultureInfo? selectedCulture;
 

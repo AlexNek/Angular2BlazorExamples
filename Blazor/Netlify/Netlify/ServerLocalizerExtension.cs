@@ -7,12 +7,12 @@ namespace Netlify
     {
         public static void AddSharedLocalization(this WebApplication app)
         {
-            var supportedCultures = SharedLocalizerExtension.GetSupportedCultures();
-
+            var supportedCultures = SharedLocalizerHelper.GetSupportedCultures();
+            var cultureNames = supportedCultures.Select(c => c.Name).ToArray();
             var localizationOptions = new RequestLocalizationOptions()
-                .SetDefaultCulture(supportedCultures[0])
-                .AddSupportedCultures(supportedCultures)
-                .AddSupportedUICultures(supportedCultures);
+                .SetDefaultCulture(cultureNames[0])
+                .AddSupportedCultures(cultureNames)
+                .AddSupportedUICultures(cultureNames);
 
             app.UseRequestLocalization(localizationOptions);
 
