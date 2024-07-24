@@ -1,7 +1,4 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.JSInterop;
-using System.Globalization;
-
 using Microsoft.FluentUI.AspNetCore.Components;
 
 using Netlify.SharedResources;
@@ -21,8 +18,7 @@ namespace Netlify.Client
             //services.AddCascadingAuthenticationState();
 
             // Configure localization services
-            services.AddLocalization(options => options.ResourcesPath = "Resources");
-            services.AddTransient<SharedLocalizer>();
+            services.AddSharedLocalization();
 
             // need for FluentUI sometimes
             services.AddSingleton<LibraryConfiguration>();
@@ -30,19 +26,7 @@ namespace Netlify.Client
 
             var host = builder.Build();
 
-            const string defaultCulture = "en-US";
-
-            var js = host.Services.GetRequiredService<IJSRuntime>();
-            var result = await js.InvokeAsync<string>("blazorCulture.get");
-            var culture = CultureInfo.GetCultureInfo(result ?? defaultCulture);
-
-            if (result == null)
-            {
-                await js.InvokeVoidAsync("blazorCulture.set", defaultCulture);
-            }
-
-            CultureInfo.DefaultThreadCurrentCulture = culture;
-            CultureInfo.DefaultThreadCurrentUICulture = culture;
+            await host.AddSharedLocalization("en-US");
 
             await host.RunAsync();
         }

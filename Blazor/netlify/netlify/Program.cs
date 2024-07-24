@@ -35,8 +35,7 @@ namespace Netlify
             //    .AddCookie();
 
             // Configure localization services
-            builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
-            services.AddTransient<SharedLocalizer>();
+            services.AddSharedLocalization();
 
             services.AddHttpContextAccessor();
             services.AddControllers();
@@ -58,14 +57,7 @@ namespace Netlify
                 app.UseHsts();
             }
 
-            var supportedCultures = new[] { "en-US", "es-MX" };
-            var localizationOptions = new RequestLocalizationOptions()
-                .SetDefaultCulture(supportedCultures[0])
-                .AddSupportedCultures(supportedCultures)
-                .AddSupportedUICultures(supportedCultures);
-
-            app.UseRequestLocalization(localizationOptions);
-            app.UseMiddleware<CultureMiddleware>();
+            app.AddSharedLocalization();
 
             app.UseHttpsRedirection();
 
@@ -86,5 +78,6 @@ namespace Netlify
 
             app.Run();
         }
+        
     }
 }

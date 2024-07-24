@@ -19,13 +19,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example2", "Example2", "{7C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{DE642DB6-F7BC-4D55-BF6D-C234EF7CABE2}"
 	ProjectSection(SolutionItems) = preProject
-		Localization.md = Localization.md
+		..\Docu\Localization.md = ..\Docu\Localization.md
 		..\..\README.md = ..\..\README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Netlifly.Shared", "Netlify\Netlifly.Shared\Netlifly.Shared.csproj", "{40D4C855-B8BB-471F-8070-9485F45841EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netlify.SharedResources", "Netlify\Netlify.SharedResources\Netlify.SharedResources.csproj", "{0FEEAE23-B07D-47DA-8368-F363035545D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Netlify.SharedResources", "Netlify\Netlify.SharedResources\Netlify.SharedResources.csproj", "{0FEEAE23-B07D-47DA-8368-F363035545D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
