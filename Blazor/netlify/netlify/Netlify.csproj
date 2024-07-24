@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Habit-Tracker\Netlify.SharedResources\Netlify.SharedResources.csproj" />
     <ProjectReference Include="..\netlify.Client\Netlify.Client.csproj" />
     <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.6" />
@@ -15,5 +16,8 @@
   <ItemGroup>
 	  <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.*-* " />
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.*-* " />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
 </Project>
