@@ -2,9 +2,14 @@
 @rendermode InteractiveServer
 @using System.Globalization
 
+@using Netlify.SharedResources
+
+@inject SharedLocalizer Localizer
+
 <PageTitle>Culture Server</PageTitle>
 
-<h1>Culture Server</h1>
+<h1>Culture Server, @Localizer["test"]</h1>
+
 
 <ul>
     <li><b>CurrentCulture</b>: @CultureInfo.CurrentCulture</li>

@@ -6,6 +6,7 @@ using Microsoft.FluentUI.AspNetCore.Components;
 
 using Netlify.Components;
 using Netlify.Middlware;
+using Netlify.SharedResources;
 
 namespace Netlify
 {
@@ -32,6 +33,10 @@ namespace Netlify
 
             //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             //    .AddCookie();
+
+            // Configure localization services
+            builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddTransient<SharedLocalizer>();
 
             services.AddHttpContextAccessor();
             services.AddControllers();

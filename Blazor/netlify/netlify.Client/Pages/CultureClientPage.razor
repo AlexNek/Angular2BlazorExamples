@@ -1,10 +1,13 @@
 ﻿@page "/culture-client"
 @rendermode InteractiveWebAssembly
 @using System.Globalization
+@using Netlify.SharedResources
+
+@inject SharedLocalizer Localizer
 
 <PageTitle>Culture Client</PageTitle>
 
-<h1>Culture Client</h1>
+<h1>Culture Client @Localizer["test"]</h1>
 
 <ul>
     <li><b>CurrentCulture</b>: @CultureInfo.CurrentCulture</li>

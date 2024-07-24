@@ -4,6 +4,8 @@ using System.Globalization;
 
 using Microsoft.FluentUI.AspNetCore.Components;
 
+using Netlify.SharedResources;
+
 namespace Netlify.Client
 {
     internal class Program
@@ -18,6 +20,9 @@ namespace Netlify.Client
             services.AddAuthorizationCore();
             //services.AddCascadingAuthenticationState();
 
+            // Configure localization services
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddTransient<SharedLocalizer>();
 
             // need for FluentUI sometimes
             services.AddSingleton<LibraryConfiguration>();
