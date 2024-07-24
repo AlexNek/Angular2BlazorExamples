@@ -117,7 +117,217 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="test" xml:space="preserve">
-    <value>Test EN</value>
+  <data name="Incorrect username or password." xml:space="preserve">
+    <value>Incorrect username or password.</value>
+  </data>
+  <data name="A network problem has occurred. Please make sure you are connected and if the problem persists please contact support at support@angularexampleapp.com" xml:space="preserve">
+    <value>A network problem has occurred. Please make sure you are connected and if the problem persists please contact support at support@angularexampleapp.com</value>
+  </data>
+  <data name="Oops! An unexpected error has occurred. Please contact us at support@angularexampleapp.com if it continues." xml:space="preserve">
+    <value>Oops! An unexpected error has occurred. Please contact us at support@angularexampleapp.com if it continues.</value>
+  </data>
+  <data name="¡Welcome back!" xml:space="preserve">
+    <value>¡Welcome back!</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="don't have an account yet?" xml:space="preserve">
+    <value>don't have an account yet?</value>
+  </data>
+  <data name="Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Register2" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="already have an account?" xml:space="preserve">
+    <value>already have an account?</value>
+  </data>
+  <data name="This email is not available, please, choose another one" xml:space="preserve">
+    <value>This email is not available, please, choose another one</value>
+  </data>
+  <data name="First name" xml:space="preserve">
+    <value>First name</value>
+  </data>
+  <data name="I've read and accept the terms and conditions and the privacy policy" xml:space="preserve">
+    <value>I've read and accept the terms and conditions and the privacy policy</value>
+  </data>
+  <data name="log in" xml:space="preserve">
+    <value>log in</value>
+  </data>
+  <data name="¡Register, and create your first hero!" xml:space="preserve">
+    <value>¡Register, and create your first hero!</value>
+  </data>
+  <data name="Minimum  caracters." xml:space="preserve">
+    <value>Minimum  caracters.</value>
+  </data>
+  <data name="Format invalid. example@domain.com" xml:space="preserve">
+    <value>Format invalid. example@domain.com</value>
+  </data>
+  <data name="Field required" xml:space="preserve">
+    <value>Field required</value>
+  </data>
+  <data name="Password has been changed successfully." xml:space="preserve">
+    <value>Password has been changed successfully.</value>
+  </data>
+  <data name="Change password" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="Log out" xml:space="preserve">
+    <value>Log out</value>
+  </data>
+  <data name="Free plan" xml:space="preserve">
+    <value>Free plan</value>
+  </data>
+  <data name="My account" xml:space="preserve">
+    <value>My account</value>
+  </data>
+  <data name="How it works" xml:space="preserve">
+    <value>How it works</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Lateral menu navigation" xml:space="preserve">
+    <value>Lateral menu navigation</value>
+  </data>
+  <data name="User menu navigation" xml:space="preserve">
+    <value>User menu navigation</value>
+  </data>
+  <data name="Personal data" xml:space="preserve">
+    <value>Personal data</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="User updated successfully." xml:space="preserve">
+    <value>User updated successfully.</value>
+  </data>
+  <data name="Change your password" xml:space="preserve">
+    <value>Change your password</value>
+  </data>
+  <data name="User not updated due to some fail. Check all the fields in the form are passing." xml:space="preserve">
+    <value>User not updated due to some fail. Check all the fields in the form are passing.</value>
+  </data>
+  <data name="New password" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="Current password" xml:space="preserve">
+    <value>Current password</value>
+  </data>
+  <data name="Passwords must be different from each other" xml:space="preserve">
+    <value>Passwords must be different from each other</value>
+  </data>
+  <data name="Current password does not match." xml:space="preserve">
+    <value>Current password does not match.</value>
+  </data>
+  <data name="Session has expired, please log in again." xml:space="preserve">
+    <value>Session has expired, please log in again.</value>
+  </data>
+  <data name="The page will be reloaded." xml:space="preserve">
+    <value>The page will be reloaded.</value>
+  </data>
+  <data name="Select your language" xml:space="preserve">
+    <value>Select your language</value>
+  </data>
+  <data name="Profile and password" xml:space="preserve">
+    <value>Profile and password</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Delete account" xml:space="preserve">
+    <value>Delete account</value>
+  </data>
+  <data name="The account has been deleted. We are sorry to see you go :(" xml:space="preserve">
+    <value>The account has been deleted. We are sorry to see you go :(</value>
+  </data>
+  <data name="Caution!" xml:space="preserve">
+    <value>Caution!</value>
+  </data>
+  <data name="Delete my account" xml:space="preserve">
+    <value>Delete my account</value>
+  </data>
+  <data name="This is not your email" xml:space="preserve">
+    <value>This is not your email</value>
+  </data>
+  <data name="You will immediately delete:" xml:space="preserve">
+    <value>You will immediately delete:</value>
+  </data>
+  <data name="What you typed is not" xml:space="preserve">
+    <value>What you typed is not</value>
+  </data>
+  <data name="Once you delete your account, there is no going back. Please be certain." xml:space="preserve">
+    <value>Once you delete your account, there is no going back. Please be certain.</value>
+  </data>
+  <data name="To verify, type delete my account" xml:space="preserve">
+    <value>To verify, type delete my account</value>
+  </data>
+  <data name="Are you sure you want to do this?" xml:space="preserve">
+    <value>Are you sure you want to do this?</value>
+  </data>
+  <data name="Cancel plan and delete this account" xml:space="preserve">
+    <value>Cancel plan and delete this account</value>
+  </data>
+  <data name="created heroes" xml:space="preserve">
+    <value>created heroes</value>
+  </data>
+  <data name="Angular Example App" xml:space="preserve">
+    <value>Angular Example App</value>
+  </data>
+  <data name="votes" xml:space="preserve">
+    <value>votes</value>
+  </data>
+  <data name="Top 5 public heroes" xml:space="preserve">
+    <value>Top 5 public heroes</value>
+  </data>
+  <data name="Password must contain at least one lowercase letter, one uppercase letter and one number. No special characters allowed. " xml:space="preserve">
+    <value>Password must contain at least one lowercase letter, one uppercase letter and one number. No special characters allowed. </value>
+  </data>
+  <data name=" This heroes are available to all the users and you can vote for them! " xml:space="preserve">
+    <value> This heroes are available to all the users and you can vote for them! </value>
+  </data>
+  <data name="You can only vote each hero once." xml:space="preserve">
+    <value>You can only vote each hero once.</value>
+  </data>
+  <data name="Alter-ego" xml:space="preserve">
+    <value>Alter-ego</value>
+  </data>
+  <data name="Real name" xml:space="preserve">
+    <value>Real name</value>
+  </data>
+  <data name="Create a hero" xml:space="preserve">
+    <value>Create a hero</value>
+  </data>
+  <data name="Now, the real one" xml:space="preserve">
+    <value>Now, the real one</value>
+  </data>
+  <data name="Alter ego" xml:space="preserve">
+    <value>Alter ego</value>
+  </data>
+  <data name="Create hero" xml:space="preserve">
+    <value>Create hero</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="What's the hero's name?" xml:space="preserve">
+    <value>What's the hero's name?</value>
+  </data>
+  <data name="You don't have any heroes. Go and create one!" xml:space="preserve">
+    <value>You don't have any heroes. Go and create one!</value>
+  </data>
+  <data name="Hero deleted!" xml:space="preserve">
+    <value>Hero deleted!</value>
+  </data>
+  <data name="My heroes" xml:space="preserve">
+    <value>My heroes</value>
+  </data>
+  <data name=" Create as many as you want " xml:space="preserve">
+    <value> Create as many as you want </value>
+  </data>
+  <data name="register" xml:space="preserve">
+    <value>register</value>
   </data>
 </root>

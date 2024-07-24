@@ -117,7 +117,217 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="test" xml:space="preserve">
-    <value>Test SP</value>
+  <data name="¡Welcome back!" xml:space="preserve">
+    <value>¡Bienvenido de nuevo!</value>
+  </data>
+  <data name="Incorrect username or password." xml:space="preserve">
+    <value>Usuario o contraseña incorrectos.</value>
+  </data>
+  <data name="Oops! An unexpected error has occurred. Please contact us at support@angularexampleapp.com if it continues." xml:space="preserve">
+    <value>¡Ups! Ha ocurrido un error que no nos esperábamos. Por favor, si continúa, ponte en contacto con nosotros en support@angularexampleapp.com</value>
+  </data>
+  <data name="A network problem has occurred. Please make sure you are connected and if the problem persists please contact support at support@angularexampleapp.com" xml:space="preserve">
+    <value>Ha ocurrido un problema de red. Por favor, asegúrate de tener conexión y si continúa el problema ponte en contacto con soporte en support@angularexampleapp.com</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Contraseña</value>
+  </data>
+  <data name="Enter" xml:space="preserve">
+    <value>Entrar</value>
+  </data>
+  <data name="don't have an account yet?" xml:space="preserve">
+    <value>¿no tienes cuenta?</value>
+  </data>
+  <data name="register" xml:space="preserve">
+    <value>registro</value>
+  </data>
+  <data name="¡Register, and create your first hero!" xml:space="preserve">
+    <value>¡Regístrate, y crea tu primer menú!</value>
+  </data>
+  <data name="First name" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="I've read and accept the terms and conditions and the privacy policy" xml:space="preserve">
+    <value>He leído y acepto la política de privacidad y los términos y condiciones</value>
+  </data>
+  <data name="Register2" xml:space="preserve">
+    <value>Regístrate</value>
+  </data>
+  <data name="already have an account?" xml:space="preserve">
+    <value>¿ya tienes una cuenta?</value>
+  </data>
+  <data name="log in" xml:space="preserve">
+    <value>iniciar sesión</value>
+  </data>
+  <data name="This email is not available, please, choose another one" xml:space="preserve">
+    <value>El email no está disponible, por favor, elige uno distinto</value>
+  </data>
+  <data name="Minimum  caracters." xml:space="preserve">
+    <value>Mínimo  caracteres.</value>
+  </data>
+  <data name="Field required" xml:space="preserve">
+    <value>Campo requerido</value>
+  </data>
+  <data name="Format invalid. example@domain.com" xml:space="preserve">
+    <value>Formato inválido. example@domain.com</value>
+  </data>
+  <data name="Change password" xml:space="preserve">
+    <value>Cambiar contraseña</value>
+  </data>
+  <data name="Password has been changed successfully." xml:space="preserve">
+    <value>La contraseña se ha cambiado correctamente.</value>
+  </data>
+  <data name="Free plan" xml:space="preserve">
+    <value>Plan gratuito</value>
+  </data>
+  <data name="My account" xml:space="preserve">
+    <value>Mi cuenta</value>
+  </data>
+  <data name="Log out" xml:space="preserve">
+    <value>Cerrar sesión</value>
+  </data>
+  <data name="How it works" xml:space="preserve">
+    <value>Cómo funciona</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Inicio</value>
+  </data>
+  <data name="Lateral menu navigation" xml:space="preserve">
+    <value>Menu de navegacion lateral</value>
+  </data>
+  <data name="User menu navigation" xml:space="preserve">
+    <value>Menu de navegacion de tu usuario</value>
+  </data>
+  <data name="Personal data" xml:space="preserve">
+    <value>Información personal</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="User updated successfully." xml:space="preserve">
+    <value>El usuario se ha actualizado correctamente.</value>
+  </data>
+  <data name="Change your password" xml:space="preserve">
+    <value>Cambia tu contraseña</value>
+  </data>
+  <data name="Current password" xml:space="preserve">
+    <value>Contraseña actual</value>
+  </data>
+  <data name="New password" xml:space="preserve">
+    <value>Contraseña nueva</value>
+  </data>
+  <data name="User not updated due to some fail. Check all the fields in the form are passing." xml:space="preserve">
+    <value>No se ha podido actualizar el perfil. Por favor, comprueba que todos los campos son correctos.</value>
+  </data>
+  <data name="Passwords must be different from each other" xml:space="preserve">
+    <value>Las contraseñas deben ser distintas.</value>
+  </data>
+  <data name="Current password does not match." xml:space="preserve">
+    <value>La contraseña actual no es correcta.</value>
+  </data>
+  <data name="Session has expired, please log in again." xml:space="preserve">
+    <value>La sesión ha caducado. Por favor, inicia sesión de nuevo. Volverás donde estabas!</value>
+  </data>
+  <data name="Select your language" xml:space="preserve">
+    <value>Elige tu idioma</value>
+  </data>
+  <data name="The page will be reloaded." xml:space="preserve">
+    <value>La pagina se recargará sola.</value>
+  </data>
+  <data name="Profile and password" xml:space="preserve">
+    <value>Perfil y contraseña</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="Delete account" xml:space="preserve">
+    <value>Baja</value>
+  </data>
+  <data name="The account has been deleted. We are sorry to see you go :(" xml:space="preserve">
+    <value>La cuenta ha sido eliminada. Sentimos que te vayas... :(</value>
+  </data>
+  <data name="Caution!" xml:space="preserve">
+    <value>¡Cuidado!</value>
+  </data>
+  <data name="Delete my account" xml:space="preserve">
+    <value>Eliminar mi cuenta</value>
+  </data>
+  <data name="What you typed is not" xml:space="preserve">
+    <value>Lo que has escrito no es</value>
+  </data>
+  <data name="This is not your email" xml:space="preserve">
+    <value>Este no es tu email</value>
+  </data>
+  <data name="Once you delete your account, there is no going back. Please be certain." xml:space="preserve">
+    <value>Una vez que borres la cuenta, no hay marcha atrás. Por favor, estate seguro de continuar.</value>
+  </data>
+  <data name="Are you sure you want to do this?" xml:space="preserve">
+    <value>Estas seguro de lo que vas a hacer?</value>
+  </data>
+  <data name="You will immediately delete:" xml:space="preserve">
+    <value>Vas a eliminar de forma inmediata:</value>
+  </data>
+  <data name="To verify, type delete my account" xml:space="preserve">
+    <value>Para asegurarnos, escribe eliminar mi cuenta</value>
+  </data>
+  <data name="Cancel plan and delete this account" xml:space="preserve">
+    <value>Cancelar el plan y eliminar mi cuenta</value>
+  </data>
+  <data name="created heroes" xml:space="preserve">
+    <value>heroes creados</value>
+  </data>
+  <data name="Angular Example App" xml:space="preserve">
+    <value>Angular Example App</value>
+  </data>
+  <data name="Password must contain at least one lowercase letter, one uppercase letter and one number. No special characters allowed. " xml:space="preserve">
+    <value>La contraseña debe contener al menos una letra minúscula, una mayúscula y un número. No se admiten caracteres especiales. </value>
+  </data>
+  <data name="Top 5 public heroes" xml:space="preserve">
+    <value>Top 5 heroes públicos</value>
+  </data>
+  <data name="votes" xml:space="preserve">
+    <value>votos</value>
+  </data>
+  <data name=" This heroes are available to all the users and you can vote for them! " xml:space="preserve">
+    <value> Estos héroes están disponibles para todos los usuarios y puedes votar por ellos. </value>
+  </data>
+  <data name="You can only vote each hero once." xml:space="preserve">
+    <value>Sólo se puede votar a cada héroe una vez.</value>
+  </data>
+  <data name="Alter-ego" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="Real name" xml:space="preserve">
+    <value>Nombre real</value>
+  </data>
+  <data name="Create a hero" xml:space="preserve">
+    <value>Crear heroe</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="What's the hero's name?" xml:space="preserve">
+    <value>¿Cual es el nombre del heroe?</value>
+  </data>
+  <data name="Alter ego" xml:space="preserve">
+    <value>Alter ego</value>
+  </data>
+  <data name="Now, the real one" xml:space="preserve">
+    <value>Ahora, el nombre real</value>
+  </data>
+  <data name="Create hero" xml:space="preserve">
+    <value>Crear hero</value>
+  </data>
+  <data name="You don't have any heroes. Go and create one!" xml:space="preserve">
+    <value>No tienes ningun heroe. Ve y crea uno!</value>
+  </data>
+  <data name="Hero deleted!" xml:space="preserve">
+    <value>Heroe eliminado!</value>
+  </data>
+  <data name="My heroes" xml:space="preserve">
+    <value>Mis heroes</value>
+  </data>
+  <data name=" Create as many as you want " xml:space="preserve">
+    <value> Crea todos los que quieras! </value>
   </data>
 </root>
