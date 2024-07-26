@@ -1,11 +1,49 @@
-# Angular to Blazor conversion example
+# Angular to Blazor Conversion Example
+
 ## Overview
-We won't have a discussion about which is better for you, Angular or Blazor?
-We will only focus on how to convert an existing Angular application into a Blazor application.
-What problems could we expect?
-- Different UI Library. You need to select a new UI library with similar controls.
-- Different page rendering and user experience. It will be very difficult to achieve that the user won't be able to see the difference between an Angular application and a Blazor application.
-- Converting the main application. It could be general tips for converting components only.
+
+This guide focuses on the process of converting an existing Angular application into a Blazor application. It will not delve into which framework is better for your specific needs—Angular or Blazor—but will provide practical insights into the conversion process.
+
+### Common Challenges
+
+When converting from Angular to Blazor, you may encounter several challenges:
+
+- **Different UI Library**: You will need to select a new UI library for Blazor that offers similar controls to those used in your Angular application. This might involve finding Blazor components that match the functionality and aesthetics of your existing Angular components.
+
+- **Different Page Rendering and User Experience**: Achieving a seamless user experience similar to that of your Angular application can be challenging. Blazor and Angular have different rendering mechanisms and lifecycle events, which may impact how users interact with your application.
+
+- **Converting the Main Application**: While converting components is a crucial part of the process, you will also need to consider general tips and best practices for converting the overall application architecture and logic.
+
+For detailed guidance on Blazor-specific topics, including localization, you can refer to the [Blazor Localization Guide](Docu/Localization.md).
+
+## Conversion Tips
+
+### 1. **Selecting a UI Library**
+
+- **Identify Key Components**: List the key components used in your Angular application and find equivalent components in Blazor. Libraries like [Radzen Blazor](https://www.radzen.com/blazor/components/), [DevExpress Blazor](https://www.devexpress.com/blazor/), and [Syncfusion Blazor](https://www.syncfusion.com/blazor-components) offer extensive collections of UI controls.
+
+- **Consistency**: Ensure that the new UI library supports responsive design and provides similar styling options to maintain consistency in user experience.
+
+### 2. **Page Rendering and User Experience**
+
+- **Understand Blazor’s Lifecycle**: Familiarize yourself with Blazor’s component lifecycle and rendering model. Blazor uses a component-based architecture where components are rendered on the client-side (Blazor WebAssembly) or server-side (Blazor Server).
+
+- **Manage State**: Blazor provides various ways to manage state, including cascading parameters, dependency injection, and state containers. Adapt your Angular state management strategy to fit Blazor’s model.
+
+- **Performance Optimization**: Blazor’s performance may differ from Angular’s. Optimize your Blazor application by leveraging features like async data loading, component reusability, and efficient state management.
+
+### 3. **General Conversion Tips**
+
+- **Component Conversion**: Convert Angular components to Blazor components (.razor files). Pay attention to data binding, event handling, and component interaction.
+
+- **Routing**: Adapt Angular routing to Blazor routing. Blazor uses a different routing model, and you’ll need to update your route configurations accordingly.
+
+- **Service Integration**: Replace Angular services with Blazor services. Ensure that your dependency injection setup in Blazor is configured to match the services used in your Angular application.
+
+- **Testing**: Thoroughly test your Blazor application to identify and resolve any issues related to functionality, performance, and user experience.
+
+By addressing these challenges and following best practices, you can effectively transition from Angular to Blazor, leveraging the strengths of both frameworks to build a robust and modern web application.
+
 
 ## General information
 
@@ -99,8 +137,9 @@ We can find there GraphQL Api call, authentication and localization.
 - For localization, we will follow [MS Recommendation](https://learn.microsoft.com/en-us/aspnet/core/blazor/globalization-localization?view=aspnetcore-8.0).
   For web assembly language setting stored in local storage and for the server in cookie via controller.
   In general, in our case it will be enough to use the cookie to store the language setting. But we leave both local settings and internal storage for learning case.
-  But we keep both the cookie and local storage for learning purposes.
-- 
+  But we keep both the cookie and local storage for learning purposes. [See more](Docu/Localization.md)
+
+
 ## Blazor UI Library
 - [Radzen Blazor Components - free](https://blazor.radzen.com/) A set of 80+ free and open source native Blazor UI controls.
 - [MudBlazor - free](https://mudblazor.com/) Blazor Component Library based on Material design with an emphasis on ease of use. Mainly written in C# with Javascript kept to a bare minimum it empowers .NET developers to easily debug it if needed. 
