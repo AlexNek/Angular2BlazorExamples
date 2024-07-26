@@ -156,8 +156,8 @@
   <data name="already have an account?" xml:space="preserve">
     <value>¿ya tienes una cuenta?</value>
   </data>
-  <data name="log in" xml:space="preserve">
-    <value>iniciar sesión</value>
+  <data name="Log in" xml:space="preserve">
+    <value>Iniciar sesión</value>
   </data>
   <data name="This email is not available, please, choose another one" xml:space="preserve">
     <value>El email no está disponible, por favor, elige uno distinto</value>
@@ -329,5 +329,17 @@
   </data>
   <data name=" Create as many as you want " xml:space="preserve">
     <value> Crea todos los que quieras! </value>
+  </data>
+  <data name="Demo login" xml:space="preserve">
+    <value>Demo de inicio de sesión</value>
+  </data>
+  <data name="E-Mail" xml:space="preserve">
+    <value>Correo electrónico</value>
+  </data>
+  <data name="Register as a new user" xml:space="preserve">
+    <value>Registrarse como nuevo usuario</value>
+  </data>
+  <data name="Remember me" xml:space="preserve">
+    <value>Acuérdate de mí</value>
   </data>
 </root>

@@ -153,8 +153,8 @@
   <data name="I've read and accept the terms and conditions and the privacy policy" xml:space="preserve">
     <value>I've read and accept the terms and conditions and the privacy policy</value>
   </data>
-  <data name="log in" xml:space="preserve">
-    <value>log in</value>
+  <data name="Log in" xml:space="preserve">
+    <value>Log in</value>
   </data>
   <data name="¡Register, and create your first hero!" xml:space="preserve">
     <value>¡Register, and create your first hero!</value>
@@ -329,5 +329,17 @@
   </data>
   <data name="register" xml:space="preserve">
     <value>register</value>
+  </data>
+  <data name="Demo login" xml:space="preserve">
+    <value>Demo login</value>
+  </data>
+  <data name="E-Mail" xml:space="preserve">
+    <value>E-Mail</value>
+  </data>
+  <data name="Register as a new user" xml:space="preserve">
+    <value>Register as a new user</value>
+  </data>
+  <data name="Remember me" xml:space="preserve">
+    <value>Remember me</value>
   </data>
 </root>

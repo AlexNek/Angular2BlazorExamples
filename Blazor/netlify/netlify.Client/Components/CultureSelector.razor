@@ -3,7 +3,7 @@
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
 
-<div style="display: flex;justify-content: center; align-items: center; ">
+<div style="display: flex;justify-content: center; align-items: center; @AdditionalStyle">
     @Label <FluentIcon Value="@(new Icons.Regular.Size24.GlobeLocation())" Color="@IconColor" Style="margin-top: 0px"/>
     <select id="lang-select" @bind="@selectedCulture" @bind:after="ApplySelectedCultureAsync">
         @foreach (var culture in supportedCultures)
@@ -21,6 +21,9 @@
     
     [Parameter]
     public Color? IconColor { get; set; }
+
+    [Parameter]
+    public string? AdditionalStyle { get; set; }
 
     private Dictionary<string, string> cultureDict = SharedLocalizerHelper.GetCulturesDescription();
     
