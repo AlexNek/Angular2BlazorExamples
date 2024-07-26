@@ -49,7 +49,7 @@
                     <div>
 
                         <p>
-                            <FluentAnchor Appearance="Appearance.Hypertext" Href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">@Localizer["Register as a new user"]</FluentAnchor>
+                            <FluentAnchor Appearance="Appearance.Hypertext" Href="@(NavigationManager.GetUriWithQueryParameters("auth/register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">@Localizer["Register as a new user"]</FluentAnchor>
                         </p>
 
                         <p>

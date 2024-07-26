@@ -189,3 +189,27 @@ code {
         right: unset;
     }
 }
+
+.align-items-center {
+    align-items: center;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.padding-2 {
+    padding: 1.0rem;
+}
+
+.bg-white {
+    background: white;
+}
+
+.rounded-10 {
+    border-radius: 10px;
+}

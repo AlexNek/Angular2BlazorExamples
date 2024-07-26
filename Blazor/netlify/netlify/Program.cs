@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.FluentUI.AspNetCore.Components;
 
 using Netlify.Components;
+using Netlify.Components.Account;
 using Netlify.Middlware;
 using Netlify.SharedResources;
 
@@ -36,6 +37,7 @@ namespace Netlify
 
             // Configure localization services
             services.AddSharedLocalization();
+            services.AddScoped<IdentityRedirectManager>();
 
             services.AddHttpContextAccessor();
             services.AddControllers();
