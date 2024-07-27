@@ -35,8 +35,8 @@ namespace Netlify.Components.Account.Pages
 
             if (IsDemoLogin.HasValue && IsDemoLogin.Value)
             {
-                Input.EMail = "demo";
-                Input.Password = "Demo1-Demo!";
+                Input.EMail = "test@gmail.com";
+                Input.Password = "Admin1";
             }
         }
 

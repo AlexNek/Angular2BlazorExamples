@@ -342,4 +342,7 @@
   <data name="Remember me" xml:space="preserve">
     <value>Acuérdate de mí</value>
   </data>
+  <data name="You must accept the terms and conditions" xml:space="preserve">
+    <value>Debe aceptar las condiciones</value>
+  </data>
 </root>

@@ -17,6 +17,9 @@ namespace Netlify
             app.UseRequestLocalization(localizationOptions);
 
             app.UseMiddleware<CultureMiddleware>();
+            // Ensure localization is set up
+            var localizer = app.Services.GetService<SharedLocalizer>();
+            StaticLocalizer.SetLocalizer(localizer);
 
         }
     }

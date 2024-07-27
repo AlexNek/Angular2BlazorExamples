@@ -9,6 +9,7 @@
 @using Microsoft.AspNetCore.WebUtilities
 @using Netlify.Components.Layout
 @using Netlify.Components.Account.Shared
+@using Netlify.SharedResources
 
 
 @* @inject UserManager<ApplicationUser> UserManager
@@ -19,6 +20,7 @@
 @inject ILogger<Register> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
+@inject SharedLocalizer Localizer
 
 <PageTitle>Register</PageTitle>
 
@@ -30,30 +32,24 @@
             <StatusMessage Message="@Message" />
             <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
                 <DataAnnotationsValidator />
-                <h2>Create a new account.</h2>
+                <h2>@Localizer["¡Register, and create your first hero!"]</h2>
                 <hr />
                 <FluentValidationSummary class="text-danger" role="alert" />
                 <FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
                     <FluentTextField Name="Input.Name" @bind-Value="Input.Name" Required="true" Placeholder="nickname" Label="Nickname" Style="width: 100%; margin-bottom: 10px;" />
-                    <FluentTextField Name="Input.Email" @bind-Value="Input.Email" AutoComplete="email" Required="true" Placeholder="name@example.com" Label="Email" Style="width: 100%; margin-bottom: 10px;" />
+                    <FluentTextField Name="Input.Email" @bind-Value="Input.Email" AutoComplete="email" Required="true" Placeholder="name@example.com" Label="Email" Style="width: 100%; margin-bottom: 10px;">
+                        <FluentIcon Value="@(new Icons.Regular.Size24.MailEdit())" Slot="start" />
+                    </FluentTextField>
                     <FluentValidationMessage For="() => Input.Email" class="text-danger" />
-                    @* <FluentTextField
-                    type="password"
-                    Name="Input.Password"
-                    @bind-Value="Input.Password"
-                    AutoComplete="new-password"
-                    Required="true"
-                    Placeholder="password"
-                    Label="Password"
-                    Style="width: 100%">
-                    <FluentIcon Value="@(new Icons.Regular.Size16.EyeOff())" Color="@Color.Neutral" Slot="end" OnClick="PasswordVisibility"/>
-                    </FluentTextField> *@
-                    <PasswordField Label="Password" Name="Input.Password" Placeholder="password" AutoComplete="new-password" Style="width: 100%; margin-bottom: 10px;" @bind-Value="Input.Password" />
+                    
+                    <PasswordField Label="Password" Name="Input.Password" Placeholder="password" AutoComplete="new-password" StartIcon="@(new Icons.Regular.Size24.PersonPasskey())" Style="width: 100%; margin-bottom: 10px;" @bind-Value="Input.Password" />
                     <FluentValidationMessage For="() => Input.Password" class="text-danger" />
 
-                    <PasswordField Id="confirmpassword" Name="Input.ConfirmPassword" @bind-Value="Input.ConfirmPassword" AutoComplete="new-password" Placeholder="password" Label="Confirm Password" Style="width: 100%; margin-bottom: 10px;" />
+                    <PasswordField Id="confirmpassword" Name="Input.ConfirmPassword" @bind-Value="Input.ConfirmPassword" AutoComplete="new-password" Placeholder="password" Label="Confirm Password" StartIcon="@(new Icons.Regular.Size24.PersonPasskey())" Style="width: 100%; margin-bottom: 10px;" />
                     <FluentValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
-                    <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%; margin-bottom: 10px;">Register</FluentButton>
+                    
+                    <FluentCheckbox Name="Input.Accept" @bind-Value="Input.Accept" Label="@Localizer["I've read and accept the terms and conditions and the privacy policy"]" Style="width: 100%; margin-bottom: 10px;" />
+                    <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%; margin-bottom: 10px;">@Localizer["Register"]</FluentButton>
                 </FluentStack>
             </EditForm>
         </FluentGridItem>
