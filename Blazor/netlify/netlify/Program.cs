@@ -41,10 +41,10 @@ namespace Netlify
                 .AddCookie(options =>
                     {
                         // 2 lines for test
-                        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // Use 'Always' in production with HTTPS
-                        options.Cookie.SameSite = SameSiteMode.Lax; // Adjust based on your needs (or SameSiteMode.Strict)
+                        //options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // Use 'Always' in production with HTTPS
+                        //options.Cookie.SameSite = SameSiteMode.Lax; // Adjust based on your needs (or SameSiteMode.Strict)
 
-                        options.LoginPath = "/auth/login"; // route to login
+                        options.LoginPath = "/auth/log-in"; // route to login
                         options.LogoutPath = "/auth/logout"; // route to logout
                         options.AccessDeniedPath = "/access-denied";
                     });
@@ -53,8 +53,6 @@ namespace Netlify
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
             services.AddFluentUIComponents();
-            //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            //    .AddCookie();
             
            // Configure localization services
             services.AddSharedLocalization();
@@ -77,22 +75,9 @@ namespace Netlify
                     client.BaseAddress = new Uri("https://localhost:7254"); // Set your backend URL here
                 });
 
-            // Register AuthenticationStateProvider as Scoped
-            //services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
-            services.AddScoped<ManualCookieHandler>();
-
-            // Register HttpClient dynamically
-            //services.AddScoped(sp =>
-            //    {
-            //        var navigationManager = sp.GetRequiredService<NavigationManager>();
-            //        return new HttpClient { BaseAddress = new Uri(navigationManager.BaseUri) };
-            //    });
-
-
             services.AddAuthorizationCore();
 
             services.AddBlazoredLocalStorage();
-
 
             var app = builder.Build();
 

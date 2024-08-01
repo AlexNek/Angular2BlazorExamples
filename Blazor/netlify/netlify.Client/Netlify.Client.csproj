@@ -27,8 +27,4 @@
 	  <ProjectReference Include="..\Netlify.SharedResources\Netlify.SharedResources.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <None Include="Pages\SecurePage1.razor" />
-	</ItemGroup>
-
 </Project>
