@@ -2,6 +2,7 @@
 @layout EmptyLayout
 
 @using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Antiforgery
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
 
@@ -10,13 +11,14 @@
 @using Netlify.Components.Account.Shared
 @using Netlify.SharedResources
 
+
 @* only need for Demo button, HttpContext is null, login doesn't work *@
 @* @rendermode InteractiveServer *@
-
+@* @rendermode InteractiveAuto *@
 @* @inject SignInManager<ApplicationUser> SignInManager
 @inject ILogger<Login> Logger *@
 @inject NavigationManager NavigationManager
-@* @inject IdentityRedirectManager RedirectManager *@
+@inject IdentityRedirectManager RedirectManager
 @inject SharedLocalizer Localizer
 
 <PageTitle>Log in</PageTitle>

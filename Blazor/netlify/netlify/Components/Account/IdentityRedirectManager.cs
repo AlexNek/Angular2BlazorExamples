@@ -17,7 +17,7 @@ namespace Netlify.Components.Account
         };
 
         [DoesNotReturn]
-        public void RedirectTo(string? uri)
+        public void RedirectTo(string? uri, bool forceLoad=false)
         {
             uri ??= "";
 
@@ -29,7 +29,7 @@ namespace Netlify.Components.Account
 
             // During static rendering, NavigateTo throws a NavigationException which is handled by the framework as a redirect.
             // So as long as this is called from a statically rendered Identity component, the InvalidOperationException is never thrown.
-            navigationManager.NavigateTo(uri);
+            navigationManager.NavigateTo(uri, forceLoad: forceLoad);
             throw new InvalidOperationException($"{nameof(IdentityRedirectManager)} can only be used during static rendering.");
         }
 

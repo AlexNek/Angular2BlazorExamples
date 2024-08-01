@@ -1,0 +1,42 @@
+﻿@page "/secure-page"
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthStateProvider
+
+<PageTitle>Account test</PageTitle>
+
+<h1>Secure page</h1>
+
+<AuthorizeView>
+    <Authorized>
+        <h3>Secure Page</h3>
+        <p>This content is only visible to authenticated users.</p>
+        <p>User name: @_name</p>
+        <p>Current Locale: @_locale</p>
+    </Authorized>
+    <Authorizing>
+        <p>Authorizing...</p>
+    </Authorizing>
+    <NotAuthorized>
+        <h3>Access Denied</h3>
+        <p>You are not authorized to view this content.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+    private string? _locale;
+    private string? _name;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            _locale = user.FindFirst(ClaimTypes.Locality)?.Value;
+            _name = user.Identity.Name;
+        }
+    }
+}

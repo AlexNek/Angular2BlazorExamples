@@ -1,5 +1,8 @@
-﻿@inherits LayoutComponentBase
-
+﻿@* *************************************** *@
+@* Important for account generate SSR mode *@
+@* *************************************** *@
+@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
 <style>
     .bg-linear {
         background: #0d47a1;
@@ -14,12 +17,28 @@
     }
 </style>
 
-<div class="h-100 bg-linear center-all">
-    @* <div class="content px-4"> *@
+@if (HttpContext is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="h-100 bg-linear center-all">
+        @* <div class="content px-4"> *@
         @Body
-   @*  </div> *@
-</div>
+        @*  </div> *@
+    </div>
+}
 
 @code {
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
 
+    protected override void OnParametersSet()
+    {
+        if (HttpContext is null)
+        {
+            NavigationManager.Refresh(forceReload: true);
+        }
+    }
 }

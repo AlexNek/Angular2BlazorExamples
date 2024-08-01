@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example2", "Example2", "{7C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{DE642DB6-F7BC-4D55-BF6D-C234EF7CABE2}"
 	ProjectSection(SolutionItems) = preProject
+		..\Docu\Authentication.md = ..\Docu\Authentication.md
 		..\Docu\Localization.md = ..\Docu\Localization.md
 		..\README.md = ..\README.md
 	EndProjectSection

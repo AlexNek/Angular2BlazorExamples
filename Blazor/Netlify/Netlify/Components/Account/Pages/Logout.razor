@@ -1,0 +1,44 @@
+﻿@page "/auth/logout"
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+@using Microsoft.AspNetCore.Components.Authorization
+@using Netlify.Client
+@inject NavigationManager Navigation
+@* @inject HttpClient Http
+@inject IHttpClientFactory httpClientFactory *@
+
+@* @inject AuthenticationStateProvider AuthStateProvider *@
+
+<button @onclick="LogoutHandler">Logout</button>
+
+@code {
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    private async Task LogoutHandler()
+    {
+        // Sign out the user by clearing the authentication cookie
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        // var httpClient = httpClientFactory.CreateClient(nameof(CustomAuthStateProvider));
+        // await httpClient.PostAsync("api/auth/logout", null);
+        // if (AuthStateProvider is CustomAuthStateProvider customAuthStateProvider)
+        // {
+        //     customAuthStateProvider.NotifyUserLogout();
+        // }
+        Navigation.NavigateTo("/",true);
+    }
+
+    /// <summary>
+    /// Method invoked when the component is ready to start, having received its
+    /// initial parameters from its parent in the render tree.
+    /// Override this method if you will perform an asynchronous operation and
+    /// want the component to refresh when that operation is completed.
+    /// </summary>
+    /// <returns>A <see cref="T:System.Threading.Tasks.Task" /> representing any asynchronous operation.</returns>
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await LogoutHandler();
+    }
+
+}
