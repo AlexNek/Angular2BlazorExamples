@@ -1,6 +1,4 @@
-﻿using System.Reactive.Linq;
-
-namespace Netlifly.Shared.MyNamespace;
+﻿namespace Netlifly.Shared.MyNamespace;
 
 //public class Program
 //{

@@ -9,7 +9,6 @@ namespace Netlifly.Shared.NgNeat
     // Translated from TypeScript to C#
 
     using System;
-    using System.Reactive.Subjects;
 
     //public class BehaviorSubject<T> : Subject<T>
     //{

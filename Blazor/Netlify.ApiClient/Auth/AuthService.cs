@@ -1,16 +1,17 @@
-﻿namespace Netlifly.Shared
+﻿using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
+
+using GraphQL.Client.Http;
+
+using Netlifly.Shared;
+using Netlifly.Shared.Request;
+using Netlifly.Shared.Response;
+
+using Newtonsoft.Json;
+
+namespace Netlify.ApiClient.Auth
 {
-    using System;
-    using System.Reactive.Linq;
-    using System.Reactive.Threading.Tasks;
-    using GraphQL.Client.Http;
-    using Newtonsoft.Json;
-
-    using Netlifly.Shared.Response;
-    using Netlifly.Shared.Request;
-    using System.IdentityModel.Tokens.Jwt;
-
-    public class AuthService
+    internal class AuthService:IAuthService
     {
         private readonly GraphQLHttpClient _apollo;
         private readonly AuthRepository _authRepository;
@@ -36,7 +37,7 @@
             }
         }
 
-        public IObservable<AuthUserData> Signup(RegisterPayload payload)
+        public async Task<AuthUserData> Signup(RegisterPayload payload)
         {
             var request = new GraphQLHttpRequest(Mutations.SignupMutation)
                               {
@@ -50,7 +51,7 @@
             //    Variables = new { payload.FirstName, payload.Email, payload.Password }
             //};
 
-            return _apollo.SendMutationAsync<RegisterResponse>(request)
+            return await _apollo.SendMutationAsync<RegisterResponse>(request)
                 .ToObservable()
                 .Select(response =>
                 {
@@ -64,35 +65,36 @@
                 });
         }
 
-        public IObservable<AuthUserData> LogIn(string email, string password)
+        public async Task<AuthUserData> LogInAsync(string email, string password)
         {
             var request = new GraphQLHttpRequest(Mutations.LoginMutation)
             {
                 Variables = new { email, password }
             };
 
-            return _apollo.SendMutationAsync<LogInResponse>(request)
-                .ToObservable()
-                .Select(response =>
-                {
-                    var loginData = response.Data?.Data?.Login;
-                    if (loginData != null)
-                    {
-                        SaveUserData(loginData);
-                        return loginData;
-                    }
-                    return null;
-                });
+            var userData = await _apollo.SendMutationAsync<LogInResponse>(request)
+                                             .ToObservable()
+                                             .Select(response =>
+                                                 {
+                                                     var loginData = response.Data?.Data?.Login;
+                                                     if (loginData != null)
+                                                     {
+                                                         SaveUserData(loginData);
+                                                         return loginData;
+                                                     }
+                                                     return null;
+                                                 });
+            return userData;
         }
 
-        public IObservable<User> UpdateUser(UpdateUserData userData)
+        public async Task<User> UpdateUser(UpdateUserData userData)
         {
             var request = new GraphQLHttpRequest(Mutations.UpdateUserMutation)
             {
                 Variables = userData
             };
 
-            return _apollo.SendMutationAsync<UpdateUserResponse>(request)
+            return await _apollo.SendMutationAsync<UpdateUserResponse>(request)
                 .ToObservable()
                 .Select(response =>
                 {
@@ -106,14 +108,14 @@
                 });
         }
 
-        public IObservable<OkData> ChangePassword(string oldPassword, string newPassword)
+        public async Task<OkData> ChangePassword(string oldPassword, string newPassword)
         {
             var request = new GraphQLHttpRequest(Mutations.ChangePasswordMutation)
             {
                 Variables = new { oldPassword, newPassword }
             };
 
-            return _apollo.SendMutationAsync<ChangePasswordResponse>(request)
+            return await _apollo.SendMutationAsync<ChangePasswordResponse>(request)
                 .ToObservable()
                 .Select(response =>
                 {
@@ -126,14 +128,14 @@
                 });
         }
 
-        public IObservable<OkData> DeleteAccount(string password)
+        public async Task<OkData> DeleteAccount(string password)
         {
             var request = new GraphQLHttpRequest(Mutations.DeleteAccountMutation)
             {
                 Variables = new { password }
             };
 
-            return _apollo.SendMutationAsync<DeleteAccountResponse>(request)
+            return await _apollo.SendMutationAsync<DeleteAccountResponse>(request)
                 .ToObservable()
                 .Select(response =>
                 {
@@ -146,7 +148,7 @@
                 });
         }
 
-        public IObservable<UpdateTokenData> RefreshToken()
+        public async Task<UpdateTokenData> RefreshToken()
         {
             var refreshToken = _authRepository.GetRefreshTokenValue() ?? string.Empty;
             var request = new GraphQLHttpRequest(Mutations.RefreshTokenMutation)
@@ -158,7 +160,7 @@
             
             _apollo.HttpClient.DefaultRequestHeaders.Add(_appConfig.BypassAuthorization,"true");
 
-            return _apollo.SendMutationAsync<RefreshTokenResponse>(request)
+            return await _apollo.SendMutationAsync<RefreshTokenResponse>(request)
                 .ToObservable()
                 .Select(response =>
                 {
@@ -176,21 +178,6 @@
         {
             _authRepository.UpdateTokens(userData.AccessToken, userData.RefreshToken);
             _authRepository.SetUser(userData.User);
-        }
-    }
-
-    public class JwtDecoder
-    {
-        public static string? Decode(string tokenStr)
-        {
-            var handler = new JwtSecurityTokenHandler();
-            var token = handler.ReadJwtToken(tokenStr);
-            if (token != null)
-            {
-                var ret = JsonConvert.SerializeObject(token);
-                return ret;
-            }
-            return null;
         }
     }
 }

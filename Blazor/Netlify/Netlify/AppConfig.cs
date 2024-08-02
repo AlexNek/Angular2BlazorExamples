@@ -1,4 +1,6 @@
-﻿namespace Netlifly.Shared;
+﻿using Netlifly.Shared;
+
+namespace Netlify;
 
 public class AppConfig : IAppConfig
 {

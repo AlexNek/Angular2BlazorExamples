@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.FluentUI.AspNetCore.Components;
 
+using Netlify.ApiClient;
 using Netlify.Client;
 using Netlify.Components;
 using Netlify.Components.Account;
@@ -68,12 +69,13 @@ namespace Netlify
                 //    });
 
             services.AddLocalization();
-            
+            services.InitApiClient<AppConfig>("https://nestjs-example-app.fly.dev");
+
             // Register HttpClient as Singleton (recommended)
-            services.AddHttpClient<CustomAuthStateProvider>(client =>
-                {
-                    client.BaseAddress = new Uri("https://localhost:7254"); // Set your backend URL here
-                });
+            //services.AddHttpClient<CustomAuthStateProvider>(client =>
+            //    {
+            //        client.BaseAddress = new Uri("https://localhost:7254"); // Set your backend URL here
+            //    });
 
             services.AddAuthorizationCore();
 

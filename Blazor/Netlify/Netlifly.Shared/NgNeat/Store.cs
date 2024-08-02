@@ -1,6 +1,4 @@
-﻿using System.Reactive.Subjects;
-
-namespace Netlifly.Shared.MyNamespace;
+﻿namespace Netlifly.Shared.MyNamespace;
 
 //public class Store
 //{

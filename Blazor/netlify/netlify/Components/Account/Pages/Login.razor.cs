@@ -7,12 +7,18 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components;
 
 using Netlifly.Shared;
+using Netlifly.Shared.Request;
+
+using Netlify.ApiClient.Auth;
 
 namespace Netlify.Components.Account.Pages
 {
     public partial class Login
     {
         private string? errorMessage;
+
+        [Inject]
+        private IAuthService apiClient { get; set; }
 
         [CascadingParameter]
         private HttpContext HttpContext { get; set; } = default!;
@@ -40,7 +46,7 @@ namespace Netlify.Components.Account.Pages
                                         Locale = CultureInfo.CurrentCulture.Name
                                     };
 
-            var response = LoginWithCookie(internalLogin);
+            var response = await LoginWithCookieAsync(internalLogin);
             if (response)
             {
                 // Force a full reload to apply the cookie
@@ -75,24 +81,12 @@ namespace Netlify.Components.Account.Pages
             }
         }
 
-        private sealed class InputModel
+        private async Task<bool> LoginWithCookieAsync(InternalLoginRequest internalLogin)
         {
-            [Required]
-            [EmailAddress]
-            public string EMail { get; set; } = "";
+            var userData = await apiClient.LogInAsync(internalLogin.Email, internalLogin.Password);
 
-            [Required]
-            [DataType(DataType.Password)]
-            public string Password { get; set; } = "";
-
-            [Display(Name = "Remember me?")]
-            public bool RememberMe { get; set; }
-        }
-
-        private bool LoginWithCookie(InternalLoginRequest internalLogin)
-        {
-            if (internalLogin.Email == "test@gmail.com"
-                && internalLogin.Password == "Admin1") // Replace with real user validation
+            //&& internalLogin.Email == "test@gmail.com" && internalLogin.Password == "Admin1"
+            if (userData!= null ) // Replace with real user validation
             {
                 var claims = new List<Claim>
                                  {
@@ -120,6 +114,20 @@ namespace Netlify.Components.Account.Pages
             }
 
             return false;
+        }
+
+        private sealed class InputModel
+        {
+            [Required]
+            [EmailAddress]
+            public string EMail { get; set; } = "";
+
+            [Required]
+            [DataType(DataType.Password)]
+            public string Password { get; set; } = "";
+
+            [Display(Name = "Remember me?")]
+            public bool RememberMe { get; set; }
         }
     }
 }

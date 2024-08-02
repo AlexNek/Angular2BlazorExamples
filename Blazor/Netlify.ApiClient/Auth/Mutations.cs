@@ -1,6 +1,6 @@
 ﻿using GraphQL;
 
-namespace Netlifly.Shared
+namespace Netlify.ApiClient.Auth
 {
     internal static class Mutations
     {

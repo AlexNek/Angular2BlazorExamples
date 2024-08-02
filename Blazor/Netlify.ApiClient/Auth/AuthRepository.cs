@@ -3,21 +3,24 @@ using System.Reactive.Subjects;
 
 using Microsoft.Extensions.Localization;
 
+using Netlifly.Shared;
+
 using Newtonsoft.Json;
 
-namespace Netlifly.Shared
+namespace Netlify.ApiClient.Auth
 {
     public class AuthRepository
     {
         private readonly BehaviorSubject<AuthProps> authStore;
 
-        private readonly IStringLocalizer localizer;
+        //private readonly IStringLocalizer localizer;
 
         public IObservable<User> UserObservable { get; private set; }
 
         public AuthRepository(IStringLocalizerFactory localizerFactory)
         {
-            localizer = localizerFactory.Create("AuthRepository", typeof(AuthRepository).Assembly.FullName);
+            //TODO: use shared localizer if needed
+            //localizer = localizerFactory.Create(nameof(SharedLocalizer), typeof(AuthRepository).Assembly.FullName);
             authStore = new BehaviorSubject<AuthProps>(
                 new AuthProps { User = null, AccessToken = null, RefreshToken = null });
 
@@ -86,13 +89,24 @@ namespace Netlifly.Shared
             SaveState();
         }
 
+        /// <summary>
+        /// Loads the state.
+        /// The same as in Angular. Not good solution
+        /// </summary>
         private void LoadState()
         {
-            var json = File.ReadAllText("auth.json");
-            var state = JsonConvert.DeserializeObject<AuthProps>(json);
-            authStore.OnNext(state);
+            if (File.Exists("auth.json"))
+            {
+                var json = File.ReadAllText("auth.json");
+                var state = JsonConvert.DeserializeObject<AuthProps>(json);
+                authStore.OnNext(state);
+            }
         }
 
+        /// <summary>
+        /// Saves the state.
+        /// The same as in Angular. Not good solution
+        /// </summary>
         private void SaveState()
         {
             var json = JsonConvert.SerializeObject(authStore.Value);
