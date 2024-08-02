@@ -15,7 +15,7 @@ namespace Netlify.Components.Account.Pages
 {
     public partial class Login
     {
-        private string? errorMessage;
+        private string? _errorMessage;
 
         [Inject]
         private IAuthService apiClient { get; set; }
@@ -36,6 +36,8 @@ namespace Netlify.Components.Account.Pages
 
         public async Task LoginUser()
         {
+            _errorMessage = null;
+
             // Serialize the login request
             var internalLogin = new InternalLoginRequest
                                     {
@@ -58,7 +60,7 @@ namespace Netlify.Components.Account.Pages
                 // Handle unsuccessful login
                 //var responseBody = await response.Content.ReadAsStringAsync();
                 string responseBody = "";
-                errorMessage = $"Error: Invalid login attempt. {responseBody}";
+                _errorMessage = $"Error: Invalid login attempt. {responseBody}";
             }
         }
 
@@ -76,14 +78,23 @@ namespace Netlify.Components.Account.Pages
 
             if (IsDemoLogin.HasValue && IsDemoLogin.Value)
             {
-                Input.EMail = "test@gmail.com";
-                Input.Password = "Admin1";
+                Input.EMail = "demo@yahoo.com";
+                Input.Password = "Demo1Demo1";
             }
         }
 
         private async Task<bool> LoginWithCookieAsync(InternalLoginRequest internalLogin)
         {
-            var userData = await apiClient.LogInAsync(internalLogin.Email, internalLogin.Password);
+            AuthUserData? userData = null;
+            try
+            {
+                userData = await apiClient.LogInAsync(internalLogin.Email, internalLogin.Password);
+            }
+            catch (Exception ex)
+            {
+                _errorMessage = ex.Message;
+                return false;
+            }
 
             //&& internalLogin.Email == "test@gmail.com" && internalLogin.Password == "Admin1"
             if (userData!= null ) // Replace with real user validation

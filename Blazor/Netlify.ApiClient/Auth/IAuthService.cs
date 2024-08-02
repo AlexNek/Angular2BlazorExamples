@@ -6,9 +6,9 @@ namespace Netlify.ApiClient.Auth;
 
 public interface IAuthService
 {
-    Task<AuthUserData> Signup(RegisterPayload payload);
+    Task<AuthUserData?> SignupAsync(RegisterPayload payload);
 
-    Task<AuthUserData> LogInAsync(string email, string password);
+    Task<AuthUserData?> LogInAsync(string email, string password);
 
     Task<User> UpdateUser(UpdateUserData userData);
 

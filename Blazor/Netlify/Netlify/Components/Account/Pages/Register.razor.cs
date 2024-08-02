@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
+
+using Netlifly.Shared.Request;
+
+using Netlify.ApiClient.Auth;
 using Netlify.SharedResources;
 
 namespace Netlify.Components.Account.Pages;
@@ -13,6 +17,9 @@ namespace Netlify.Components.Account.Pages;
 public partial class Register
 {
     private IEnumerable<IdentityError>? identityErrors;
+
+    [Inject]
+    private IAuthService apiClient { get; set; }
 
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = new();
@@ -27,6 +34,24 @@ public partial class Register
 
     public async Task RegisterUser(EditContext editContext)
     {
+        RegisterPayload registerData = new RegisterPayload(){FirstName = Input.Name, Email = Input.Email, Password = Input.Password};
+        try
+        {
+            var authUserData = await apiClient.SignupAsync(registerData);
+            if (authUserData != null)
+            {
+                RedirectManager.RedirectTo(ReturnUrl);
+            }
+            else
+            {
+                identityErrors = [new IdentityError() { Description = "Registration is not successful" }];
+            }
+        }
+        catch (Exception ex)
+        {
+            identityErrors = [new IdentityError() { Description = ex.Message }];
+        }
+
         //var user = CreateUser();
 
         //await UserStore.SetUserNameAsync(user, Input.Name, CancellationToken.None);
@@ -59,7 +84,7 @@ public partial class Register
         //}
 
         //await SignInManager.SignInAsync(user, isPersistent: false);
-        RedirectManager.RedirectTo(ReturnUrl);
+       
     }
 
     //private ApplicationUser CreateUser()
@@ -101,7 +126,7 @@ public partial class Register
         [StringLength(
             100,
             ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
-            MinimumLength = 6)]
+            MinimumLength = 8)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; } = "";

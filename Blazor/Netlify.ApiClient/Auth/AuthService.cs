@@ -1,6 +1,7 @@
 ﻿using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 
+using GraphQL;
 using GraphQL.Client.Http;
 
 using Netlifly.Shared;
@@ -8,19 +9,20 @@ using Netlifly.Shared.Request;
 using Netlifly.Shared.Response;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Netlify.ApiClient.Auth
 {
     internal class AuthService:IAuthService
     {
-        private readonly GraphQLHttpClient _apollo;
+        private readonly GraphQLHttpClient _graphQlClient;
         private readonly AuthRepository _authRepository;
 
         private readonly IAppConfig _appConfig;
 
-        public AuthService(GraphQLHttpClient apollo, AuthRepository authRepository, IAppConfig appConfig)
+        public AuthService(GraphQLHttpClient graphQlClient, AuthRepository authRepository, IAppConfig appConfig)
         {
-            _apollo = apollo;
+            _graphQlClient = graphQlClient;
             _authRepository = authRepository;
             _appConfig = appConfig;
         }
@@ -37,54 +39,164 @@ namespace Netlify.ApiClient.Auth
             }
         }
 
-        public async Task<AuthUserData> Signup(RegisterPayload payload)
+        public async Task<AuthUserData?> Signup1Async(RegisterPayload payload)
+        {
+            var request = new GraphQLHttpRequest(Mutations.SignupMutation)
+            {
+                Variables = new { firstname = payload.FirstName, email = payload.Email, password = payload.Password }
+            };
+
+            var authUserData = await _graphQlClient.SendMutationAsync<RegisterResponse>(request)
+                                             .ToObservable()
+                                             .Select(response =>
+                                                 {
+                                                     var registerData = response.Data?.Signup;
+                                                     if (registerData != null)
+                                                     {
+                                                         SaveUserData(registerData);
+                                                         return registerData;
+                                                     }
+                                                     return null;
+                                                 });
+            return authUserData;
+        }
+
+        public async Task<AuthUserData?> SignupAsync(RegisterPayload payload)
+        {
+
+            var request = new GraphQLHttpRequest(Mutations.SignupMutation)
+                              {
+                                  Variables = new { firstname = payload.FirstName, email = payload.Email, password = payload.Password }
+                              };
+
+            var authUserData = await _graphQlClient.SendMutationAsync<dynamic>(request)
+                                   .ToObservable()
+                                   .Select(
+                                       response =>
+                                           {
+                                               // Check for errors in the GraphQL response
+                                               if (response.Errors != null && response.Errors.Any())
+                                               {
+                                                   // Handle the errors as needed
+                                                   // For example, you could log them or throw an exception
+                                                   throw new Exception(
+                                                       "GraphQL errors occurred: " + string.Join(
+                                                           ", ",
+                                                           response.Errors.Select(
+                                                               e => e.Message)));
+                                               }
+
+                                               // Proceed with normal processing if there are no errors
+                                               //RegisterResponse
+                                               RegisterResponse registerData =
+                                                   JsonConvert.DeserializeObject<RegisterResponse>(response.Data.ToString());
+                                               //var registerData = response.Data?.Data?.Data?.Signup;
+                                               if (registerData != null)
+                                               {
+                                                   SaveUserData(registerData.Signup);
+                                                   return registerData;
+                                               }
+
+                                               return null;
+                                           })
+                ;
+            return authUserData?.Signup;
+        }
+
+        public async Task<AuthUserData?> SignupBadAsync(RegisterPayload payload)
         {
             var request = new GraphQLHttpRequest(Mutations.SignupMutation)
                               {
-                                  Variables = new { payload.FirstName, payload.Email, payload.Password }
+                                  Variables = new { firstname = payload.FirstName, email = payload.Email, password = payload.Password }
                               };
-            
 
-            //var request = new GraphQLHttpRequest
-            //{
-            //    Query = Mutations.SignupMutation,
-            //    Variables = new { payload.FirstName, payload.Email, payload.Password }
-            //};
+            // Assuming the response JSON is stored in a variable called responseJson
+            var responseJson = await _graphQlClient.SendMutationAsync<string>(request); // Get raw JSON response
+            var jsonResponse = JObject.Parse(responseJson.Data);
 
-            return await _apollo.SendMutationAsync<RegisterResponse>(request)
-                .ToObservable()
-                .Select(response =>
+            // Check if there are errors
+            var errors = jsonResponse["errors"];
+            if (errors != null)
+            {
+                foreach (var error in errors)
                 {
-                    var registerData = response.Data?.Data?.Signup;
-                    if (registerData != null)
+                    // Extract standard error information
+                    var message = error["message"]?.ToString();
+                    Console.WriteLine($"Error: {message}");
+
+                    // Extract "info" field if it exists
+                    var info = error["info"] as JArray;
+                    if (info != null)
                     {
-                        SaveUserData(registerData);
-                        return registerData;
+                        foreach (var infoItem in info)
+                        {
+                            Console.WriteLine($"Info: {infoItem}");
+                        }
                     }
+                }
+
+                // Handle the errors as necessary
+                throw new Exception("GraphQL errors occurred.");
+            }
+
+            // If no errors, proceed with normal processing
+            var data = jsonResponse["data"];
+            if (data != null)
+            {
+               var registerData = data["signup"];
+                if (registerData != null)
+                {
+                    // Map to your RegisterResponse object or handle as needed
+                    // SaveUserData(registerData);
+                    //return registerData;
                     return null;
-                });
+                }
+            }
+
+            return null;
+
         }
 
-        public async Task<AuthUserData> LogInAsync(string email, string password)
+        public async Task<AuthUserData?> LogInAsync(string email, string password)
         {
             var request = new GraphQLHttpRequest(Mutations.LoginMutation)
             {
                 Variables = new { email, password }
             };
 
-            var userData = await _apollo.SendMutationAsync<LogInResponse>(request)
-                                             .ToObservable()
-                                             .Select(response =>
-                                                 {
-                                                     var loginData = response.Data?.Data?.Login;
-                                                     if (loginData != null)
-                                                     {
-                                                         SaveUserData(loginData);
-                                                         return loginData;
-                                                     }
-                                                     return null;
-                                                 });
-            return userData;
+            var userData = await _graphQlClient.SendMutationAsync<dynamic>(request)
+                               .ToObservable()
+                               .Select(
+                                   response =>
+                                       {
+                                           //Check if there are any errors in the GraphQL response
+                                           if (response.Errors != null && response.Errors.Any())
+                                           {
+                                               // Handle the errors accordingly
+                                               // Here we log the errors or you could throw an exception
+                                               var errorMessages = string.Join(
+                                                   ", ",
+                                                   response.Errors.Select(e => e.Message));
+                                               Console.WriteLine($"GraphQL errors occurred: {errorMessages}");
+
+                                               // Optionally, you can throw an exception or return a special error object
+                                               throw new Exception($"Login failed: {errorMessages}");
+                                           }
+
+                                           if (response.Data != null)
+                                           {
+                                               LogInResponse loginData =
+                                                   JsonConvert.DeserializeObject<LogInResponse>(response.Data.ToString());
+                                               if (loginData != null)
+                                               {
+                                                   SaveUserData(loginData.Login);
+                                                   return loginData;
+                                               }
+                                           }
+
+                                           return null;
+                                       });
+            return userData?.Login;
         }
 
         public async Task<User> UpdateUser(UpdateUserData userData)
@@ -94,7 +206,7 @@ namespace Netlify.ApiClient.Auth
                 Variables = userData
             };
 
-            return await _apollo.SendMutationAsync<UpdateUserResponse>(request)
+            return await _graphQlClient.SendMutationAsync<UpdateUserResponse>(request)
                 .ToObservable()
                 .Select(response =>
                 {
@@ -115,7 +227,7 @@ namespace Netlify.ApiClient.Auth
                 Variables = new { oldPassword, newPassword }
             };
 
-            return await _apollo.SendMutationAsync<ChangePasswordResponse>(request)
+            return await _graphQlClient.SendMutationAsync<ChangePasswordResponse>(request)
                 .ToObservable()
                 .Select(response =>
                 {
@@ -135,7 +247,7 @@ namespace Netlify.ApiClient.Auth
                 Variables = new { password }
             };
 
-            return await _apollo.SendMutationAsync<DeleteAccountResponse>(request)
+            return await _graphQlClient.SendMutationAsync<DeleteAccountResponse>(request)
                 .ToObservable()
                 .Select(response =>
                 {
@@ -158,9 +270,9 @@ namespace Netlify.ApiClient.Auth
                 //Headers = new { [AppConfig.BypassAuthorization] = "true" }
             };
             
-            _apollo.HttpClient.DefaultRequestHeaders.Add(_appConfig.BypassAuthorization,"true");
+            _graphQlClient.HttpClient.DefaultRequestHeaders.Add(_appConfig.BypassAuthorization,"true");
 
-            return await _apollo.SendMutationAsync<RefreshTokenResponse>(request)
+            return await _graphQlClient.SendMutationAsync<RefreshTokenResponse>(request)
                 .ToObservable()
                 .Select(response =>
                 {

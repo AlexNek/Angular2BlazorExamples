@@ -7,6 +7,9 @@ using Netlifly.Shared;
 
 using Netlify.ApiClient.Auth;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+
 namespace Netlify.ApiClient
 {
     public static class ApiClientExtension
@@ -18,6 +21,19 @@ namespace Netlify.ApiClient
 
             services.AddScoped<IAppConfig, TConfigImplementation>();
 
+            //services.AddNewtonsoftJson(
+            //    options =>
+            //        {
+            //            options.SerializerSettings.ContractResolver = new DefaultContractResolver()
+            //                                                              {
+            //                                                                  NamingStrategy =
+            //                                                                      new CamelCaseNamingStrategy()
+            //                                                              };
+            //            options.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Include;
+            //            options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+            //            options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            //            options.SerializerSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
+            //        });
             // Register the GraphQL client with Microsoft serializer
             //services.AddScoped(sp => new GraphQLHttpClient("http://myserver.com/graphql", new SystemTextJsonSerializer()));
 
@@ -26,11 +42,10 @@ namespace Netlify.ApiClient
                 {
                     // Resolve the IAppConfig instance
                     var appConfig = sp.GetRequiredService<IAppConfig>();
-                    var httpClient = new HttpClient
-                    {
-                        BaseAddress = new Uri($"{serverEndPoint}/{appConfig.Endpoints.Graphql}")
-                    };
-                    var httpClientOptions = new GraphQLHttpClientOptions { EndPoint = new Uri($"{serverEndPoint}/{appConfig.Endpoints.Graphql}") };
+                    var uriString = $"{serverEndPoint}/{appConfig.Endpoints.Graphql}";
+
+                    var httpClient = new HttpClient { BaseAddress = new Uri(uriString) };
+                    var httpClientOptions = new GraphQLHttpClientOptions { EndPoint = new Uri(uriString) };
                     var graphQlHttpClient = new GraphQLHttpClient(
                         httpClientOptions,
                         new NewtonsoftJsonSerializer(),

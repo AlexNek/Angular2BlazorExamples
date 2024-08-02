@@ -27,7 +27,7 @@
 
     <FluentGrid>
         <FluentGridItem>
-            <StatusMessage Message="@errorMessage" />
+            <StatusMessage Message="@_errorMessage" />
             <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
                 <DataAnnotationsValidator />
                 <h1>@Localizer["Log in"]</h1>
