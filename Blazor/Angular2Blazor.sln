@@ -28,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Netlifly.Shared", "Netlify\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Netlify.SharedResources", "Netlify\Netlify.SharedResources\Netlify.SharedResources.csproj", "{0FEEAE23-B07D-47DA-8368-F363035545D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netlify.ApiClient", "Netlify.ApiClient\Netlify.ApiClient.csproj", "{D021073C-CE57-47C0-98F3-5B7CA9296801}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Netlify.ApiClient", "Netlify.ApiClient\Netlify.ApiClient.csproj", "{D021073C-CE57-47C0-98F3-5B7CA9296801}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
