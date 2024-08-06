@@ -6,10 +6,11 @@ using Microsoft.Extensions.Localization;
 using Netlifly.Shared;
 
 using Newtonsoft.Json;
+using static GraphQL.Validation.BasicVisitor;
 
 namespace Netlify.ApiClient.Auth
 {
-    public class AuthRepository
+    internal class AuthRepository:IAuthRepository
     {
         private readonly BehaviorSubject<AuthProps> authStore;
 
@@ -39,12 +40,18 @@ namespace Netlify.ApiClient.Auth
             SaveState();
         }
 
-        public string GetAccessTokenValue()
+        public User? GetUser()
+        {
+            var state = authStore.Value;
+            return state.User;
+        }
+
+        public string? GetAccessToken()
         {
             return authStore.Value.AccessToken;
         }
 
-        public string GetRefreshTokenValue()
+        public string? GetRefreshToken()
         {
             return authStore.Value.RefreshToken;
         }
@@ -58,7 +65,7 @@ namespace Netlify.ApiClient.Auth
         {
             try
             {
-                var token = GetAccessTokenValue();
+                var token = GetAccessToken();
                 if (!string.IsNullOrEmpty(token))
                 {
                     return AuthService.DecodeToken(token) != null;
@@ -72,12 +79,20 @@ namespace Netlify.ApiClient.Auth
             }
         }
 
+        public event Action<User>? UserChanged;
+
         public void SetUser(User user)
         {
             var state = authStore.Value;
             state.User = user;
             authStore.OnNext(state);
             SaveState();
+            OnUserChanged(user); // Notify subscribers
+        }
+
+        protected virtual void OnUserChanged(User user)
+        {
+            UserChanged?.Invoke(user); // Raise the event to notify subscribers
         }
 
         public void UpdateTokens(string accessToken, string refreshToken)

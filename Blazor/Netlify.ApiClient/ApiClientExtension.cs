@@ -17,7 +17,7 @@ namespace Netlify.ApiClient
         public static void InitApiClient<TConfigImplementation>(this IServiceCollection services, string serverEndPoint)
             where TConfigImplementation : class, IAppConfig
         {
-            services.AddScoped<AuthRepository>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
 
             services.AddScoped<IAppConfig, TConfigImplementation>();
 

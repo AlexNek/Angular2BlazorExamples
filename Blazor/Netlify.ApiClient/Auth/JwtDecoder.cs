@@ -6,7 +6,7 @@ namespace Netlify.ApiClient.Auth;
 
 public class JwtDecoder
 {
-    public static string? Decode(string tokenStr)
+    public static string? Decode(string? tokenStr)
     {
         var handler = new JwtSecurityTokenHandler();
         var token = handler.ReadJwtToken(tokenStr);

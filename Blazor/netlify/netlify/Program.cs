@@ -1,8 +1,11 @@
 using Blazored.LocalStorage;
 
+using Blazr.RenderState.Server;
+
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.FluentUI.AspNetCore.Components;
 
@@ -22,6 +25,7 @@ namespace Netlify
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.AddBlazrRenderStateServerServices();
 
             // Add services to the container.
             var services = builder.Services;
@@ -57,6 +61,10 @@ namespace Netlify
             
            // Configure localization services
             services.AddSharedLocalization();
+
+            services.AddScoped<ServerState>();
+            services.AddScoped<CircuitHandler, AppCircuitHandler>();
+            services.AddSingleton<InMemoryUserStateService>();
 
             services.AddScoped<IdentityRedirectManager>();
 
