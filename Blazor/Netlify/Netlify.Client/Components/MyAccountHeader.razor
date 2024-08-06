@@ -1,0 +1,72 @@
+﻿@using System.Globalization
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Authorization
+@using Netlify.SharedResources
+@inject AuthenticationStateProvider AuthStateProvider
+@inject SharedLocalizer Localizer
+
+<div class="row">
+    <div class="col-12">
+        <div class="card card-primary card-section p-3 text-center text-md-start" style="height: 280px;">
+            <h1 class="mb-2" i18n>My account</h1>
+            <div class="row d-flex align-items-center">
+                <div class="col-12 col-md-auto px-0 px-md-4 text-center">
+                    <div class="avatar avatar-online">
+                        <img
+                            alt="user avatar"
+                            class="w-px-40 h-auto main__avatar-circle rounded-circle"
+                            referrerpolicy="no-referrer"
+                            src="/assets/images/user.png" />
+                    </div>
+                </div>
+                <div class="col-12 col-md-auto pt-2 px-3">
+                    <div class="flex-grow-1">
+                        <p class="my-account__user-name d-block mb-2">
+                            @_name
+                        </p>
+                        <small class="d-block mb-1">
+                            @_email
+                        </small>
+                        <small class="d-block mb-1">
+                            @_cultureInfo?.DisplayName
+                        </small>
+                        <small class="d-block mb-1" >@Localizer["Free plan"]</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private string? _name;
+
+    private string? _locale;
+
+    private string? _email;
+
+    private bool _isAuthenticated;
+
+    private CultureInfo? _cultureInfo;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        _name = "Anonymous";
+        if (user.Identity is { IsAuthenticated: true })
+        {
+            _locale = user.FindFirst(ClaimTypes.Locality)?.Value;
+            if (_locale != null)
+            {
+                _cultureInfo = new CultureInfo(_locale);
+            }
+            _email = user.FindFirst(ClaimTypes.Email)?.Value;
+            _name = user.Identity.Name;
+           
+            _isAuthenticated = true;
+        }
+
+    }
+}

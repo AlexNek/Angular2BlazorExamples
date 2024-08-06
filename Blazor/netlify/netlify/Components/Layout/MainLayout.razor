@@ -1,4 +1,6 @@
-﻿@using Netlify.Client.Components
+﻿@using System.Security.Claims
+@using Netlifly.Shared
+@using Netlify.Client.Components
 @inherits LayoutComponentBase
 
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
@@ -19,12 +21,11 @@
         </FluentBodyContent>
     </FluentStack>
     <FluentFooter>
-        <a href="https://www.fluentui-blazor.net" target="_blank">Documentation and demos</a>
+        <a href="https://github.com/AlexNek/Angular2BlazorExamples" target="_blank">© 2024 Angular to Blazor Example App</a>
         <FluentSpacer />
-        <a href="https://learn.microsoft.com/en-us/aspnet/core/blazor" target="_blank">About Blazor</a>
-
-
+        <a href="https://github.com/Ismaestro/angular-example-app" target="_blank">How it Works (Angular)</a>
     </FluentFooter>
+    @* <FluentToastProvider MaxToastCount="10" @rendermode="InteractiveAuto"/> *@
 </FluentLayout>
 
 <div id="blazor-error-ui">
@@ -35,43 +36,30 @@
 
 @code
 {
-    // [CascadingParameter]
-    // public HttpContext? HttpContext { get; set; }
-    /// <summary>
-    /// Method invoked when the component is ready to start, having received its
-    /// initial parameters from its parent in the render tree.
-    /// Override this method if you will perform an asynchronous operation and
-    /// want the component to refresh when that operation is completed.
-    /// </summary>
-    /// <returns>A <see cref="T:System.Threading.Tasks.Task" /> representing any asynchronous operation.</returns>
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+    [Inject]
+    private ServerState ServerState { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        var user = HttpContext.User;
+        if (user.Identity is { IsAuthenticated: true })
+        {
+            var localUser = new User();
+            localUser.Id = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            localUser.Email = user.FindFirst(ClaimTypes.Email)?.Value;
+            localUser.FirstName = user.Identity.Name;
+            ServerState.SetUser(localUser);
+        }
 
-
-        // var httpContext = HttpContextAccessor.HttpContext;
-        // var requestCookie = HttpContext?.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
-        // if (requestCookie != null)
-        // {
-        //     var cultureResult = CookieRequestCultureProvider.ParseCookieValue(requestCookie);
-        //     if (cultureResult != null && cultureResult.Cultures.Any())
-        //     {
-        //         var currentCulture = cultureResult.Cultures[0];
-        //         CultureInfo cultureInfo = new CultureInfo(currentCulture.ToString());
-        //         CultureInfo.CurrentCulture = cultureInfo;
-        //         CultureInfo.CurrentUICulture = cultureInfo;
-        //     }
-        // }
     }
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (firstRender)
-        {
-            var cultureResult = await LocalStorage.GetItemAsStringAsync("BlazorCulture");
-        }
     }
 
 }

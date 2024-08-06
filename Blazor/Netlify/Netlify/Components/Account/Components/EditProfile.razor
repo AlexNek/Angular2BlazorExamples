@@ -1,0 +1,31 @@
+﻿@using Blazr.RenderState
+
+@using Netlify.Components.Account.Shared
+@using Netlify.SharedResources
+@inject SharedLocalizer Localizer
+@inject IToastService ToastService
+<RenderStateViewer Parent="this" />
+<FluentGrid>
+    <FluentGridItem>
+        <StatusMessage Message="@Message" />
+        <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="UpdateUser" FormName="register">
+            <DataAnnotationsValidator />
+            <h2>@Localizer["Personal data"]</h2>
+            <hr />
+            <FluentValidationSummary class="text-danger" role="alert" />
+            <!-- Hidden field for User Id -->
+            <input type="hidden" @bind="Input.Id" />
+
+            <FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
+                <FluentTextField Name="Input.Name" @bind-Value="Input.Name" Required="true" Placeholder="nickname" Label="@Localizer["First name"]" Style="width: 100%; margin-bottom: 10px;" />
+                <FluentTextField ReadOnly="true" Name="Input.Email" @bind-Value="Input.Email" AutoComplete="email" Required="true" Placeholder="name@example.com" Label="@Localizer["Email"]" Style="width: 100%; margin-bottom: 10px;">
+                    <FluentIcon Value="@(new Icons.Regular.Size24.MailEdit())" Slot="start" />
+                </FluentTextField>
+                <FluentValidationMessage For="() => Input.Email" class="text-danger" />
+
+
+                <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%; margin-bottom: 10px;">@Localizer["Save"]</FluentButton>
+            </FluentStack>
+        </EditForm>
+    </FluentGridItem>
+</FluentGrid>

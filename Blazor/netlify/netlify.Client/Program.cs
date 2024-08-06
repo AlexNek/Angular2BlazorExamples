@@ -1,3 +1,5 @@
+using Blazr.RenderState.WASM;
+
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.FluentUI.AspNetCore.Components;
 
@@ -10,6 +12,8 @@ namespace Netlify.Client
         static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
+
+            builder.AddBlazrRenderStateWASMServices();
 
             var services = builder.Services;
            

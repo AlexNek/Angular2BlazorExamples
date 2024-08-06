@@ -4,8 +4,10 @@
 
     public class UpdateUserData
     {
-        private string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
-        private string Language { get; set; }
+        public string? Language { get; set; }
+
+        public User? User { get; set; }
     }
 }

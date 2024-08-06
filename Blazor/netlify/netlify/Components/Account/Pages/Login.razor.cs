@@ -101,10 +101,11 @@ namespace Netlify.Components.Account.Pages
             {
                 var claims = new List<Claim>
                                  {
-                                     new Claim(ClaimTypes.Name, userData.User.Firstname),
+                                     new Claim(ClaimTypes.Name, userData.User.FirstName),
                                      new Claim(ClaimTypes.Email, internalLogin.Email),
                                      new Claim(ClaimTypes.Role, "User"),
-                                     new Claim(ClaimTypes.Locality, userData.User.Language)
+                                     new Claim(ClaimTypes.Locality, userData.User.Language),
+                                     new Claim(ClaimTypes.NameIdentifier, userData.User.Id)
                                  };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

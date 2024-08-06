@@ -1,0 +1,47 @@
+﻿@using Netlifly.Shared
+@using Netlify.ApiClient.Auth
+@using Netlify.SharedResources
+@inject SharedLocalizer Localizer
+@* @inject IAuthRepository AuthRepository *@
+@* @inject IAppConfig AppConfig *@
+@* @implements IDisposable *@
+<FluentAccordion>
+    <FluentAccordionItem Expanded="true" Heading="@Localizer["Profile and password"]">
+        <EditProfile />
+        <ChangePassword/>
+    </FluentAccordionItem>
+    <FluentAccordionItem Heading="@Localizer["Language"]">
+        <ChangeLanguage/>
+    </FluentAccordionItem>
+    
+    <FluentAccordionItem >
+        <HeadingTemplate>
+            <span style="color:red">@Localizer["Delete account"]</span>
+        </HeadingTemplate>
+        <ChildContent>
+            <DeleteAccount/>
+        </ChildContent>
+    </FluentAccordionItem>
+</FluentAccordion>
+
+@code {
+
+    // [CascadingParameter]
+    // public User? User { get; set; }
+
+    //private int InnerWidth { get; set; }
+    //private CancellationTokenSource _cts = new CancellationTokenSource();
+
+    // protected override void OnInitialized()
+    // {
+    //     //InnerWidth = (int)Icons.Filled.Size16.Window.Width;
+
+    //     AuthRepository.UserChanged += OnUserChanged;
+    // }
+
+    // public void Dispose()
+    // {
+    //     _cts.Cancel();
+    //     AuthRepository.UserChanged -= OnUserChanged;
+    // }
+}
