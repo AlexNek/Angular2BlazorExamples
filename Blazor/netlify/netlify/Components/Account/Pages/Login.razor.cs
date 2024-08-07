@@ -7,8 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components;
 
 using Netlifly.Shared;
-using Netlifly.Shared.Request;
-
+using Netlifly.Shared.Response;
 using Netlify.ApiClient.Auth;
 
 namespace Netlify.Components.Account.Pages
@@ -99,28 +98,7 @@ namespace Netlify.Components.Account.Pages
             //&& internalLogin.Email == "test@gmail.com" && internalLogin.Password == "Admin1"
             if (userData!= null ) // Replace with real user validation
             {
-                var claims = new List<Claim>
-                                 {
-                                     new Claim(ClaimTypes.Name, userData.User.FirstName),
-                                     new Claim(ClaimTypes.Email, internalLogin.Email),
-                                     new Claim(ClaimTypes.Role, "User"),
-                                     new Claim(ClaimTypes.Locality, userData.User.Language),
-                                     new Claim(ClaimTypes.NameIdentifier, userData.User.Id)
-                                 };
-
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                var authProperties = new AuthenticationProperties
-                                         {
-                                             IsPersistent = internalLogin.RememberMe,
-                                             ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7)
-                                         };
-
-                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-                HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    claimsPrincipal,
-                    authProperties);
+                await ClaimsHelper.Login(HttpContext, internalLogin, userData);
 
                 return true;
             }

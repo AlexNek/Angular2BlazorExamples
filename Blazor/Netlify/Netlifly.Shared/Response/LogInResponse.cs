@@ -1,6 +1,4 @@
-﻿using Netlifly.Shared.Request;
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Netlifly.Shared.Response
 {

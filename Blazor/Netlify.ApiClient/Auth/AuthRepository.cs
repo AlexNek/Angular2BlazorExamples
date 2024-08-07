@@ -10,6 +10,13 @@ using static GraphQL.Validation.BasicVisitor;
 
 namespace Netlify.ApiClient.Auth
 {
+
+    /// <summary>
+    /// Class AuthRepository.
+    /// Implements the <see cref="Netlify.ApiClient.Auth.IAuthRepository" />
+    /// TODO: Valid for client side only must be removed
+    /// </summary>
+    /// <seealso cref="Netlify.ApiClient.Auth.IAuthRepository" />
     internal class AuthRepository:IAuthRepository
     {
         private readonly BehaviorSubject<AuthProps> authStore;

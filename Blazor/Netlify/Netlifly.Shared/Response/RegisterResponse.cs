@@ -1,6 +1,4 @@
-﻿using Netlifly.Shared.Request;
-
-namespace Netlifly.Shared.Response
+﻿namespace Netlifly.Shared.Response
 {
     public class RegisterResponse
     {

@@ -54,6 +54,10 @@ namespace Netlify.Components.Account
         public void RedirectToCurrentPage() => RedirectTo(CurrentPath);
 
         [DoesNotReturn]
+        public void RedirectToCurrentPage(Dictionary<string, object?> queryParameters) =>
+            RedirectTo(CurrentPath, queryParameters);
+
+        [DoesNotReturn]
         public void RedirectToCurrentPageWithStatus(string message, HttpContext context)
             => RedirectToWithStatus(CurrentPath, message, context);
     }

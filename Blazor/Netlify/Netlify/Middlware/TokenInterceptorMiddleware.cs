@@ -1,5 +1,12 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Security.Claims;
+
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
+using Netlifly.Shared;
+using Netlifly.Shared.Response;
 
 using Netlify.ApiClient.Auth;
 
@@ -7,7 +14,7 @@ namespace Netlify.Middlware
 {
     public class TokenInterceptorMiddleware
     {
-        private readonly IAuthRepository _authRepository;
+        //private readonly IAuthRepository _authRepository;
 
         private readonly IAuthService _authService;
 
@@ -18,20 +25,30 @@ namespace Netlify.Middlware
         public TokenInterceptorMiddleware(
             RequestDelegate next,
             ILogger<TokenInterceptorMiddleware> logger,
-            IAuthService authService,
-            IAuthRepository authRepository)
+            IAuthService authService
+            //IAuthRepository authRepository
+            )
         {
             _next = next;
             _logger = logger;
             _authService = authService;
-            _authRepository = authRepository;
+            //_authRepository = authRepository;
         }
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var accessToken = _authRepository.GetAccessToken();
-            var refreshToken = _authRepository.GetRefreshToken();
+            string? accessToken = null; //_authRepository.GetAccessToken();
+            string? refreshToken = null; //_authRepository.GetRefreshToken();
 
+            var user = context.User;
+            if (user.Identity is { IsAuthenticated: true })
+            {
+               var InputId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+               var InputEmail = user.FindFirst(ClaimTypes.Email)?.Value;
+               var InputName = user.Identity.Name;
+               accessToken = user.FindFirst(AdditionalClaimTypes.AccessToken)?.Value;
+               refreshToken = user.FindFirst(AdditionalClaimTypes.RefreshToken)?.Value;
+            }
             if (!string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(refreshToken))
             {
                 var tokenValidation = GetTokenExpirations(accessToken, refreshToken);
@@ -40,10 +57,16 @@ namespace Netlify.Middlware
                 {
                     if (!tokenValidation.isRefreshTokenExpired)
                     {
-                        var newAccessToken = await _authService.RefreshTokenAsync(refreshToken);
-                        if (!string.IsNullOrEmpty(newAccessToken))
+                        var tokens = await _authService.RefreshTokenAsync(refreshToken);
+                        if (!string.IsNullOrEmpty(tokens?.AccessToken))
                         {
-                            context.Request.Headers["Authorization"] = $"Bearer {newAccessToken}";
+                            context.Request.Headers["Authorization"] = $"Bearer {tokens.AccessToken}";
+
+                            bool isUpdated = await ClaimsHelper.UpdateTokens(context, tokens);
+                            if (isUpdated)
+                            {
+                                //TODO: Check expiration in client too, client need full page refresh
+                            }
                         }
                         else
                         {

@@ -59,6 +59,7 @@ namespace Netlify
                 .AddInteractiveWebAssemblyComponents();
             services.AddFluentUIComponents();
             
+            
            // Configure localization services
             services.AddSharedLocalization();
 
@@ -113,6 +114,7 @@ namespace Netlify
             //app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMiddleware<TokenInterceptorMiddleware>();
 
             app.MapControllers();
             app.MapRazorComponents<App>()

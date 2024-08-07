@@ -10,13 +10,13 @@ public interface IAuthService
 
     Task<AuthUserData?> LogInAsync(string email, string password);
 
-    Task<User?> UpdateUserAsync(UpdateUserData userData);
+    Task<User?> UpdateUserAsync(UpdateUserData userData, string? accessToken);
 
     Task<OkData> ChangePassword(string oldPassword, string newPassword);
 
     Task<OkData> DeleteAccount(string password);
 
-    Task<UpdateTokenData> RefreshToken();
+    Task<UpdateTokenData?> RefreshTokenAsync(string refreshToken);
 
-    Task<string?> RefreshTokenAsync(string refreshToken);
+    //Task<string?> RefreshTokenAsync(string refreshToken);
 }

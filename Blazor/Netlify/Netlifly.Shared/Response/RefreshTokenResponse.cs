@@ -6,28 +6,9 @@ using System.Threading.Tasks;
 
 using Netlifly.Shared.Request;
 
-namespace Netlifly.Shared.Response
+namespace Netlifly.Shared.Response;
+
+public class RefreshTokenResponse
 {
-    // Translated from TypeScript to C#
-
-    public class RefreshTokenResponse
-    {
-        public object? Errors { get; set; }
-        public RefreshTokenData? Data { get; set; }
-
-        public class RefreshTokenData
-        {
-            public UpdateTokenData RefreshToken { get; set; }
-        }
-        //public class RefreshTokenInfo
-        //{
-        //    public string AccessToken { get; set; }
-        //    public string RefreshToken { get; set; }
-        //}
-
-    }
-
-    
-
-    
+    public UpdateTokenData RefreshToken { get; set; }
 }

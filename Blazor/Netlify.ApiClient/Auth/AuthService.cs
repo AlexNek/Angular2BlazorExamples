@@ -15,6 +15,8 @@ namespace Netlify.ApiClient.Auth
 {
     internal class AuthService : IAuthService
     {
+        private const string Authorization = "Authorization";
+
         private readonly GraphQLHttpClient _graphQlClient;
 
         private readonly IAuthRepository _authRepository;
@@ -258,7 +260,7 @@ namespace Netlify.ApiClient.Auth
             }
         }
 
-        public async Task<User?> UpdateUserAsync(UpdateUserData userData)
+        public async Task<User?> UpdateUserAsync(UpdateUserData userData, string? accessToken)
         {
             //{ "operationName":"updateUser",
             //"variables":{
@@ -287,7 +289,9 @@ namespace Netlify.ApiClient.Auth
                                                       __typename = "User"
                                                   }
                               };
-            //UpdateUserResponse
+            
+            // Add the access token to the default request headers
+            _graphQlClient.HttpClient.DefaultRequestHeaders.Add(Authorization, $"Bearer {accessToken}");
             var response = await _graphQlClient.SendMutationAsync<UpdateUserResponse>(request);
             IfErrorThrowException(response, "Update user failed:");
             var updateUserResponse = response.Data.UpdateUser;
@@ -359,7 +363,7 @@ namespace Netlify.ApiClient.Auth
                                });
         }
 
-        public async Task<UpdateTokenData> RefreshToken()
+        public async Task<UpdateTokenData?> RefreshTokenAsync(string refreshToken1)
         {
             var refreshToken = _authRepository.GetRefreshToken() ?? string.Empty;
             var request = new GraphQLHttpRequest(Mutations.RefreshTokenMutation)
@@ -371,28 +375,39 @@ namespace Netlify.ApiClient.Auth
 
             _graphQlClient.HttpClient.DefaultRequestHeaders.Add(_appConfig.BypassAuthorization, "true");
 
-            return await _graphQlClient.SendMutationAsync<RefreshTokenResponse>(request)
-                       .ToObservable()
-                       .Select(
-                           response =>
-                               {
-                                   var refreshTokenData = response.Data?.Data?.RefreshToken;
-                                   if (refreshTokenData != null)
-                                   {
-                                       _authRepository.UpdateTokens(
-                                           refreshTokenData.AccessToken,
-                                           refreshTokenData.RefreshToken);
-                                       return refreshTokenData;
-                                   }
+            var response = await _graphQlClient.SendMutationAsync<RefreshTokenResponse>(request);
+            IfErrorThrowException(response, "Refresh token failed:");
+            var updateUserResponse = response.Data.RefreshToken;
+            if (updateUserResponse != null)
+            {
+                _authRepository.UpdateTokens(
+                    updateUserResponse.AccessToken,
+                    updateUserResponse.RefreshToken);
+            }
+            return updateUserResponse;
 
-                                   return null;
-                               });
+            //return await _graphQlClient.SendMutationAsync<RefreshTokenResponse>(request)
+            //           .ToObservable()
+            //           .Select(
+            //               response =>
+            //                   {
+            //                       var refreshTokenData = response.Data?.Data?.RefreshToken;
+            //                       if (refreshTokenData != null)
+            //                       {
+            //                           _authRepository.UpdateTokens(
+            //                               refreshTokenData.AccessToken,
+            //                               refreshTokenData.RefreshToken);
+            //                           return refreshTokenData;
+            //                       }
+
+            //                       return null;
+            //                   });
         }
 
-        public async Task<string?> RefreshTokenAsync(string refreshToken)
-        {
-            return await Task.FromResult(null as string);
-        }
+        //public async Task<string?> RefreshTokenAsync(string refreshToken)
+        //{
+        //    return await Task.FromResult(null as string);
+        //}
 
         private void SaveUserData(AuthUserData userData)
         {

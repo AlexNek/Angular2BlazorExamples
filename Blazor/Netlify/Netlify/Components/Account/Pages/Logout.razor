@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Authentication.Cookies
 @using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.WebUtilities
 @using Netlify.Client
 @inject NavigationManager Navigation
 @* @inject HttpClient Http
@@ -15,6 +16,12 @@
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;
 
+    [SupplyParameterFromQuery(Name = "origin")]
+    private string? Origin { get; set; }
+    
+    [SupplyParameterFromQuery(Name = "alertId")]
+    private string? AlertIdStr { get; set; }
+
     private async Task LogoutHandler()
     {
         // Sign out the user by clearing the authentication cookie
@@ -25,7 +32,8 @@
         // {
         //     customAuthStateProvider.NotifyUserLogout();
         // }
-        Navigation.NavigateTo("/",true);
+        var query = new Dictionary<string, string?> { { nameof(Origin), Origin }, { nameof(AlertIdStr), AlertIdStr } };
+        Navigation.NavigateTo(QueryHelpers.AddQueryString("/", query),true);
     }
 
     /// <summary>

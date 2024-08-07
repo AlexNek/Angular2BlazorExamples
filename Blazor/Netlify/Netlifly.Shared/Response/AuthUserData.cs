@@ -1,4 +1,4 @@
-﻿namespace Netlifly.Shared.Request
+﻿namespace Netlifly.Shared.Response
 {
     public class AuthUserData
     {

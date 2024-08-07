@@ -17,9 +17,9 @@ namespace Netlify.ApiClient
         public static void InitApiClient<TConfigImplementation>(this IServiceCollection services, string serverEndPoint)
             where TConfigImplementation : class, IAppConfig
         {
-            services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddSingleton<IAuthRepository, AuthRepository>();
 
-            services.AddScoped<IAppConfig, TConfigImplementation>();
+            services.AddSingleton<IAppConfig, TConfigImplementation>();
 
             //services.AddNewtonsoftJson(
             //    options =>
@@ -38,7 +38,7 @@ namespace Netlify.ApiClient
             //services.AddScoped(sp => new GraphQLHttpClient("http://myserver.com/graphql", new SystemTextJsonSerializer()));
 
             // Register the GraphQL client with Newtonsoft.Json serializer
-            services.AddScoped(sp =>
+            services.AddSingleton(sp =>
                 {
                     // Resolve the IAppConfig instance
                     var appConfig = sp.GetRequiredService<IAppConfig>();
@@ -56,7 +56,7 @@ namespace Netlify.ApiClient
                     return graphQlHttpClient;
                 });
 
-            services.AddScoped<IAuthService, AuthService>();
+            services.AddSingleton<IAuthService, AuthService>();
         }
     }
 }

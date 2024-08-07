@@ -25,11 +25,22 @@ public partial class EditProfile
     [Inject]
     private AuthenticationStateProvider AuthStateProvider { get; set; }
 
+    //[CascadingParameter]
+    //private HttpContext HttpContext { get; set; } = default!;
+
+    //[Inject]
+    //private IHttpContextAccessor HttpContextAccessor { get; set; }
     //[Inject]
     //private ServerState ServerState { get; set; }
 
     [Inject]
     private IAuthService ApiClient { get; set; }
+
+    //[Inject]
+    //private IdentityRedirectManager RedirectManager { get; set; }
+
+    [Inject]
+    private NavigationManager Navigation { get; set; }
 
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = new();
@@ -48,15 +59,26 @@ public partial class EditProfile
         {
             User user = new User() { Id = Input.Id, Email = Input.Email };
             UpdateUserData userData = new UpdateUserData { User = user, FirstName = Input.Name };
-            var authUserData = await ApiClient.UpdateUserAsync(userData);
+            var authUserData = await ApiClient.UpdateUserAsync(userData, Input.AccessToken);
             if (authUserData != null)
             {
+                // Not found another way to get HttpContext
+               //await ClaimsHelper.UpdateUserNameAsync(HttpContextAccessor.HttpContext, Input.Name);
                 HandleUpdateUserResponse();
                 //RedirectManager.RedirectTo(ReturnUrl);
+                
+                // Trick to use HttpContext from parent
+                var queryParameters = new Dictionary<string, object?> { { nameof(User.FirstName), Input.Name } };
+                var newUri = Navigation.GetUriWithQueryParameters(Navigation.Uri, queryParameters);
+                Navigation.NavigateTo(newUri);
             }
             else
             {
                 _identityErrors = [new IdentityError { Description = "Update is not successful" }];
+                if (Message != null)
+                {
+                    ToastService.ShowError(Message);
+                }
             }
         }
         catch (Exception ex)
@@ -76,6 +98,7 @@ public partial class EditProfile
         {
             Input.Id = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Input.Email = user.FindFirst(ClaimTypes.Email)?.Value;
+            Input.AccessToken = user.FindFirst(AdditionalClaimTypes.AccessToken)?.Value;
             Input.Name = user.Identity.Name;
         }
 
@@ -120,8 +143,9 @@ public partial class EditProfile
     private void HandleUpdateUserResponse()
     {
         ToastService.ShowSuccess(AlertId.UserSaved.ToStringLocalized(Localizer));
+        
         _isProfileButtonLoading = false;
-        StateHasChanged();
+        //StateHasChanged();
     }
 
     private sealed class InputModel
@@ -142,6 +166,9 @@ public partial class EditProfile
         [Display(Name = "NickName")]
         [MinLength(2)]
         public string Name { get; set; } = string.Empty;
+
+        //Hidden
+        public string? AccessToken { get; set; }
     }
 }
 

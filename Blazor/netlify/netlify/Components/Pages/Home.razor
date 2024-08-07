@@ -1,7 +1,35 @@
 ﻿@page "/"
+@using Netlify.SharedResources
+@inject SharedLocalizer Localizer
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
+@_errorText
 
 Welcome to your new Fluent Blazor app.
+@code
+{
+    private string? _errorText;
+
+    [SupplyParameterFromQuery(Name = "origin")]
+    private string? Origin { get; set; }
+    
+    [SupplyParameterFromQuery(Name = "alertId")]
+    private string? AlertIdStr { get; set; }
+
+    /// <summary>
+    /// Method invoked when the component has received parameters from its parent in
+    /// the render tree, and the incoming values have been assigned to properties.
+    /// </summary>
+    /// <returns>A <see cref="T:System.Threading.Tasks.Task" /> representing any asynchronous operation.</returns>
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        if (Enum.TryParse(typeof(AlertId),AlertIdStr, true, out object? alertId))
+        {
+            _errorText = (alertId is AlertId id ? id : AlertId.GenericError).ToStringLocalized(Localizer);
+        }
+    }
+}
