@@ -39,6 +39,7 @@ namespace Netlify
             services.AddSerilog();
 
             //services.AddLogging();
+            services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
            
             services.AddCascadingAuthenticationState();
 
@@ -71,14 +72,26 @@ namespace Netlify
 
             services.AddHttpContextAccessor();
 
-            services.AddControllers();
-                //.AddJsonOptions(options =>
-                //    {
-                //        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-                //    });
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+                {
+                    options.IdleTimeout = TimeSpan.FromMinutes(30);
+                    options.Cookie.HttpOnly = true;// Prevent client-side access
+                    options.Cookie.IsEssential = true; // Ensure session cookie is always stored
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Ensure HTTPS is used
+                    options.Cookie.SameSite = SameSiteMode.Strict; // Mitigate CSRF risks
+                });
 
+            services.AddControllers();
+            //.AddJsonOptions(options =>
+            //    {
+            //        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+            //    });
+
+            var apiServerUrl = builder.Configuration.GetSection("ApiServerUrl").Value;
             services.AddLocalization();
-            services.InitApiClient<AppConfig>("https://nestjs-example-app.fly.dev");
+            //services.InitApiClient<AppConfig>("https://nestjs-example-app.fly.dev");
+            services.InitApiClient<AppConfig>(apiServerUrl);
 
             // Register HttpClient as Singleton (recommended)
             //services.AddHttpClient<CustomAuthStateProvider>(client =>
@@ -109,14 +122,16 @@ namespace Netlify
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
-            app.UseAntiforgery();
+            
 
+            app.UseSession(); // Make sure this is added before UseAuthentication and UseAuthorization
             //app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseMiddleware<TokenInterceptorMiddleware>();
 
-            app.MapControllers();
+            app.UseAntiforgery();// Must be after UseAuthorization!
+            app.MapControllers(); 
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode()
                 .AddInteractiveWebAssemblyRenderMode()

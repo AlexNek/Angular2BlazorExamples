@@ -1,5 +1,6 @@
 using Blazr.RenderState.WASM;
 
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.FluentUI.AspNetCore.Components;
 
@@ -13,18 +14,21 @@ namespace Netlify.Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-            builder.AddBlazrRenderStateWASMServices();
+            builder.AddBlazrRenderStateWASMServices(); // Library for showing render state
 
             var services = builder.Services;
            
             services.AddAuthorizationCore();
             //services.AddCascadingAuthenticationState();
+            services.AddCascadingAuthenticationState();
+            services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
 
             // Configure localization services
             services.AddSharedLocalization();
 
             // need for FluentUI sometimes
-            services.AddSingleton<LibraryConfiguration>();
+            builder.Services.AddFluentUIComponents();
+            //services.AddSingleton<LibraryConfiguration>();
 
 
             var host = builder.Build();
