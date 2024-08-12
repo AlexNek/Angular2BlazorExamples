@@ -1,0 +1,47 @@
+﻿@page "/refresh-tokens"
+
+
+@using Netlify.Client.Components
+@using Netlify.Components.Account.Shared
+@using Netlify.SharedResources
+
+
+@* only need for Demo button, HttpContext is null, login doesn't work *@
+@* @rendermode InteractiveServer *@
+@* @rendermode InteractiveAuto *@
+@* @inject SignInManager<ApplicationUser> SignInManager
+@inject ILogger<Login> Logger *@
+@inject NavigationManager NavigationManager
+@inject IdentityRedirectManager RedirectManager
+@inject SharedLocalizer Localizer
+
+<PageTitle>Log in</PageTitle>
+
+
+<FluentGrid>
+    <FluentGridItem>
+        <StatusMessage Message="@Message" />
+        <EditForm Model="Input" method="post" OnValidSubmit="UpdateTokens" FormName="refresh-tokens">
+            <DataAnnotationsValidator />
+            <FluentValidationSummary class="text-danger" role="alert" />
+
+            <FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
+                <FluentLabel Typo="Typography.Body">@Input.Name</FluentLabel>
+                <FluentLabel Typo="Typography.Body">@Input.EMail</FluentLabel>
+
+
+                <FluentLabel Typo="Typography.Body" Color="_accessTokenColor">Access Token Expire at @_accessTokenExpiry.ToString("f") GMT</FluentLabel>
+                <FluentLabel Typo="Typography.Body" Color="_refreshTokenColor">Refresh Token Expire at @_refreshTokenExpiry.ToString("f") GMT</FluentLabel>
+
+                <FluentButton Type="ButtonType.Submit" Loading="@_waitingTime" Appearance="Appearance.Accent" Style="width: 100%">@Localizer["Refresh"]</FluentButton>
+
+            </FluentStack>
+
+        </EditForm>
+
+    </FluentGridItem>
+
+</FluentGrid>
+
+
+

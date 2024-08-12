@@ -1,4 +1,5 @@
-﻿using System.Reactive.Linq;
+﻿using System.Net.Http.Headers;
+using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 
 using GraphQL;
@@ -283,15 +284,17 @@ namespace Netlify.ApiClient.Auth
                                   Variables = new
                                                   {
                                                       id = userData.User.Id,
-                                                      firstname = userData.FirstName,
+                                                      firstname = string.IsNullOrEmpty(userData.FirstName)?userData.User.FirstName:userData.FirstName,
                                                       email = userData.User.Email,
-                                                      language = userData.User.Language,
+                                                      language = string.IsNullOrEmpty(userData.Language) ? userData.User.Language : userData.Language,
                                                       __typename = "User"
                                                   }
                               };
             
             // Add the access token to the default request headers
-            _graphQlClient.HttpClient.DefaultRequestHeaders.Add(Authorization, $"Bearer {accessToken}");
+            //_graphQlClient.HttpClient.DefaultRequestHeaders.Add(Authorization, $"Bearer {accessToken}");
+
+            _graphQlClient.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             var response = await _graphQlClient.SendMutationAsync<UpdateUserResponse>(request);
             IfErrorThrowException(response, "Update user failed:");
             var updateUserResponse = response.Data.UpdateUser;

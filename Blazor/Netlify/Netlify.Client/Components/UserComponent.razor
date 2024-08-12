@@ -5,13 +5,11 @@
 
 <FluentProfileMenu FullName="@_name"
                    Status="@_status"
-                   @* StatusSize="PresenceBadgeSize.Small" *@
                    StatusTitle="@_statusTitle"
                    EMail="@_email"
                    Image="@(new Icons.Regular.Size48.Person().ToDataUri(size: "20px", color: "white"))"
                    ImageSize="30px"
-                   @* TextPosition="TextPosition.Start" *@
-                   @* OnClick="()=>OnClick()" *@
+                   
                    OnHeaderButtonClick="() => OnLogout()">
     <StartTemplate>
         @_name
