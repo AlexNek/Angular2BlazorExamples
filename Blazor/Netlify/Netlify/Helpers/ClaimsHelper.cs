@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -7,7 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Netlifly.Shared;
 using Netlifly.Shared.Response;
 
-namespace Netlify
+namespace Netlify.Helpers
 {
     public class ClaimsHelper
     {
@@ -39,10 +38,10 @@ namespace Netlify
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             var authProperties = new AuthenticationProperties
-                                     {
-                                         IsPersistent = internalLogin.RememberMe,
-                                         ExpiresUtc = DateTimeOffset.UtcNow.AddDays(ExpirationDays)
-                                     };
+            {
+                IsPersistent = internalLogin.RememberMe,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(ExpirationDays)
+            };
 
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
             await httpContext.SignInAsync(
@@ -84,6 +83,39 @@ namespace Netlify
 
             return ret;
         }
+
+        public static async Task<bool> UpdateUserLanguageAsync(HttpContext context, string userLanguage)
+        {
+            bool ret = false;
+            var user = context.User;
+            if (user.Identity is { IsAuthenticated: true } && !string.IsNullOrEmpty(userLanguage))
+            {
+                // Update the claims with the new token
+                if (context.User.Identity is ClaimsIdentity claimsIdentity)
+                {
+                    var newClaims = new List<Claim>(claimsIdentity.Claims);
+                    newClaims.RemoveAll(c => c.Type == ClaimTypes.Locality);
+                    newClaims.Add(new Claim(ClaimTypes.Locality, userLanguage));
+
+                    // Create a new ClaimsIdentity and ClaimsPrincipal with the updated claims
+                    var newIdentity = new ClaimsIdentity(newClaims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var newPrincipal = new ClaimsPrincipal(newIdentity);
+
+                    AuthenticationProperties authProperties = GetOldAuthenticationProperties(user);
+
+                    // Sign in with the new principal
+                    await context.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        newPrincipal,
+                        authProperties);
+
+                    ret = true;
+                }
+            }
+
+            return ret;
+        }
+
         public static async Task<bool> UpdateUserNameAsync(HttpContext context, string userName)
         {
             bool ret = false;
@@ -115,6 +147,7 @@ namespace Netlify
 
             return ret;
         }
+
         private static AuthenticationProperties GetOldAuthenticationProperties(ClaimsPrincipal user)
         {
             var isPersistentClaim = user.FindFirst(AdditionalClaimTypes.IsPersistentClaim)?.Value;
@@ -131,11 +164,12 @@ namespace Netlify
             {
                 previousExpirationDays = expirationDaysTemp;
             }
+
             var authProperties = new AuthenticationProperties
-                                     {
-                                         IsPersistent = previousIsPersistent,
-                                         ExpiresUtc = DateTimeOffset.UtcNow.AddDays(previousExpirationDays)
-                                     };
+            {
+                IsPersistent = previousIsPersistent,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(previousExpirationDays)
+            };
             return authProperties;
         }
     }

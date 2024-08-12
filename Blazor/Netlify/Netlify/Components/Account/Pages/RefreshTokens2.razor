@@ -1,0 +1,35 @@
+﻿@page "/refresh-tokens2"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc
+@using Netlify.SharedResources
+@using Netlify.Components.Account.Shared
+
+
+@* @attribute [Authorize] *@
+@inject SharedLocalizer Localizer
+
+<PageTitle>Refresh Tokens</PageTitle>
+
+<h1>Refresh Tokens</h1>
+<FluentGrid>
+    <FluentGridItem>
+        <StatusMessage Message="@Message" />
+        <EditForm Model="Input" method="post" OnValidSubmit="UpdateUser" FormName="update-tokens">
+            <DataAnnotationsValidator />
+            <FluentValidationSummary class="text-danger" role="alert" />
+            <!-- Hidden fields -->
+            <input type="hidden" @bind="Input.Id" />
+
+            <FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
+                <FluentLabel Typo="Typography.Body">@Input.Name</FluentLabel>
+                <FluentLabel Typo="Typography.Body">@Input.Email</FluentLabel>
+
+                
+                <FluentLabel Typo="Typography.Body" Color="_accessTokenColor">Access Token Expire at @_accessTokenExpiry.ToString("f") GMT</FluentLabel>
+                <FluentLabel Typo="Typography.Body" Color="_refreshTokenColor">Refresh Token Expire at @_refreshTokenExpiry.ToString("f") GMT</FluentLabel>
+
+                <FluentButton Type="ButtonType.Submit" Loading="@_waitingTime" Appearance="Appearance.Accent" Style="width: 100%; margin-bottom: 10px;">@Localizer["Refresh"]</FluentButton>
+            </FluentStack>
+        </EditForm>
+    </FluentGridItem>
+</FluentGrid>

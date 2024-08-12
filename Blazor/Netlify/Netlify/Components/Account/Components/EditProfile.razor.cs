@@ -53,8 +53,11 @@ public partial class EditProfile
     [SupplyParameterFromQuery]
     private string? ReturnUrl { get; set; }
 
+    private bool _waitingTime;
+
     public async Task UpdateUser(EditContext editContext)
     {
+        _waitingTime = true;
         try
         {
             User user = new User() { Id = Input.Id, Email = Input.Email };
@@ -63,10 +66,10 @@ public partial class EditProfile
             if (authUserData != null)
             {
                 // Not found another way to get HttpContext
-               //await ClaimsHelper.UpdateUserNameAsync(HttpContextAccessor.HttpContext, Input.Name);
+                //await ClaimsHelper.UpdateUserNameAsync(HttpContextAccessor.HttpContext, Input.Name);
                 HandleUpdateUserResponse();
                 //RedirectManager.RedirectTo(ReturnUrl);
-                
+
                 // Trick to use HttpContext from parent
                 var queryParameters = new Dictionary<string, object?> { { nameof(User.FirstName), Input.Name } };
                 var newUri = Navigation.GetUriWithQueryParameters(Navigation.Uri, queryParameters);
@@ -85,6 +88,10 @@ public partial class EditProfile
         {
             _identityErrors = [new IdentityError { Description = ex.Message }];
             HandleUpdateUserError(ex);
+        }
+        finally
+        {
+            _waitingTime = false;
         }
     }
 
