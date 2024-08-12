@@ -1,5 +1,35 @@
-﻿<h3>ChangeLanguage</h3>
+﻿@using Netlify.Components.Account.Shared
+@using Netlify.SharedResources
+@inject SharedLocalizer Localizer
+@inject IToastService ToastService
 
-@code {
+<FluentGrid>
+    <FluentGridItem>
+        <StatusMessage Message="@Message"/>
+        <EditForm Model="Input" method="post" OnValidSubmit="UpdateUser" FormName="edit-profile">
+            <DataAnnotationsValidator/>
+            <h2>@Localizer["Select your language"]</h2>
+            <hr/>
+            <FluentValidationSummary class="text-danger" role="alert"/>
+            <!-- Hidden fields -->
+            <input type="hidden" @bind="Input.Id"/>
+            <input type="hidden" @bind="Input.AccessToken"/>
+            <input type="hidden" @bind="Input.Email" />
+            <input type="hidden" @bind="Input.Name" />
 
-}
+            <FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
+                <FluentCombobox Name="Input.Language" 
+                                Items="@supportedCultures" 
+                                @bind-SelectedOption="@Input.Culture" 
+                                OptionText="info => info.DisplayName" 
+                                OptionValue="info => info.TwoLetterISOLanguageName"
+                                Height="200px"/>
+
+                <FluentValidationMessage For="() => Input.Culture" class="text-danger"/>
+
+
+                <FluentButton Type="ButtonType.Submit" Loading="@_waitingTime" Appearance="Appearance.Accent" Style="width: 100%; margin-bottom: 10px;">@Localizer["Save"]</FluentButton>
+            </FluentStack>
+        </EditForm>
+    </FluentGridItem>
+</FluentGrid>

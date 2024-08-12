@@ -7,8 +7,8 @@ public static class SharedLocalizerHelper
     // Define supported cultures and their descriptions
     private static readonly Dictionary<string, string> SupportedCultures = new()
                                                                                {
-                                                                                   { "en-US", "English (United States)" },
-                                                                                   { "es-MX", "Spanish (Mexico)" }
+                                                                                   { "en", "English" },
+                                                                                   { "es", "Spanish" }
                                                                                };
     public static CultureInfo[] GetSupportedCultures()
     {

@@ -9,6 +9,7 @@ using Netlifly.Shared;
 using Netlifly.Shared.Response;
 
 using Netlify.ApiClient.Auth;
+using Netlify.Helpers;
 
 namespace Netlify.Middlware
 {
@@ -51,11 +52,11 @@ namespace Netlify.Middlware
             }
             if (!string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(refreshToken))
             {
-                var tokenValidation = GetTokenExpirations(accessToken, refreshToken);
+                var tokenValidation = TokenHelper.GetTokenExpirationsState(accessToken, refreshToken);
 
-                if (tokenValidation.isAccessTokenExpired)
+                if (tokenValidation.IsAccessTokenExpired)
                 {
-                    if (!tokenValidation.isRefreshTokenExpired)
+                    if (!tokenValidation.IsRefreshTokenExpired)
                     {
                         var tokens = await _authService.RefreshTokenAsync(refreshToken);
                         if (!string.IsNullOrEmpty(tokens?.AccessToken))
@@ -104,26 +105,6 @@ namespace Netlify.Middlware
             {
                 NavigateToLogout(context);
             }
-        }
-
-        private (bool isAccessTokenExpired, bool isRefreshTokenExpired) GetTokenExpirations(
-            string accessToken,
-            string refreshToken)
-        {
-            var accessTokenExpiry = GetTokenExpiry(accessToken);
-            var refreshTokenExpiry = GetTokenExpiry(refreshToken);
-
-            var isAccessTokenExpired = DateTime.UtcNow >= accessTokenExpiry;
-            var isRefreshTokenExpired = DateTime.UtcNow >= refreshTokenExpiry;
-
-            return (isAccessTokenExpired, isRefreshTokenExpired);
-        }
-
-        private DateTime GetTokenExpiry(string token)
-        {
-            var jwtToken = new JwtSecurityTokenHandler().ReadToken(token) as JwtSecurityToken;
-            var expiry = jwtToken?.ValidTo;
-            return expiry ?? DateTime.MinValue;
         }
 
         private void NavigateToLogout(HttpContext context)
