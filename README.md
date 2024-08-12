@@ -55,7 +55,10 @@ Starting with .NET version 8, blazor has 4 application rendering modes:
 - Interactive WebAssembly. Client-side rendering (CSR) using Blazor WebAssembly.
 - Interactive Auto.	Interactive SSR using Blazor Server initially and then CSR on subsequent visits after the Blazor bundle is downloaded.
 
-> See More: [ASP.NET Core Blazor render modes](https://learn.microsoft.com/en-us/aspnet/core/blazor/components/render-modes?view=aspnetcore-8.0), [Blazor hosting models (Blazor in .NET 8: Full stack Web UI )](https://chrissainty.com/blazor-in-dotnet-8-full-stack-web-ui/), [Blazor Render Modes in .NET 8](https://dvoituron.com/2024/01/23/blazor-render-modes/)
+> See More: [ASP.NET Core Blazor render modes](https://learn.microsoft.com/en-us/aspnet/core/blazor/components/render-modes?view=aspnetcore-8.0), 
+[Blazor hosting models (Blazor in .NET 8: Full stack Web UI )](https://chrissainty.com/blazor-in-dotnet-8-full-stack-web-ui/), 
+[Blazor Render Modes in .NET 8](https://dvoituron.com/2024/01/23/blazor-render-modes/),
+[Blazor Explore Rendering](https://github.com/ShaunCurtis/Blazor.ExploreRendering/blob/master/Documents/Going-For-Broke.md)
 
 Streaming rendering is a small enhancement over SSR. It allows pages that need to execute long running requests to load quickly via an initial payload of HTML. 
 
@@ -133,12 +136,14 @@ We can find there GraphQL Api call, authentication and localization.
 ![image](Docu/pics/example2-angular.gif)
 
 ### Conversion steps
-- For this example, we will choose MS FluentUI
+For this example, we will choose MS FluentUI
+
 - For localization, we will follow [MS Recommendation](https://learn.microsoft.com/en-us/aspnet/core/blazor/globalization-localization?view=aspnetcore-8.0).
   For web assembly language setting stored in local storage and for the server in cookie via controller.
   In general, in our case it will be enough to use the cookie to store the language setting. But we leave both local settings and internal storage for learning case.
   But we keep both the cookie and local storage for learning purposes. [See more](Docu/Localization.md)
-
+- For calling GrapQL API we using GraphQL.NET library. Implemetation must be different in some cases.
+- implement User Profile change like name and password change. As into the old project we need to use interactivity there wiil be some problem to solve.
 
 ## Blazor UI Library
 - [Radzen Blazor Components - free](https://blazor.radzen.com/) A set of 80+ free and open source native Blazor UI controls.
