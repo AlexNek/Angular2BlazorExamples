@@ -213,3 +213,13 @@ code {
 .rounded-10 {
     border-radius: 10px;
 }
+
+.alert-danger {
+    color: #fff; /* White text color */
+    background-color: #dc3545; /* Red background color (Bootstrap's danger color) */
+    
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Adjust the font size */
+    
+    text-align: left; /* Align text to the left */
+}

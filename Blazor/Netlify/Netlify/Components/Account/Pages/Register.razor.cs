@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Netlifly.Shared.Request;
 
 using Netlify.ApiClient.Auth;
-using Netlify.SharedResources;
+using Netlify.Attributes;
 
 namespace Netlify.Components.Account.Pages;
 
@@ -123,10 +123,7 @@ public partial class Register
         public string Email { get; set; } = "";
 
         [Required]
-        [StringLength(
-            100,
-            ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
-            MinimumLength = 8)]
+        [PasswordLengthDefaultLoc]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; } = "";
@@ -136,52 +133,7 @@ public partial class Register
         [CompareLoc("Password", "The password and confirmation password do not match.") ]
         public string ConfirmPassword { get; set; } = "";
 
-        [MustBeTrue("You must accept the terms and conditions")]
+        [MustBeTrueLoc("You must accept the terms and conditions")]
         public bool Accept { get; set; }
-    }
-    
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class CompareLoc : CompareAttribute
-    {
-        private readonly string _message;
-
-        /// <summary>Initializes a new instance of the <see cref="T:System.ComponentModel.DataAnnotations.CompareAttribute" /> class.</summary>
-        /// <param name="password"></param>
-        /// <param name="otherProperty">The property to compare with the current property.</param>
-        public CompareLoc(string otherProperty, string message)
-            : base(otherProperty)
-        {
-            _message = message;
-        }
-
-        /// <summary>Applies formatting to an error message, based on the data field where the error occurred.</summary>
-        /// <param name="name">The name of the field that caused the validation failure.</param>
-        /// <returns>The formatted error message.</returns>
-        public override string FormatErrorMessage(string name)
-        {
-            return StaticLocalizer.GetString(_message);
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class MustBeTrueAttribute : ValidationAttribute
-    {
-        private readonly string _message;
-
-        public MustBeTrueAttribute(string message)
-        {
-            _message = message;
-        }
-        public override bool IsValid(object? value)
-        {
-            // Check if value is a boolean and equals true
-            return value is true;
-        }
-
-        public override string FormatErrorMessage(string name)
-        {
-            // Use the static localizer to get the localized error message
-            return StaticLocalizer.GetString(_message); ;
-        }
     }
 }

@@ -4,7 +4,7 @@
 @inject IToastService ToastService
 
 <FluentGrid>
-    <FluentGridItem>
+    <FluentGridItem xs="8" sm="4">
         <StatusMessage Message="@Message"/>
         <EditForm Model="Input" method="post" OnValidSubmit="UpdateUser" FormName="edit-profile">
             <DataAnnotationsValidator/>

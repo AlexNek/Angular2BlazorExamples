@@ -50,6 +50,12 @@ public partial class EditProfile
             ? null
             : $"Error: {string.Join(", ", _identityErrors.Select(error => error.Description))}";
 
+
+    //[CascadingParameter]
+    //private HttpContext HttpContext { get; set; } = default!;
+    [Inject]
+    private IHttpContextAccessor HttpContextAccessor { get; set; }
+
     [SupplyParameterFromQuery]
     private string? ReturnUrl { get; set; }
 
@@ -60,9 +66,17 @@ public partial class EditProfile
         _waitingTime = true;
         try
         {
+            var accessToken = HttpContextAccessor.HttpContext.Session.GetString(AdditionalClaimTypes.AccessToken);
+
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                _identityErrors = [new IdentityError { Description = "Error:Can not get access token for update" }];
+                return;
+            }
+
             User user = new User() { Id = Input.Id, Email = Input.Email };
             UpdateUserData userData = new UpdateUserData { User = user, FirstName = Input.Name };
-            var authUserData = await ApiClient.UpdateUserAsync(userData, Input.AccessToken);
+            var authUserData = await ApiClient.UpdateUserAsync(userData, accessToken);
             if (authUserData != null)
             {
                 // Not found another way to get HttpContext
@@ -105,8 +119,11 @@ public partial class EditProfile
         {
             Input.Id = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Input.Email = user.FindFirst(ClaimTypes.Email)?.Value;
-            Input.AccessToken = user.FindFirst(AdditionalClaimTypes.AccessToken)?.Value;
+            string? userAccessToken = user.FindFirst(AdditionalClaimTypes.AccessToken)?.Value;
             Input.Name = user.Identity.Name;
+            HttpContextAccessor.HttpContext.Session.SetString(
+                AdditionalClaimTypes.AccessToken,
+                userAccessToken); // Store token in session
         }
 
         //bool isRunningOnWasm = IsRunningOnWasm();
@@ -173,9 +190,7 @@ public partial class EditProfile
         [Display(Name = "NickName")]
         [MinLength(2)]
         public string Name { get; set; } = string.Empty;
-
-        //Hidden
-        public string? AccessToken { get; set; }
+        
     }
 }
 

@@ -6,7 +6,7 @@
 @inject IToastService ToastService
 <RenderStateViewer Parent="this" />
 <FluentGrid>
-    <FluentGridItem>
+    <FluentGridItem xs="8" sm="4">
         <StatusMessage Message="@Message" />
         <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="UpdateUser" FormName="edit-profile">
             <DataAnnotationsValidator />
@@ -15,11 +15,10 @@
             <FluentValidationSummary class="text-danger" role="alert" />
             <!-- Hidden fields -->
             <input type="hidden" @bind="Input.Id" />
-            <input type="hidden" @bind="Input.AccessToken" />
 
             <FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
-                <FluentTextField Name="Input.Name" @bind-Value="Input.Name" Required="true" Placeholder="nickname" Label="@Localizer["First name"]" Style="width: 100%; margin-bottom: 10px;" />
-                <FluentTextField ReadOnly="true" Name="Input.Email" @bind-Value="Input.Email" AutoComplete="email" Required="true" Placeholder="name@example.com" Label="@Localizer["Email"]" Style="width: 100%; margin-bottom: 10px;">
+                <FluentTextField Id="nickname" Name="Input.Name" @bind-Value="Input.Name" Required="true" Placeholder="nickname" Label="@Localizer["First name"]" Style="width: 100%; margin-bottom: 10px;" />
+                <FluentTextField Id="EMailprofile" ReadOnly="true" Name="Input.Email" @bind-Value="Input.Email" AutoComplete="email" Required="true" Placeholder="name@example.com" Label="@Localizer["Email"]" Style="width: 100%; margin-bottom: 10px;">
                     <FluentIcon Value="@(new Icons.Regular.Size24.MailEdit())" Slot="start" />
                 </FluentTextField>
                 <FluentValidationMessage For="() => Input.Email" class="text-danger" />

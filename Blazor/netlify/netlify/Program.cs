@@ -59,7 +59,7 @@ namespace Netlify
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
             services.AddFluentUIComponents();
-            
+            services.AddSession();
             
            // Configure localization services
             services.AddSharedLocalization();

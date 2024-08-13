@@ -11,6 +11,10 @@
 @using Netlify.Components.Account.Shared
 @using Netlify.SharedResources
 
+@code {
+    public const string PasswordRegexPattern = @"^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$";
+}
+
 
 @* @inject UserManager<ApplicationUser> UserManager
 @inject IUserStore<ApplicationUser> UserStore

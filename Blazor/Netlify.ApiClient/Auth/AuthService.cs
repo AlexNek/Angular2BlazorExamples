@@ -325,26 +325,34 @@ namespace Netlify.ApiClient.Auth
             return updateUserResponse;
         }
 
-        public async Task<OkData> ChangePassword(string oldPassword, string newPassword)
+        public async Task<OkData?> ChangePasswordAsync(
+            string oldPassword,
+            string newPassword,
+            string userId,
+            string accessToken)
         {
             var request = new GraphQLHttpRequest(Mutations.ChangePasswordMutation)
                               {
-                                  Variables = new { oldPassword, newPassword }
+                                  Variables = new { oldPassword = oldPassword, newPassword = newPassword, id = userId }
                               };
 
-            return await _graphQlClient.SendMutationAsync<ChangePasswordResponse>(request)
-                       .ToObservable()
-                       .Select(
-                           response =>
-                               {
-                                   var changePasswordData = response.Data?.Data?.ChangePassword;
-                                   if (changePasswordData != null)
-                                   {
-                                       return changePasswordData;
-                                   }
+            _graphQlClient.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            var response = await _graphQlClient.SendMutationAsync<ChangePasswordResponse>(request);
+            IfErrorThrowException(response, "Change password failed:");
+            return response?.Data?.ChangePassword;
+            //return await _graphQlClient.SendMutationAsync<ChangePasswordResponse>(request)
+            //           .ToObservable()
+            //           .Select(
+            //               response =>
+            //                   {
+            //                       var changePasswordData = response.Data?.Data?.ChangePassword;
+            //                       if (changePasswordData != null)
+            //                       {
+            //                           return changePasswordData;
+            //                       }
 
-                                   return null;
-                               });
+            //                       return null;
+            //                   });
         }
 
         public async Task<OkData> DeleteAccount(string password)

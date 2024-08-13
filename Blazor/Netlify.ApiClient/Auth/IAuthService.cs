@@ -12,7 +12,7 @@ public interface IAuthService
 
     Task<User?> UpdateUserAsync(UpdateUserData userData, string? accessToken);
 
-    Task<OkData> ChangePassword(string oldPassword, string newPassword);
+    Task<OkData?> ChangePasswordAsync(string oldPassword, string newPassword, string userId, string accessToken);
 
     Task<OkData> DeleteAccount(string password);
 
