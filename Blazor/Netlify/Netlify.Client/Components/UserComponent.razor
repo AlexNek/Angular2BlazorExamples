@@ -9,7 +9,8 @@
                    EMail="@_email"
                    Image="@(new Icons.Regular.Size48.Person().ToDataUri(size: "20px", color: "white"))"
                    ImageSize="30px"
-                   
+                   PopoverStyle="@PopoverStyle"
+                   @* style="display: @(isMenuOpen ? "block" : "none")" *@
                    OnHeaderButtonClick="() => OnLogout()">
     <StartTemplate>
         @_name
@@ -60,6 +61,10 @@
 
     private bool _isAuthenticated;
 
+    private bool _isPopupVisible = true;
+
+    public string? PopoverStyle { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
@@ -76,6 +81,7 @@
         }
 
         UpdateStatusTitle();
+        UpdatePopoverStyle();
     }
 
     private void UpdateStatusTitle()
@@ -96,5 +102,9 @@
     private void OnRegister()
     {
         NavManager.NavigateTo("auth/register");
+    }
+    private void UpdatePopoverStyle()
+    {
+        PopoverStyle = _isPopupVisible ? "display: block;" : "display: none;";
     }
 }

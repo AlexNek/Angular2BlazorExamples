@@ -1,0 +1,46 @@
+﻿@page "/dashboard"
+
+@* @implements IDisposable *@
+
+@using Netlify.SharedResources
+@using Netlify.Components.Account.Shared
+
+@inject SharedLocalizer Localizer
+@* @inject IHeroService HeroService *@
+@* @inject AuthenticationStateProvider AuthenticationStateProvider *@
+
+<h3>Dashboard</h3>
+<StatusMessage Message="@Message" />
+
+@if (_user != null)
+{
+    <p>Welcome, @_user.FirstName!</p>
+    <ul>
+        @foreach (var hero in _publicHeroes)
+        {
+            <li>
+                @hero.RealName
+                <button @onclick="() => VoteForHero(hero)">Vote</button>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+
+    // private void CheckUserLanguage()
+    // {
+    //     if (user.Language != CultureInfo.CurrentCulture.Name)
+    //     {
+    //         var redirectUrl = user.Language != AppConfig.DefaultLang
+    //             ? $"/{user.Language}/dashboard"
+    //             : "/dashboard";
+    //         JSRuntime.InvokeVoidAsync("location.replace", redirectUrl);
+    //     }
+    // }
+
+}

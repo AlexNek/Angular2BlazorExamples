@@ -1,4 +1,5 @@
-﻿using GraphQL.Client.Http;
+﻿using GraphQL.Client.Abstractions;
+using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.Newtonsoft;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Netlifly.Shared;
 
 using Netlify.ApiClient.Auth;
+using Netlify.ApiClient.Hero;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -57,6 +59,7 @@ namespace Netlify.ApiClient
                 });
 
             services.AddSingleton<IAuthService, AuthService>();
+            services.AddSingleton<IHeroService, HeroService>();
         }
     }
 }

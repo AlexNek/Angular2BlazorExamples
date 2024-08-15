@@ -28,6 +28,21 @@ namespace Netlify.Helpers
                        };
         }
 
+        public static User CreateUser(ClaimsPrincipal user)
+        {
+            var ret = new User();
+
+            if (user.Identity is { IsAuthenticated: true })
+            {
+                ret.Id = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                ret.Email = user.FindFirst(ClaimTypes.Email)?.Value;
+
+                ret.FirstName = user.Identity.Name;
+            }
+
+            return ret;
+        }
+
         public static async Task Login(
             HttpContext httpContext,
             InternalLoginRequest internalLogin,
@@ -38,10 +53,10 @@ namespace Netlify.Helpers
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = internalLogin.RememberMe,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(ExpirationDays)
-            };
+                                     {
+                                         IsPersistent = internalLogin.RememberMe,
+                                         ExpiresUtc = DateTimeOffset.UtcNow.AddDays(ExpirationDays)
+                                     };
 
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
             await httpContext.SignInAsync(
@@ -69,7 +84,7 @@ namespace Netlify.Helpers
                     var newIdentity = new ClaimsIdentity(newClaims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var newPrincipal = new ClaimsPrincipal(newIdentity);
 
-                    AuthenticationProperties authProperties = GetOldAuthenticationProperties(user);
+                    AuthenticationProperties authProperties = GetAuthenticationProperties(user);
 
                     // Sign in with the new principal
                     await context.SignInAsync(
@@ -101,7 +116,7 @@ namespace Netlify.Helpers
                     var newIdentity = new ClaimsIdentity(newClaims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var newPrincipal = new ClaimsPrincipal(newIdentity);
 
-                    AuthenticationProperties authProperties = GetOldAuthenticationProperties(user);
+                    AuthenticationProperties authProperties = GetAuthenticationProperties(user);
 
                     // Sign in with the new principal
                     await context.SignInAsync(
@@ -133,7 +148,7 @@ namespace Netlify.Helpers
                     var newIdentity = new ClaimsIdentity(newClaims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var newPrincipal = new ClaimsPrincipal(newIdentity);
 
-                    AuthenticationProperties authProperties = GetOldAuthenticationProperties(user);
+                    AuthenticationProperties authProperties = GetAuthenticationProperties(user);
 
                     // Sign in with the new principal
                     await context.SignInAsync(
@@ -148,7 +163,7 @@ namespace Netlify.Helpers
             return ret;
         }
 
-        private static AuthenticationProperties GetOldAuthenticationProperties(ClaimsPrincipal user)
+        private static AuthenticationProperties GetAuthenticationProperties(ClaimsPrincipal user)
         {
             var isPersistentClaim = user.FindFirst(AdditionalClaimTypes.IsPersistentClaim)?.Value;
 
@@ -166,10 +181,10 @@ namespace Netlify.Helpers
             }
 
             var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = previousIsPersistent,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(previousExpirationDays)
-            };
+                                     {
+                                         IsPersistent = previousIsPersistent,
+                                         ExpiresUtc = DateTimeOffset.UtcNow.AddDays(previousExpirationDays)
+                                     };
             return authProperties;
         }
     }
