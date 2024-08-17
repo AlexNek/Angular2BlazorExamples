@@ -2,33 +2,51 @@
 
 @* @implements IDisposable *@
 
+@using Netlifly.Shared
 @using Netlify.SharedResources
 @using Netlify.Components.Account.Shared
+@using Newtonsoft.Json
 
 @inject SharedLocalizer Localizer
 @* @inject IHeroService HeroService *@
 @* @inject AuthenticationStateProvider AuthenticationStateProvider *@
-
+@* 
 <h3>Dashboard</h3>
-<StatusMessage Message="@Message" />
+ *@<div class="container mt-4">
+    <div class="row mb-5">
+        <div class="col-12">
+            <h1 class="text-center mb-2">Top 5 public heroes</h1>
+            <p class="text-center mb-3">
+                These heroes are available to all users, and you can vote for them!
+            </p>
+            <div class="row">
 
-@if (_user != null)
-{
-    <p>Welcome, @_user.FirstName!</p>
-    <ul>
-        @foreach (var hero in _publicHeroes)
-        {
-            <li>
-                @hero.RealName
-                <button @onclick="() => VoteForHero(hero)">Vote</button>
-            </li>
-        }
-    </ul>
-}
-else
-{
-    <p>Loading...</p>
-}
+                <StatusMessage Message="@Message" />
+
+                @if (_user != null)
+                {
+                   @*  <p>Welcome, @_user.FirstName!</p> *@
+                    @*  <HeroViewComponent HeroAsString="@(new Hero(null))" @rendermode="InteractiveServer" /> *@
+                   
+                        @* <InteractiveRenderMode rendermode="InteractiveServer"> *@
+                        @foreach (var hero in _publicHeroes)
+                        {
+                            @*  <HeroViewComponent HeroAsString="hero" /> *@
+
+                            string heroString = JsonConvert.SerializeObject(hero);
+                            <HeroViewComponent HeroAsString="@heroString" AccessToken="@_accessToken" @rendermode="InteractiveServer" />
+                        }
+                        @*  </InteractiveRenderMode> *@
+                   
+                }
+                else
+                {
+                    <p>Loading...</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
 

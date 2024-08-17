@@ -43,6 +43,12 @@ namespace Netlify.Helpers
             return ret;
         }
 
+        public static string? GetAccessToken(ClaimsPrincipal user)
+        {
+            var ret = user.FindFirst(AdditionalClaimTypes.AccessToken)?.Value;
+            return ret;
+        }
+
         public static async Task Login(
             HttpContext httpContext,
             InternalLoginRequest internalLogin,

@@ -29,6 +29,8 @@ public partial class DashboardPage
 
     private IEnumerable<IdentityError>? _errors;
 
+    private string? _accessToken;
+
     private string? Message =>
         _errors is null
             ? null
@@ -40,6 +42,7 @@ public partial class DashboardPage
         var user = authState.User;
 
         _user = ClaimsHelper.CreateUser(user);
+        _accessToken = ClaimsHelper.GetAccessToken(user);
         // AuthRepository.UserObservable
         //     .TakeUntil(destroy)
         //     .Subscribe(u =>
@@ -103,18 +106,18 @@ public partial class DashboardPage
         }
     }
 
-    private async Task VoteForHero(Hero hero)
-    {
-        try
-        {
-            await HeroService.VoteForHeroAsync(hero.Id);
-            await LoadPublicHeroes();
-        }
-        catch (Exception ex)
-        {
-            HandleError(ex);
-        }
-    }
+    //private async Task VoteForHero(Hero hero)
+    //{
+    //    try
+    //    {
+    //        await HeroService.VoteForHeroAsync(hero.Id, TODO);
+    //        await LoadPublicHeroes();
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        HandleError(ex);
+    //    }
+    //}
 
     private void HandleResponse()
     {

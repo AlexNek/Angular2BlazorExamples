@@ -1,6 +1,7 @@
 ﻿using GraphQL;
 using GraphQL.Client.Abstractions;
 using GraphQL.Client.Http;
+using System.Net.Http.Headers;
 using static Netlify.ApiClient.Hero.SearchHeroesRequest;
 
 namespace Netlify.ApiClient.Hero;
@@ -85,7 +86,7 @@ internal class HeroService : IHeroService
         //    .Select(response => response.Data?.RemoveHero);
     }
 
-    public async Task<Netlifly.Shared.Hero?> VoteForHeroAsync(string heroId)
+    public async Task<Netlifly.Shared.Hero?> VoteForHeroAsync(string heroId, string? accessToken)
     {
         var request = new GraphQLRequest
                           {
@@ -93,11 +94,25 @@ internal class HeroService : IHeroService
                               Variables = new { heroId }
                           };
 
+        _client.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         var response = await _client.SendMutationAsync<VoteForHeroResponse>(request);
         IfErrorThrowException(response, "VoteForHero failed:");
         return response.Data?.VoteHero;
         //return await _client.SendMutationAsync<VoteForHeroResponse>(request)
         //    .Select(response => response.Data?.VoteHero);
+    }
+    public async Task<int?> GetVoteForHeroAsync(string heroId)
+    {
+        var request = new GraphQLRequest
+                          {
+                              Query = Queries.GetVoteForHero,
+                              Variables = new { heroId }
+                          };
+
+        
+        var response = await _client.SendQueryAsync<GetVoteForHeroResponse>(request);
+        IfErrorThrowException(response, "GetVoteForHero failed:");
+        return response.Data?.HeroVotes.Votes;
     }
 
     private static void IfErrorThrowException(IGraphQLResponse response, object? errorHeader)

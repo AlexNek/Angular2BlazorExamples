@@ -28,4 +28,11 @@ internal static class Queries
                     }
                 }
 ";
+
+    internal const string? GetVoteForHero = @"
+  query HeroVotes($heroId: String!) {
+    heroVotes(heroId: $heroId) {
+        votes
+    }
+}";
 }

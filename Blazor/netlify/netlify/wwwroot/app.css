@@ -223,3 +223,14 @@ code {
     
     text-align: left; /* Align text to the left */
 }
+
+:root {
+    --bs-border-width: 1px;
+    --bs-border-color-translucent: rgba(0, 0, 0, 0.175);
+    --bs-border-radius: 0.375rem;
+    --bs-body-color-rgb: 48 48 48;
+    --bs-body-bg: #fdfdfd;
+    --bs-body-color: #303030;
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+}

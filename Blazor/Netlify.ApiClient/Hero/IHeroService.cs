@@ -8,5 +8,7 @@ public interface IHeroService
 
     Task<DeleteHeroResponse.DeleteHeroData?> DeleteHero(string heroId);
 
-    Task<Netlifly.Shared.Hero?> VoteForHeroAsync(string heroId);
+    Task<Netlifly.Shared.Hero?> VoteForHeroAsync(string heroId, string? accessToken);
+
+    Task<int?> GetVoteForHeroAsync(string heroId);
 }
