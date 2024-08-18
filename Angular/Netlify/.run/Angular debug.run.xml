@@ -1,0 +1,6 @@
+﻿<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Angular debug" type="JavascriptDebugType" uri="http://localhost:4200">
+    <mapping url="http://localhost:4200" local-file="$PROJECT_DIR$/src/main.ts" />
+    <method v="2" />
+  </configuration>
+</component>
