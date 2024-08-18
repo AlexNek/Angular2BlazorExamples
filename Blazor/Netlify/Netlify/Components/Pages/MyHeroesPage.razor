@@ -1,0 +1,54 @@
+﻿@page "/my-heroes" 
+@using Netlifly.Shared
+@using Netlify.ApiClient.Auth
+@using Netlify.ApiClient.Hero
+@using Netlify.ApiClient.Users
+@using Netlify.Components.Account.Shared
+
+@code {
+    
+}
+@rendermode InteractiveServer
+
+@* @inject IAuthRepository AuthRepository *@
+@inject IHeroService HeroService
+@inject IUserService UserService
+@* @inject IUserService UserService
+@inject IAlertService AlertService *@
+
+<PageTitle>My Heroes</PageTitle>
+
+<StatusMessage Message="@_message" />
+<FluentButton Appearance="Appearance.Accent" @onclick="OpenNewHeroModal">Add New Hero</FluentButton>
+
+@if (_userHeroes != null)
+{
+    <FluentDataGrid Items="@_userHeroes.AsQueryable()" TGridItem="Hero">
+        @* <PropertyColumn Property="@(p => p.Id)" Title="ID" Sortable="true" /> *@
+        <PropertyColumn Property="@(p => p.AlterEgo)" Title="AlterEgo" Sortable="true" />
+        <PropertyColumn Property="@(p => p.RealName)" Title="Name" Sortable="true" />
+
+        <TemplateColumn Title="Actions" Align="@Align.End">
+            <FluentButton aria-label="Edit item" IconEnd="@(new Icons.Regular.Size16.Edit())" @onclick="() => EditHero(context)">Edit</FluentButton>
+            <FluentButton aria-label="Delete item" IconEnd="@(new Icons.Regular.Size16.Delete())" @onclick="() => DeleteHero(context)">Delete</FluentButton>
+        </TemplateColumn>
+    </FluentDataGrid>
+}
+else
+{
+    <FluentText>Loading..</FluentText>
+}
+
+<FluentDialog Modal="true" @bind-Hidden="@_isModalHidden" OnDialogResult="OnDialogResult">
+    <FluentDialogHeader Visible="true" ShowDismiss="true">@(_isEditing ? "Edit Hero" : "Add Hero")</FluentDialogHeader>
+    <FluentCard>
+        <FluentLabel>Alter Ego</FluentLabel>
+        <FluentTextField Required="true" @bind-Value="_editingHero.AlterEgo" Placeholder="Enter Hero Alter Ego"/>
+        <FluentLabel>Real Name</FluentLabel>
+        <FluentTextField Required="true" @bind-Value="_editingHero.RealName" Placeholder="Enter Hero Name"/>
+
+        <FluentButton Appearance="Appearance.Accent" Autofocus="true" @onclick="SaveHero">Save</FluentButton>
+        <FluentButton Appearance="Appearance.Neutral" @onclick="CloseModal">Cancel</FluentButton>
+    </FluentCard>
+</FluentDialog>
+

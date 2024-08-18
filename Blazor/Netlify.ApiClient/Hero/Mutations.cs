@@ -20,6 +20,24 @@
             }
         }
     ";
+        public const string UpdateHeroMutation = @"
+        mutation createHero($alterEgo: String!, $realName: String!, $id: String!) {
+            createHero(data: { alterEgo: $alterEgo, realName: $realName, id: $id }) {
+                id
+                realName
+                alterEgo
+                votes
+                image
+                public
+                user {
+                    id
+                    email
+                }
+                createdAt
+                updatedAt
+            }
+        }
+    ";
 
         public const string DeleteHeroMutation = @"
         mutation removeHero($heroId: String!) {

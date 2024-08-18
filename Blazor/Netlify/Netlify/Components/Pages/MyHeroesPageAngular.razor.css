@@ -1,0 +1,32 @@
+.card__hero-alter-ego {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.card__hero-real-name {
+    font-size: 0.9rem;
+}
+
+.dashboard__action-button {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border: none;
+}
+
+/*Font Awesome heart icon */
+.fa-heart {
+    font-size: 1.3rem;
+    color: red;
+}
+
+.fa-heart:hover
+ {
+     animation: fa-beat 0.5s infinite linear;
+ }
+
+
+/*Font Awesome trash icon*/
+.fa-trash {
+       color: darken(red, 10);
+   }

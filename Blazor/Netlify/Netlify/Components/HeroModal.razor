@@ -1,0 +1,121 @@
+﻿@using Netlifly.Shared
+@using Netlify.ApiClient.Hero
+
+@inject IHeroService HeroService
+@inject IJSRuntime JSRuntime
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="hero-modal">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            @if (HeroSelected != null)
+            {
+                <div class="modal-header">
+                    <h5 class="modal-title" id="hero">
+                        @if (string.IsNullOrEmpty(HeroSelected.Id))
+                        {
+                            <span>Create a hero</span>
+                        }
+                        else
+                        {
+                            <span>Edit @HeroSelected.AlterEgo</span>
+                        }
+                    </h5>
+                    <button type="button" class="btn-close" aria-label="Close" @onclick="CloseModal">
+                        <i class="icon fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <EditForm Model="HeroForm" OnValidSubmit="SendForm">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+
+                        <div class="mb-4">
+                            <label class="form-label" for="alter-ego-form-control">What's the hero's name?</label>
+                            <InputText id="alter-ego-form-control" @bind-Value="HeroForm.AlterEgo" class="form-control" placeholder="Alter ego" />
+                            <ValidationMessage For="@(() => HeroForm.AlterEgo)" />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label" for="real-name-form-control">Now, the real one</label>
+                            <InputText id="real-name-form-control" @bind-Value="HeroForm.RealName" class="form-control" placeholder="Real name" />
+                            <ValidationMessage For="@(() => HeroForm.RealName)" />
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" disabled="@(IsButtonLoading || HeroSelected == null)">
+                                @if (IsButtonLoading)
+                                {
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                }
+                                Save
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Hero HeroSelected { get; set; }
+    [Parameter] public List<Hero> HeroesList { get; set; }
+    [Parameter] public User User { get; set; }
+
+    private HeroFormModel HeroForm { get; set; } = new HeroFormModel();
+    private bool IsButtonLoading { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (HeroSelected != null)
+        {
+            HeroForm.AlterEgo = HeroSelected.AlterEgo;
+            HeroForm.RealName = HeroSelected.RealName;
+        }
+    }
+
+    private async Task SendForm()
+    {
+        IsButtonLoading = true;
+
+        // var newHero = new Hero(null)
+        //     {
+        //         AlterEgo = HeroForm.AlterEgo,
+        //         RealName = HeroForm.RealName
+        //     };
+        var newHeroRequest = new CreateHeroRequest
+                          {
+                              AlterEgo = HeroForm.AlterEgo,
+                              RealName = HeroForm.RealName
+                          };
+
+        var createdHero = await HeroService.CreateHeroAsync(newHeroRequest);
+        if (createdHero != null)
+        {
+            HeroesList.Add(createdHero);
+            await CloseModal();
+        }
+
+        IsButtonLoading = false;
+    }
+
+    public async Task Show()
+    {
+        // Logic to show the modal
+        // You may need to use JS interop to show the modal
+        await JSRuntime.InvokeVoidAsync("$('#hero-modal').modal", "show");
+    }
+
+    public async Task CloseModal()
+    {
+        // Logic to close the modal
+        // You may need to use JS interop to hide the modal
+        await JSRuntime.InvokeVoidAsync("$('#hero-modal').modal", "hide");
+    }
+
+    public class HeroFormModel
+    {
+        public string AlterEgo { get; set; }
+        public string RealName { get; set; }
+    }
+}

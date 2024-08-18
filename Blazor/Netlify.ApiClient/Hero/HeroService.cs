@@ -2,6 +2,9 @@
 using GraphQL.Client.Abstractions;
 using GraphQL.Client.Http;
 using System.Net.Http.Headers;
+
+using Netlify.Components.Pages;
+
 using static Netlify.ApiClient.Hero.SearchHeroesRequest;
 
 namespace Netlify.ApiClient.Hero;
@@ -43,7 +46,7 @@ internal class HeroService : IHeroService
                           };
 
         var response = await _client.SendQueryAsync<SearchHeroesResponse>(request);
-        IfErrorThrowException(response, "SearchHeroes failed:");
+        ApiHelper.IfErrorThrowException(response, "SearchHeroes failed:");
         return response.Data.SearchHeroes;
 
         //return _client.SendQueryAsync<SearchHeroesResponse>(request)
@@ -58,7 +61,7 @@ internal class HeroService : IHeroService
         //        });
     }
 
-    public async Task<Netlifly.Shared.Hero?> CreateHero(CreateHeroData data)
+    public async Task<Netlifly.Shared.Hero?> CreateHeroAsync(CreateHeroRequest data)
     {
         var request = new GraphQLRequest
                           {
@@ -66,13 +69,13 @@ internal class HeroService : IHeroService
                               Variables = data
                           };
         var response = await _client.SendMutationAsync<CreateHeroResponse>(request);
-        IfErrorThrowException(response, "CreateHero failed:");
+        ApiHelper.IfErrorThrowException(response, "CreateHero failed:");
         return response.Data?.CreateHero;
         //return await _client.SendMutationAsync<CreateHeroResponse>(request)
         //    .Select(response => response.Data?.CreateHero);
     }
 
-    public async Task<DeleteHeroResponse.DeleteHeroData?> DeleteHero(string heroId)
+    public async Task<DeleteHeroResponse.DeleteHeroData?> DeleteHeroAsync(string heroId)
     {
         var request = new GraphQLRequest
                           {
@@ -80,7 +83,7 @@ internal class HeroService : IHeroService
                               Variables = new { heroId }
                           };
         var response = await _client.SendMutationAsync<DeleteHeroResponse>(request);
-        IfErrorThrowException(response, "DeleteHero failed:");
+        ApiHelper.IfErrorThrowException(response, "DeleteHero failed:");
         return response.Data?.RemoveHero;
         //return await _client.SendMutationAsync<DeleteHeroResponse>(request)
         //    .Select(response => response.Data?.RemoveHero);
@@ -96,7 +99,7 @@ internal class HeroService : IHeroService
 
         _client.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         var response = await _client.SendMutationAsync<VoteForHeroResponse>(request);
-        IfErrorThrowException(response, "VoteForHero failed:");
+        ApiHelper.IfErrorThrowException(response, "VoteForHero failed:");
         return response.Data?.VoteHero;
         //return await _client.SendMutationAsync<VoteForHeroResponse>(request)
         //    .Select(response => response.Data?.VoteHero);
@@ -111,24 +114,19 @@ internal class HeroService : IHeroService
 
         
         var response = await _client.SendQueryAsync<GetVoteForHeroResponse>(request);
-        IfErrorThrowException(response, "GetVoteForHero failed:");
+        ApiHelper.IfErrorThrowException(response, "GetVoteForHero failed:");
         return response.Data?.HeroVotes.Votes;
     }
 
-    private static void IfErrorThrowException(IGraphQLResponse response, object? errorHeader)
+    public async Task<Netlifly.Shared.Hero?> UpdateHeroAsync(UpdateHeroRequest data)
     {
-        //Check if there are any errors in the GraphQL response
-        if (response.Errors != null && response.Errors.Any())
-        {
-            // Handle the errors accordingly
-            // Here we log the errors or you could throw an exception
-            var errorMessages = string.Join(
-                ", ",
-                response.Errors.Select(e => e.Message));
-            Console.WriteLine($"GraphQL errors occurred: {errorMessages}");
-
-            // Optionally, you can throw an exception or return a special error object
-            throw new GraphQLException($"{errorHeader} {errorMessages}");
-        }
+        var request = new GraphQLRequest
+                          {
+                              Query = Mutations.UpdateHeroMutation,
+                              Variables = new{alterEgo = data.AlterEgo, realName = data.RealName, id = data.Id}
+                          };
+        var response = await _client.SendMutationAsync<CreateHeroResponse>(request);
+        ApiHelper.IfErrorThrowException(response, "UpdateHero failed:");
+        return response.Data?.CreateHero;
     }
 }

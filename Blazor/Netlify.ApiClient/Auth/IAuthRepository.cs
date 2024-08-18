@@ -6,7 +6,7 @@ public interface IAuthRepository
 {
     event Action<User> UserChanged;
     void SetUser(User user);
-    User? GetUser();
+    Task<User?> GetUserAsync();
     string? GetAccessToken();
     string? GetRefreshToken();
     void UpdateTokens(string accessToken, string refreshToken);

@@ -1,0 +1,77 @@
+﻿@page "/my-heroes-ang" 
+@using Netlify.ApiClient.Auth
+@using Netlify.ApiClient.Hero
+@using Netlify.ApiClient.Users
+@rendermode InteractiveServer
+
+@* @inject IAuthRepository AuthRepository *@
+@inject IHeroService HeroService
+@inject IUserService UserService
+@* @inject IUserService UserService
+@inject IAlertService AlertService *@
+
+<PageTitle>My Heroes</PageTitle>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center mb-4">My heroes</h1>
+            <div class="row mb-3">
+                <div class="col-12">
+                    @* <InteractiveRenderMode rendermode="InteractiveServer"> *@
+                        <button @onclick="() => OpenHeroModal()" class="btn btn-primary px-2 px-md-3" >
+                            Create hero
+                        </button>
+                    @* </InteractiveRenderMode> *@
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <Table Class="table table-success table-striped">
+                            <caption>
+                                Create as many as you want
+                            </caption>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Alter-ego</th>
+                                    <th>Real name</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (UserHeroes.Any())
+                                {
+                                    @for (int i = 0; i < UserHeroes.Count; i++)
+                                    {
+                                        var hero = UserHeroes[i];
+                                        <tr>
+                                            <td>@(i + 1)</td>
+                                            <td>@hero.AlterEgo</td>
+                                            <td>@hero.RealName</td>
+                                            <td>
+                                                <button @onclick="@(() => DeleteHero(hero))" Class="dashboard__action-button p-0">
+                                                    <i class="icon fa-solid fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4">You don't have any heroes. Go and create one!</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </Table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<HeroModal @ref="heroModal" HeroSelected="heroSelected" HeroesList="UserHeroes" User="_user" />
+

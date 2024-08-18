@@ -8,6 +8,7 @@ using Netlifly.Shared;
 
 using Netlify.ApiClient.Auth;
 using Netlify.ApiClient.Hero;
+using Netlify.ApiClient.Users;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -60,6 +61,7 @@ namespace Netlify.ApiClient
 
             services.AddSingleton<IAuthService, AuthService>();
             services.AddSingleton<IHeroService, HeroService>();
+            services.AddSingleton<IUserService, UserService>();
         }
     }
 }

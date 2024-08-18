@@ -14,7 +14,7 @@
 
         public Hero[]? UsersVoted { get; set; }
 
-        public Hero(Hero? hero)
+        public Hero(Hero? hero=null)
         {
             if (hero != null)
             {

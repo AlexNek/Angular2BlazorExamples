@@ -47,8 +47,9 @@ namespace Netlify.ApiClient.Auth
             SaveState();
         }
 
-        public User? GetUser()
+        public async Task<User?> GetUserAsync()
         {
+            await Task.CompletedTask;
             var state = authStore.Value;
             return state.User;
         }

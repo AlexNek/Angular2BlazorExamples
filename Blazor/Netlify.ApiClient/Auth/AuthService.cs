@@ -132,7 +132,7 @@ namespace Netlify.ApiClient.Auth
                 }
             };
             var response = await _graphQlClient.SendMutationAsync<RegisterResponse>(request);
-            IfErrorThrowException(response, "Registration failed:");
+            ApiHelper.IfErrorThrowException(response, "Registration failed:");
             var signupResponse = response.Data.Signup;
             if (signupResponse != null)
             {
@@ -233,7 +233,7 @@ namespace Netlify.ApiClient.Auth
             var request = new GraphQLHttpRequest(Mutations.LoginMutation) { Variables = new { email, password } };
 
             var response = await _graphQlClient.SendMutationAsync<LogInResponse>(request);
-            IfErrorThrowException(response, "Login failed:");
+            ApiHelper.IfErrorThrowException(response, "Login failed:");
     
             AuthUserData? loginResponse = response.Data.Login;
             if (loginResponse != null)
@@ -243,24 +243,7 @@ namespace Netlify.ApiClient.Auth
             return loginResponse;
         }
 
-
-        private static void IfErrorThrowException(IGraphQLResponse response, object? errorHeader)
-        {
-            //Check if there are any errors in the GraphQL response
-            if (response.Errors != null && response.Errors.Any())
-            {
-                // Handle the errors accordingly
-                // Here we log the errors or you could throw an exception
-                var errorMessages = string.Join(
-                    ", ",
-                    response.Errors.Select(e => e.Message));
-                Console.WriteLine($"GraphQL errors occurred: {errorMessages}");
-
-                // Optionally, you can throw an exception or return a special error object
-                throw new GraphQLException($"{errorHeader} {errorMessages}");
-            }
-        }
-
+        
         public async Task<User?> UpdateUserAsync(UpdateUserData userData, string? accessToken)
         {
             //{ "operationName":"updateUser",
@@ -296,7 +279,7 @@ namespace Netlify.ApiClient.Auth
 
             _graphQlClient.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             var response = await _graphQlClient.SendMutationAsync<UpdateUserResponse>(request);
-            IfErrorThrowException(response, "Update user failed:");
+            ApiHelper.IfErrorThrowException(response, "Update user failed:");
             var updateUserResponse = response.Data.UpdateUser;
             if (updateUserResponse != null)
             {
@@ -338,7 +321,7 @@ namespace Netlify.ApiClient.Auth
 
             _graphQlClient.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             var response = await _graphQlClient.SendMutationAsync<ChangePasswordResponse>(request);
-            IfErrorThrowException(response, "Change password failed:");
+            ApiHelper.IfErrorThrowException(response, "Change password failed:");
             return response?.Data?.ChangePassword;
             //return await _graphQlClient.SendMutationAsync<ChangePasswordResponse>(request)
             //           .ToObservable()
@@ -387,7 +370,7 @@ namespace Netlify.ApiClient.Auth
             _graphQlClient.HttpClient.DefaultRequestHeaders.Add(_appConfig.BypassAuthorization, "true");
 
             var response = await _graphQlClient.SendMutationAsync<RefreshTokenResponse>(request);
-            IfErrorThrowException(response, "Refresh token failed:");
+            ApiHelper.IfErrorThrowException(response, "Refresh token failed:");
             var updateUserResponse = response.Data.RefreshToken;
             if (updateUserResponse != null)
             {
