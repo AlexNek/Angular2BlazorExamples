@@ -1,10 +1,11 @@
 ﻿@using System.Globalization
+@using Microsoft.FluentUI.AspNetCore.Components.Icons.Regular
 @using Netlify.SharedResources
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
 
 <div style="display: flex;justify-content: center; align-items: center; @AdditionalStyle">
-    @Label <FluentIcon Value="@(new Icons.Regular.Size24.GlobeLocation())" Color="@IconColor" Style="margin-top: 0px"/>
+    @Label <FluentIcon Value="@(new Size24.GlobeLocation())" Color="@IconColor" Style="margin-top: 0px"/>
     <select id="lang-select" @bind="@selectedCulture" @bind:after="ApplySelectedCultureAsync">
         @foreach (var culture in supportedCultures)
         {

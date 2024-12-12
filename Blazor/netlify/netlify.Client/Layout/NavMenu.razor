@@ -1,22 +1,23 @@
-﻿@rendermode InteractiveAuto
+﻿@using Microsoft.FluentUI.AspNetCore.Components.Icons.Regular
+@rendermode InteractiveAuto
 
 <div class="navmenu">
     <input type="checkbox" title="Menu expand/collapse toggle" id="navmenu-toggle" class="navmenu-icon" />
-    <label for="navmenu-toggle" class="navmenu-icon"><FluentIcon Value="@(new Icons.Regular.Size20.Navigation())" Color="Color.Fill" /></label>
+    <label for="navmenu-toggle" class="navmenu-icon"><FluentIcon Value="@(new Size20.Navigation())" Color="Color.Fill" /></label>
     <nav class="sitenav" aria-labelledby="main-menu">
         <FluentNavMenu Id="main-menu" Width="250" Collapsible="true" Title="Navigation menu" @bind-Expanded="expanded" CustomToggle="true">
-            <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())" IconColor="Color.Accent">Home</FluentNavLink>
-            <FluentNavLink Href="counter" Icon="@(new Icons.Regular.Size20.NumberSymbolSquare())" IconColor="Color.Accent">Counter</FluentNavLink>
-            <FluentNavLink Href="weather" Icon="@(new Icons.Regular.Size20.WeatherPartlyCloudyDay())" IconColor="Color.Accent">Weather</FluentNavLink>
-            <FluentNavLink Href="refresh-tokens" Icon="@(new Icons.Filled.Size20.ImageReflection())" IconColor="Color.Accent">Refresh tokens</FluentNavLink>
-            <FluentNavLink Href="culture-server" Icon="@(new Icons.Filled.Size20.LocalLanguage())" IconColor="Color.Accent">Culture (Server)</FluentNavLink>
-            <FluentNavLink Href="culture-client" Icon="@(new Icons.Regular.Size20.LocalLanguage())" IconColor="Color.Accent">Culture (Client)</FluentNavLink>
-            <FluentNavLink Href="auth/log-in" Icon="@(new Icons.Filled.Size20.StreamInput())" IconColor="Color.Accent">Login</FluentNavLink>
-            <FluentNavLink Href="auth/register" Icon="@(new Icons.Filled.Size20.StreamInput())" IconColor="Color.Accent">Register</FluentNavLink>
-            <FluentNavLink Href="auth/logout" Icon="@(new Icons.Filled.Size20.StreamInput())" IconColor="Color.Accent">Logout</FluentNavLink>
-            <FluentNavLink Href="secure-page" Icon="@(new Icons.Regular.Size20.VideoSecurity())" IconColor="Color.Accent">Secure page</FluentNavLink>
-            <FluentNavLink Href="dashboard" Icon="@(new Icons.Filled.Size20.ChartMultiple())" IconColor="Color.Accent">Dashboard</FluentNavLink>
-            <FluentNavLink Href="my-heroes" Icon="@(new Icons.Filled.Size20.PeopleList())" IconColor="Color.Accent">My heroes</FluentNavLink>
+            <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@(new Size20.Home())" IconColor="Color.Accent">Home</FluentNavLink>
+            <FluentNavLink Href="counter" Icon="@(new Size20.NumberSymbolSquare())" IconColor="Color.Accent">Counter</FluentNavLink>
+            <FluentNavLink Href="weather" Icon="@(new Size20.WeatherPartlyCloudyDay())" IconColor="Color.Accent">Weather</FluentNavLink>
+            <FluentNavLink Href="refresh-tokens" Icon="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Filled.Size20.ImageReflection())" IconColor="Color.Accent">Refresh tokens</FluentNavLink>
+            <FluentNavLink Href="culture-server" Icon="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Filled.Size20.LocalLanguage())" IconColor="Color.Accent">Culture (Server)</FluentNavLink>
+            <FluentNavLink Href="culture-client" Icon="@(new Size20.LocalLanguage())" IconColor="Color.Accent">Culture (Client)</FluentNavLink>
+            <FluentNavLink Href="auth/log-in" Icon="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Filled.Size20.StreamInput())" IconColor="Color.Accent">Login</FluentNavLink>
+            <FluentNavLink Href="auth/register" Icon="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Filled.Size20.StreamInput())" IconColor="Color.Accent">Register</FluentNavLink>
+            <FluentNavLink Href="auth/logout" Icon="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Filled.Size20.StreamInput())" IconColor="Color.Accent">Logout</FluentNavLink>
+            <FluentNavLink Href="secure-page" Icon="@(new Size20.VideoSecurity())" IconColor="Color.Accent">Secure page</FluentNavLink>
+            <FluentNavLink Href="dashboard" Icon="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Filled.Size20.ChartMultiple())" IconColor="Color.Accent">Dashboard</FluentNavLink>
+            <FluentNavLink Href="my-heroes" Icon="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Filled.Size20.PeopleList())" IconColor="Color.Accent">My heroes</FluentNavLink>
         </FluentNavMenu>
     </nav>
 </div>

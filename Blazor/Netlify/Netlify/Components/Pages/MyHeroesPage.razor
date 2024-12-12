@@ -1,4 +1,5 @@
 ﻿@page "/my-heroes" 
+@using Microsoft.FluentUI.AspNetCore.Components.Icons.Regular
 @using Netlifly.Shared
 @using Netlify.ApiClient.Auth
 @using Netlify.ApiClient.Hero
@@ -29,8 +30,8 @@
         <PropertyColumn Property="@(p => p.RealName)" Title="Name" Sortable="true" />
 
         <TemplateColumn Title="Actions" Align="@Align.End">
-            <FluentButton aria-label="Edit item" IconEnd="@(new Icons.Regular.Size16.Edit())" @onclick="() => EditHero(context)">Edit</FluentButton>
-            <FluentButton aria-label="Delete item" IconEnd="@(new Icons.Regular.Size16.Delete())" @onclick="() => DeleteHero(context)">Delete</FluentButton>
+            <FluentButton aria-label="Edit item" IconEnd="@(new Size20.Edit())" @onclick="() => EditHero(context)">Edit</FluentButton>
+            <FluentButton aria-label="Delete item" IconEnd="@(new Size20.Delete())" @onclick="() => DeleteHero(context)">Delete</FluentButton>
         </TemplateColumn>
     </FluentDataGrid>
 }

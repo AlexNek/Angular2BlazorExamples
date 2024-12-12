@@ -5,6 +5,7 @@
 @using Microsoft.AspNetCore.Antiforgery
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.FluentUI.AspNetCore.Components.Icons.Regular
 
 @using Netlify.Client.Components
 @using Netlify.Components.Layout
@@ -38,10 +39,10 @@
                 <FluentValidationSummary class="text-danger" role="alert" />
 
                 <FluentTextField Id="EMail" Name="Input.EMail" @bind-Value="Input.EMail" AutoComplete="email" Required="true" Placeholder="@Localizer["E-Mail"]" Label="@Localizer["E-Mail"]" Style="width: 100%; margin-bottom: 10px;">
-                    <FluentIcon Value="@(new Icons.Regular.Size24.MailEdit())" Slot="start" />
+                    <FluentIcon Value="@(new Size24.MailEdit())" Slot="start" />
                 </FluentTextField>
                 <FluentValidationMessage For="() => Input.EMail" class="text-danger" />
-                <PasswordField Id="Password" Name="Input.Password" @bind-Value="Input.Password" StartIcon="@(new Icons.Regular.Size24.PersonPasskey())" AutoComplete="current-password" Placeholder="@Localizer["Password"]" Label="@Localizer["Password"]" Style="width: 100%; margin-bottom: 10px;" />
+                <PasswordField Id="Password" Name="Input.Password" @bind-Value="Input.Password" StartIcon="@(new Size24.PersonPasskey())" AutoComplete="current-password" Placeholder="@Localizer["Password"]" Label="@Localizer["Password"]" Style="width: 100%; margin-bottom: 10px;" />
 
                 <FluentValidationMessage For="() => Input.Password" class="text-danger" />
                 <FluentStack Orientation="Orientation.Vertical">

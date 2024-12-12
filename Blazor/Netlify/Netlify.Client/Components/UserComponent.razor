@@ -1,5 +1,6 @@
 ﻿@using System.Security.Claims
 @using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.FluentUI.AspNetCore.Components.Icons.Regular
 @inject AuthenticationStateProvider AuthStateProvider
 @inject NavigationManager NavManager
 
@@ -7,7 +8,7 @@
                    Status="@_status"
                    StatusTitle="@_statusTitle"
                    EMail="@_email"
-                   Image="@(new Icons.Regular.Size48.Person().ToDataUri(size: "20px", color: "white"))"
+                   Image="@(new Size24.Person().ToDataUri(size: "20px", color: "white"))"
                    ImageSize="30px"
                    PopoverStyle="@PopoverStyle"
                    @* style="display: @(isMenuOpen ? "block" : "none")" *@

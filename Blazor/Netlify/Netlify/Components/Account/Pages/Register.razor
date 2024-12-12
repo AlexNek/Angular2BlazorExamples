@@ -7,6 +7,7 @@
 @using System.Text.Encodings.Web
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
+@using Microsoft.FluentUI.AspNetCore.Components.Icons.Regular
 @using Netlify.Components.Layout
 @using Netlify.Components.Account.Shared
 @using Netlify.SharedResources
@@ -42,14 +43,14 @@
                 <FluentStack Orientation="Orientation.Vertical" VerticalGap="0">
                     <FluentTextField Name="Input.Name" @bind-Value="Input.Name" Required="true" Placeholder="nickname" Label="Nickname" Style="width: 100%; margin-bottom: 10px;" />
                     <FluentTextField Name="Input.Email" @bind-Value="Input.Email" AutoComplete="email" Required="true" Placeholder="name@example.com" Label="Email" Style="width: 100%; margin-bottom: 10px;">
-                        <FluentIcon Value="@(new Icons.Regular.Size24.MailEdit())" Slot="start" />
+                        <FluentIcon Value="@(new Size24.MailEdit())" Slot="start" />
                     </FluentTextField>
                     <FluentValidationMessage For="() => Input.Email" class="text-danger" />
                     
-                    <PasswordField Label="Password" Name="Input.Password" Placeholder="password" AutoComplete="new-password" StartIcon="@(new Icons.Regular.Size24.PersonPasskey())" Style="width: 100%; margin-bottom: 10px;" @bind-Value="Input.Password" />
+                    <PasswordField Label="Password" Name="Input.Password" Placeholder="password" AutoComplete="new-password" StartIcon="@(new Size24.PersonPasskey())" Style="width: 100%; margin-bottom: 10px;" @bind-Value="Input.Password" />
                     <FluentValidationMessage For="() => Input.Password" class="text-danger" />
 
-                    <PasswordField Id="confirmpassword" Name="Input.ConfirmPassword" @bind-Value="Input.ConfirmPassword" AutoComplete="new-password" Placeholder="password" Label="Confirm Password" StartIcon="@(new Icons.Regular.Size24.PersonPasskey())" Style="width: 100%; margin-bottom: 10px;" />
+                    <PasswordField Id="confirmpassword" Name="Input.ConfirmPassword" @bind-Value="Input.ConfirmPassword" AutoComplete="new-password" Placeholder="password" Label="Confirm Password" StartIcon="@(new Size24.PersonPasskey())" Style="width: 100%; margin-bottom: 10px;" />
                     <FluentValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
                     
                     <FluentCheckbox Name="Input.Accept" @bind-Value="Input.Accept" Label="@Localizer["I've read and accept the terms and conditions and the privacy policy"]" Style="width: 100%; margin-bottom: 10px;" />
