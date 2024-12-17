@@ -72,12 +72,14 @@ namespace Netlify.Middlware
                         else
                         {
                             NavigateToLogout(context);
+                            await _next(context);
                             return;
                         }
                     }
                     else
                     {
                         NavigateToLogout(context);
+                        await _next(context);
                         return;
                     }
                 }
