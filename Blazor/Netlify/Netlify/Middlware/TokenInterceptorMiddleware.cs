@@ -112,7 +112,7 @@ namespace Netlify.Middlware
         private void NavigateToLogout(HttpContext context)
         {
             context.Response.Redirect(
-                $"/logout?origin={WebUtility.UrlEncode(context.Request.Path)}&alertId=SESSION_EXPIRED");
+                $"/auth/logout?origin={WebUtility.UrlEncode(context.Request.Path)}&alertId=SESSION_EXPIRED");
         }
     }
 }
