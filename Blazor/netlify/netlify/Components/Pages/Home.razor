@@ -5,9 +5,16 @@
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
-@_errorText
 
-Welcome to your new Fluent Blazor app.
+Welcome to your new Fluent Blazor app.<br>
+
+@if (!String.IsNullOrEmpty(_errorText))
+{
+    <div class="alert alert-danger" role="alert">
+        @_errorText
+    </div>
+}
+
 @code
 {
     private string? _errorText;

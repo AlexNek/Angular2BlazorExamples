@@ -14,7 +14,7 @@ public static class AlertIdExtensions
                                                                                    { AlertId.UserSaved, "USER_SAVED" },
                                                                                    { AlertId.UpdateUserError, "UPDATE_USER_ERROR" },
                                                                                    { AlertId.CurrentPasswordError, "CURRENT_PASSWORD_ERROR" },
-                                                                                   { AlertId.SessionExpired, "SESSION_EXPIRED" },
+                                                                                   { AlertId.SessionExpired, "SESSION EXPIRED text" },
                                                                                    { AlertId.AccountDeleted, "ACCOUNT_DELETED" },
                                                                                    { AlertId.DoubleVoted, "DOUBLE_VOTED" },
                                                                                    { AlertId.HeroDeleted, "HERO_DELETED" }

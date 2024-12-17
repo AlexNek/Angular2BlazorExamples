@@ -20,7 +20,7 @@
     private string? Origin { get; set; }
     
     [SupplyParameterFromQuery(Name = "alertId")]
-    private string? AlertIdStr { get; set; }
+    private string? AlertId { get; set; }
 
     private async Task LogoutHandler()
     {
@@ -32,7 +32,7 @@
         // {
         //     customAuthStateProvider.NotifyUserLogout();
         // }
-        var query = new Dictionary<string, string?> { { nameof(Origin), Origin }, { nameof(AlertIdStr), AlertIdStr } };
+        var query = new Dictionary<string, string?> { { nameof(Origin).ToLower(), Origin }, { "alertId", AlertId } };
         Navigation.NavigateTo(QueryHelpers.AddQueryString("/", query),true);
     }
 

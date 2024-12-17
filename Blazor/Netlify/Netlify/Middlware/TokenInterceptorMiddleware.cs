@@ -53,6 +53,10 @@ namespace Netlify.Middlware
             if (!string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(refreshToken))
             {
                 var tokenValidation = TokenHelper.GetTokenExpirationsState(accessToken, refreshToken);
+                // TEST
+                NavigateToLogout(context);
+                await _next(context);
+                return;
 
                 if (tokenValidation.IsAccessTokenExpired)
                 {
@@ -112,7 +116,7 @@ namespace Netlify.Middlware
         private void NavigateToLogout(HttpContext context)
         {
             context.Response.Redirect(
-                $"/auth/logout?origin={WebUtility.UrlEncode(context.Request.Path)}&alertId=SESSION_EXPIRED");
+                $"/auth/logout?origin={WebUtility.UrlEncode(context.Request.Path)}&alertId=SessionExpired");
         }
     }
 }
