@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Netlify.Helpers
 {
@@ -24,6 +25,29 @@ namespace Netlify.Helpers
             var refreshTokenExpiry = GetTokenExpiry(refreshToken);
 
             return (accessTokenExpiry, refreshTokenExpiry);
+        }
+
+        public static bool IsTokenNearExpired(string token, TimeSpan threshold)
+        {
+            if (string.IsNullOrEmpty(token))
+            {
+                throw new ArgumentNullException(nameof(token));
+            }
+
+            try
+            {
+                var tokenExpiry = GetTokenExpiry(token);
+
+                var currentTime = DateTime.UtcNow;
+                var timeUntilExpiration = tokenExpiry - currentTime;
+
+                return timeUntilExpiration <= threshold;
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine($"Error parsing token: {ex.Message}");
+                return true; // Assume token is near expiration if we can't parse it
+            }
         }
 
         private static DateTime GetTokenExpiry(string token)
