@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="NgNeat\**" />
+    <EmbeddedResource Remove="NgNeat\**" />
+    <None Remove="NgNeat\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Class2.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

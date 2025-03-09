@@ -138,7 +138,7 @@ namespace Netlify
                 .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
 
             // Add additional endpoints required by the Identity /Account Razor components.
-            //app.MapAdditionalIdentityEndpoints();
+            //app.MapAdditionalIdentityEndpoints(); 
 
             app.Run();
         }

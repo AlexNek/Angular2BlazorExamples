@@ -1,0 +1,21 @@
+﻿@using Netlify.Components.Pages
+@* @attribute [StreamRendering(false)] *@
+
+<ErrorBoundary>
+    <ChildContent>
+        <FluentDataGrid Id="weathergrid" Items="@Forecasts" TGridItem="Weather.WeatherForecast">
+            <PropertyColumn Title="Date" Property="@(c => c.Date)" Align="Align.Start"/>
+            <PropertyColumn Title="Temp. (C)" Property="@(c => c.TemperatureC)" Align="Align.Center"/>
+            <PropertyColumn Title="Temp. (F)" Property="@(c => c.TemperatureF)" Align="Align.Center"/>
+            <PropertyColumn Title="Summary" Property="@(c => c.Summary)" Align="Align.End"/>
+        </FluentDataGrid>
+    </ChildContent>
+    <ErrorContent>
+        <p><em>Error rendering grid. Please try refreshing the page.</em></p>
+    </ErrorContent>
+</ErrorBoundary>
+
+@code {
+    [Parameter]
+    public IQueryable<Weather.WeatherForecast>? Forecasts { get; set; }
+}

@@ -1,46 +1,59 @@
 ﻿@page "/weather"
 @attribute [StreamRendering]
-
+@inject NavigationManager NavManager
 <PageTitle>Weather</PageTitle>
-
 <h1>Weather</h1>
-
 <p>This component demonstrates showing data.</p>
 
-@if (forecasts == null)
+@if (isLoading)
 {
     <p><em>Loading...</em></p>
 }
+else if (loadFailed)
+{
+    <p><em>Failed to load weather data. Please try again later.</em></p>
+}
 else
 {
-    <!-- This page is rendered in SSR mode, so the FluentDataGrid component does not offer any interactivity (like sorting). -->
-    <FluentDataGrid Id="weathergrid" Items="@forecasts" GridTemplateColumns="1fr 1fr 1fr 2fr" TGridItem="WeatherForecast">
-        <PropertyColumn Title="Date" Property="@(c => c!.Date)" Align="Align.Start"/>
-        <PropertyColumn Title="Temp. (C)" Property="@(c => c!.TemperatureC)" Align="Align.Center"/>
-        <PropertyColumn Title="Temp. (F)" Property="@(c => c!.TemperatureF)" Align="Align.Center"/>
-        <PropertyColumn Title="Summary" Property="@(c => c!.Summary)" Align="Align.End"/>
-    </FluentDataGrid>
+    <div id="grid-container">
+        <!-- Load the grid component separately after initial render -->
+        <WeatherGrid  Forecasts="forecasts" @rendermode="InteractiveServer" />
+    </div>
 }
 
 @code {
     private IQueryable<WeatherForecast>? forecasts;
+    private bool isLoading = true;
+    private bool loadFailed = false;
 
     protected override async Task OnInitializedAsync()
     {
-        // Simulate asynchronous loading to demonstrate streaming rendering
-        await Task.Delay(500);
-
-        var startDate = DateOnly.FromDateTime(DateTime.Now);
-        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        try
         {
-            Date = startDate.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = summaries[Random.Shared.Next(summaries.Length)]
-        }).AsQueryable();
+            Console.WriteLine("Starting OnInitializedAsync");
+            await Task.Delay(500); // Simulate async work
+            var startDate = DateOnly.FromDateTime(DateTime.Now);
+            var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
+            forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+                {
+                    Date = startDate.AddDays(index),
+                    TemperatureC = Random.Shared.Next(-20, 55),
+                    Summary = summaries[Random.Shared.Next(summaries.Length)]
+                }).AsQueryable();
+            Console.WriteLine($"Forecasts loaded: {forecasts.Count()}");
+        }
+        catch (Exception ex)
+        {
+            loadFailed = true;
+            Console.WriteLine($"Error loading forecasts: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
     }
 
-    private class WeatherForecast
+    public class WeatherForecast
     {
         public DateOnly Date { get; set; }
         public int TemperatureC { get; set; }

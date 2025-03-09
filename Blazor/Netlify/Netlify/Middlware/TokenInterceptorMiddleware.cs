@@ -1,12 +1,9 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Net;
+﻿using System.Net;
 using System.Security.Claims;
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components;
 
 using Netlifly.Shared;
-using Netlifly.Shared.Response;
 
 using Netlify.ApiClient.Auth;
 using Netlify.Helpers;
@@ -19,6 +16,18 @@ namespace Netlify.Middlware
 
         private readonly IAuthService _authService;
 
+        private readonly string[] _excludedPaths =
+            {
+                "/health", "/Netlify.Client.styles.css", "/favicon.ico",
+                "/_framework/blazor.web.js", "/_framework/dotnet.js", "/_framework/dotnet.js.map",
+                "/_framework/blazor.boot.json", "/_framework/dotnet.runtime.js",
+                "/_framework/dotnet.native.js", "/_framework/dotnet.runtime.js.map",
+                "/_framework/blazor.web.js", "/_framework/dotnet.js",
+                "/_framework/blazor.boot.json", "/_blazor/disconnect", "/auth/log-in",
+                "/_blazor/negotiate", "/_blazor",
+                "/weather"
+            };
+
         private readonly ILogger<TokenInterceptorMiddleware> _logger;
 
         private readonly RequestDelegate _next;
@@ -28,7 +37,7 @@ namespace Netlify.Middlware
             ILogger<TokenInterceptorMiddleware> logger,
             IAuthService authService
             //IAuthRepository authRepository
-            )
+        )
         {
             _next = next;
             _logger = logger;
@@ -38,25 +47,35 @@ namespace Netlify.Middlware
 
         public async Task InvokeAsync(HttpContext context)
         {
+            // Skip token processing for excluded paths
+            if (ShouldSkipTokenProcessing(context.Request.Path))
+            {
+                await _next(context);
+                return;
+            }
+            _logger.LogDebug("Middleware processing path: {Path}", context.Request.Path);
+
             string? accessToken = null; //_authRepository.GetAccessToken();
             string? refreshToken = null; //_authRepository.GetRefreshToken();
 
             var user = context.User;
             if (user.Identity is { IsAuthenticated: true })
             {
-               var InputId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-               var InputEmail = user.FindFirst(ClaimTypes.Email)?.Value;
-               var InputName = user.Identity.Name;
-               accessToken = user.FindFirst(AdditionalClaimTypes.AccessToken)?.Value;
-               refreshToken = user.FindFirst(AdditionalClaimTypes.RefreshToken)?.Value;
+                var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var InputEmail = user.FindFirst(ClaimTypes.Email)?.Value;
+                var InputName = user.Identity.Name;
+                accessToken = user.FindFirst(AdditionalClaimTypes.AccessToken)?.Value;
+                refreshToken = user.FindFirst(AdditionalClaimTypes.RefreshToken)?.Value;
             }
+
             if (!string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(refreshToken))
             {
-                var tokenValidation = TokenHelper.GetTokenExpirationsState(accessToken, refreshToken);
-                // TEST
-                NavigateToLogout(context);
-                await _next(context);
-                return;
+                var tokenValidation =
+                    TokenHelper.GetTokenExpirationsState(accessToken, refreshToken);
+                //// TEST
+                //NavigateToLogout(context);
+                //await _next(context);
+                //return;
 
                 if (tokenValidation.IsAccessTokenExpired)
                 {
@@ -65,7 +84,8 @@ namespace Netlify.Middlware
                         var tokens = await _authService.RefreshTokenAsync(refreshToken);
                         if (!string.IsNullOrEmpty(tokens?.AccessToken))
                         {
-                            context.Request.Headers["Authorization"] = $"Bearer {tokens.AccessToken}";
+                            context.Request.Headers["Authorization"] =
+                                $"Bearer {tokens.AccessToken}";
 
                             bool isUpdated = await ClaimsHelper.UpdateTokens(context, tokens);
                             if (isUpdated)
@@ -96,7 +116,10 @@ namespace Netlify.Middlware
             try
             {
                 await _next(context);
-                CheckUnauthorizedError(context);
+                if (!context.Response.HasStarted) // Only check if response isn’t already streaming
+                {
+                    CheckUnauthorizedError(context);
+                }
             }
             catch (Exception ex)
             {
@@ -109,6 +132,14 @@ namespace Netlify.Middlware
         {
             if (context.Response.StatusCode == (int)HttpStatusCode.Unauthorized)
             {
+                // Check if this is a streaming endpoint
+                var endpoint = context.GetEndpoint();
+                if (endpoint?.Metadata.GetMetadata<StreamRenderingAttribute>() != null)
+                {
+                    // Log and skip redirect for streaming endpoints
+                    _logger.LogWarning("Unauthorized detected on streaming endpoint, skipping redirect.");
+                    return;
+                }
                 NavigateToLogout(context);
             }
         }
@@ -117,6 +148,13 @@ namespace Netlify.Middlware
         {
             context.Response.Redirect(
                 $"/auth/logout?origin={WebUtility.UrlEncode(context.Request.Path)}&alertId=SessionExpired");
+        }
+
+        private bool ShouldSkipTokenProcessing(PathString path)
+        {
+            return _excludedPaths.Any(
+                excludedPath =>
+                    path.StartsWithSegments(excludedPath, StringComparison.OrdinalIgnoreCase));
         }
     }
 }
