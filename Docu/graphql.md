@@ -269,7 +269,7 @@ Assuming you've generated a Strawberry Shake client from your server's GraphQL s
            }
        }
    }
-    ```
+```
 
  >*Note*:  **Crucially**, Strawberry Shake client code (like `YourGraphQLClient`, `GetBookQuery`, `AddBookMutation`, `GetBookQueryArgs`, `AddBookMutationArgs`) is **generated** based on your GraphQL schema and `.graphql` query/mutation documents. You need to use the Strawberry Shake CLI tools (`dotnet graphql init`, `dotnet graphql update`) to generate these classes into your client project *before* you can use them in your C# code.  This example assumes you have a client project set up and the necessary generation steps have been performed.
 
